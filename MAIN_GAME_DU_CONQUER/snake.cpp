@@ -21,7 +21,7 @@ bool gameOver = false;
 const int screenWidthg = 800;
 const int screenHeightg = 600;
 const int cellSize = 40;
-const float step = cellSize * 0.15f;
+const float step = cellSize * 0.25f;
 
 void init_snake() {
     background = LoadTexture("resources/bg.jpg");
@@ -49,13 +49,13 @@ void init_snake() {
 }
 
 void logic_snake() {
-    if (worm.size > 20) microbiology_game = true;
+    if (worm.size > 15) microbiology_game = true;
 
     if (!gameOver) {
-        if (IsKeyPressed(KEY_UP) && currentDirection.y == 0) nextDirection = (Vector2){0, -step};
-        if (IsKeyPressed(KEY_DOWN) && currentDirection.y == 0) nextDirection = (Vector2){0, step};
-        if (IsKeyPressed(KEY_LEFT) && currentDirection.x == 0) nextDirection = (Vector2){-step, 0};
-        if (IsKeyPressed(KEY_RIGHT) && currentDirection.x == 0) nextDirection = (Vector2){step, 0};
+        if (IsKeyPressed(KEY_S) && currentDirection.y == 0) nextDirection = (Vector2){0, -step};
+        if (IsKeyPressed(KEY_W) && currentDirection.y == 0) nextDirection = (Vector2){0, step};
+        if (IsKeyPressed(KEY_D) && currentDirection.x == 0) nextDirection = (Vector2){-step, 0};
+        if (IsKeyPressed(KEY_A) && currentDirection.x == 0) nextDirection = (Vector2){step, 0};
 
         for (int i = worm.size - 1; i > 0; i--) worm.position[i] = worm.position[i - 1];
         worm.position[0] = Vector2Add(worm.position[0], currentDirection);
