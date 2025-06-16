@@ -11,11 +11,11 @@ using namespace std;
 int main() {
     
 
-    InitWindow(GetScreenWidth(), GetScreenHeight(), "DU_Conquer");
+    InitWindow(GetMonitorWidth(0), GetMonitorHeight(0), "DU_Conquer");
+    ToggleFullscreen();
     InitAudioDevice();
     screenWidth = GetScreenWidth();
     screenHeight = GetScreenHeight();
-    ToggleFullscreen();
     SetTargetFPS(144);
 
     layer prev_state_of_game = state_of_game;

@@ -25,23 +25,20 @@ void loading_screen(std::string text)
         else alpha = 0.0f;
 
         Color bgColor;
-        if (t <= 3.0)
+        if (t <= 2.0)
         {
-            bgColor = Fade(MAGENTA, 1.0f);
+            bgColor = Fade(WHITE, 1.0f);
         }
-        else if (t > 3.0 && t <= 4.0)
+        else if (t > 2.0 && t <= 4.0)
         {
-            float bgAlpha = 1.0f - (4.0f - t);
-            bgColor = Fade(MAGENTA, bgAlpha);
+            float bgAlpha = (4.0f - t)/2.0f;
+            bgColor = Fade(WHITE, bgAlpha);
         }
-        else
-        {
-            bgColor = Fade(MAGENTA, 0.0f);
-        }
+        else bgColor = Fade(WHITE, 0.0f); 
 
         Color fadeColor = Fade(BLACK, alpha);
         DrawRectangle(0, 0, screenWidth, screenHeight, fadeColor);
-        DrawText(text.c_str(), 20*scale, screenHeight -60*scale, 40, bgColor);
+        DrawText(text.c_str(), 20*scale, screenHeight -160*scale, 30*scale, bgColor);
     }
 
 

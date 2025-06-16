@@ -1,6 +1,8 @@
 #include "raylib.h"
 #include <string>
 #include "lights_on.h"
+#include "loading.h"
+#include "eee.h"
 #include "global.h"
 using namespace std;
 
@@ -59,8 +61,6 @@ void init_eee()
     camera_eee.offset = (Vector2){ GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
     camera_eee.rotation = 0.0f;
     camera_eee.zoom = 1.0f;
-    ToggleFullscreen();
-    SetTargetFPS(60);
     InitLightsOn();
 }
 
@@ -236,6 +236,8 @@ void logic_draw_eee()
 
             
         }
+
+        loading_screen("Department Of EEE\nUniversity of Dhaka");
 
         // EndDrawing();
     }
