@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "map.h"
 #include "eee.h"
+#include "loading.h"
 #include <iostream>
 
 using namespace std;
@@ -17,6 +18,8 @@ int main() {
     ToggleFullscreen();
     SetTargetFPS(144);
 
+    layer prev_state_of_game = state_of_game;
+
     init_map();
     init_menu();
     init_eee();
@@ -27,6 +30,13 @@ int main() {
         BeginDrawing();
         ClearBackground(BLACK);
         DrawText("DU_CONQUER", screenWidth / 2, screenHeight / 2, 50, MAGENTA);
+
+        // transition
+        if(state_of_game!=prev_state_of_game)
+        {
+            time_loading_start = GetTime();
+            prev_state_of_game = state_of_game;
+        }
 
         if(state_of_game==LAYER_MENU) logic_draw_menu();
         else if(state_of_game==LAYER_MAP) logic_draw_map();

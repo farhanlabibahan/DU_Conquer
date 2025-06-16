@@ -1,3 +1,6 @@
+#ifndef GLOBAL_H
+#define GLOBAL_H
+
 extern double x_co_ordinate,y_co_ordinate;
 extern double scale;
 typedef enum
@@ -13,3 +16,8 @@ extern int screenHeight;
 
 // dept wise games
 extern bool eee_game_2;
+
+// loading
+extern double time_loading_start;
+
+#endif // GLOBAL_H
