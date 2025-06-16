@@ -9,7 +9,7 @@ double time_loading_start = 0;
 void loading_screen(std::string text)
 {
     double t = GetTime()-time_loading_start;
-    std::cout<<"time :"<<t<<std::endl;
+    // std::cout<<"time :"<<t<<std::endl;
     float alpha = 1.0f;
 
     if(t <= 5)

@@ -66,7 +66,7 @@ void logic_draw_map()
         DrawTextureEx(character_map,
             (Vector2){ x_co_ordinate - (character_map.width * scale) / 2, y_co_ordinate - (character_map.height * scale) / 2 },
             0.0f,
-            scale*0.3,
+            scale*0.25,
             WHITE);
 
         EndMode2D();

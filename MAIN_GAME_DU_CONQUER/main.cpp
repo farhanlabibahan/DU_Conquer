@@ -45,7 +45,7 @@ int main() {
         
         
 
-        cout<<"Game State: "<<state_of_game<<endl;
+        // cout<<"Game State: "<<state_of_game<<endl;
         EndDrawing();
     }
 
