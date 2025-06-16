@@ -3,7 +3,7 @@
 #include <math.h>
 #include "global.h"
 
-Texture2D map_image,character;
+Texture2D map_image,character_map;
 Camera2D camera;
 float speed = 3.0f;
 float theta = 26.2f * DEG2RAD;
@@ -13,7 +13,7 @@ float sinTheta = sinf(theta);
 void init_map()
 {
     map_image = LoadTexture("resources/map2.png");
-    character = LoadTexture("resources/character.png");
+    character_map = LoadTexture("resources/character.png");
 
 }
 
@@ -26,6 +26,10 @@ void logic_draw_map()
     if(IsKeyPressed(KEY_X))
     {
         state_of_game = LAYER_MENU;
+    }
+    if(IsKeyPressed(KEY_G))
+    {
+        state_of_game = LAYER_EEE;
     }
 
     if (IsKeyDown(KEY_W)) {
@@ -51,8 +55,8 @@ void logic_draw_map()
         BeginMode2D(camera);
 
         DrawTexture(map_image, 0, 0, WHITE);
-        DrawTextureEx(character,
-            (Vector2){ x_co_ordinate - (character.width * scale) / 2, y_co_ordinate - (character.height * scale) / 2 },
+        DrawTextureEx(character_map,
+            (Vector2){ x_co_ordinate - (character_map.width * scale) / 2, y_co_ordinate - (character_map.height * scale) / 2 },
             0.0f,
             scale*0.3,
             WHITE);
@@ -70,8 +74,8 @@ void unload_map()
         UnloadTexture(map_image);
         map_image.id = 0; 
     }
-    if (character.id > 0) {
-        UnloadTexture(character);
-        character.id = 0;
+    if (character_map.id > 0) {
+        UnloadTexture(character_map);
+        character_map.id = 0;
     }
 }

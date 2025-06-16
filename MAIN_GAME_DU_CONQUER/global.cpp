@@ -9,3 +9,6 @@ int screenHeight;
 
 
 layer state_of_game = LAYER_MENU;
+
+// dept wise games
+bool eee_game_2 = false;

@@ -330,5 +330,4 @@ int main() {
     init_menu();
     logic_draw_menu();
     unload_menu();
-    return 0;
 }

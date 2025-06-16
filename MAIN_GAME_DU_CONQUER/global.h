@@ -10,3 +10,6 @@ typedef enum
 extern layer state_of_game;
 extern int screenWidth;
 extern int screenHeight;
+
+// dept wise games
+extern bool eee_game_2;

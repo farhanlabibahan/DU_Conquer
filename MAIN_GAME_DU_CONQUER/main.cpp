@@ -2,6 +2,7 @@
 #include "global.h"
 #include "menu.h"
 #include "map.h"
+#include "eee.h"
 #include <iostream>
 
 using namespace std;
@@ -10,6 +11,7 @@ int main() {
     
 
     InitWindow(GetScreenWidth(), GetScreenHeight(), "DU_Conquer");
+    InitAudioDevice();
     screenWidth = GetScreenWidth();
     screenHeight = GetScreenHeight();
     ToggleFullscreen();
@@ -17,8 +19,9 @@ int main() {
 
     init_map();
     init_menu();
+    init_eee();
 
-    cout<<"Initial state: "<<state_of_game<<endl;
+    // cout<<"Initial state: "<<state_of_game<<endl;
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -27,6 +30,7 @@ int main() {
 
         if(state_of_game==LAYER_MENU) logic_draw_menu();
         else if(state_of_game==LAYER_MAP) logic_draw_map();
+        else if(state_of_game==LAYER_EEE) logic_draw_eee();
         else if(state_of_game==LAYER_EXIT) break;
         
         
@@ -37,6 +41,8 @@ int main() {
 
     unload_map();
     unload_menu();
+    unload_eee();
+    CloseAudioDevice();
     CloseWindow();
 
     
