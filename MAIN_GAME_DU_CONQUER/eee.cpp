@@ -160,7 +160,7 @@ void logic_draw_eee()
         }
 
         if(playerPos.x<=-20) playerPos.x = -20;
-        else if(playerPos.x>=bg_image_eee.width) playerPos.x = bg_image_eee.width;
+        else if(playerPos.x>=bg_image_eee.width*scale) playerPos.x = bg_image_eee.width*scale;
     
         scale = (float)GetMonitorHeight(0) / bg_image_eee.height;
         float scaledWidth = bg_image_eee.width * scale;
