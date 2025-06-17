@@ -1,91 +1,64 @@
 #include "raylib.h"
 #include <string>
-#include "lights_on.h"
+#include "lights_on.h" //change here
 #include "loading.h"
-#include "eee.h"
+#include "eee.h"   // change here
 #include "global.h"
 using namespace std;
-
+// whole block
 typedef enum {
-    Dept,
-    Game
+    Dept_eee,
+    Game_eee
 } dept_state;
 
-Sound conquered_sound,pop_up_sound;
-Sound click_sound, error_sound;
-Music bgm_eee;
-Music walk_music;
-bool walk_music_playing = false;
-
-dept_state dept_status = Dept;
-bool game_win_eee2;
-
-Texture2D character,bg_image_eee;
-
-// Edit these
+Texture2D bg_image_eee;
+dept_state dept_status = Dept_eee;
+bool game_win_eee2;  
+Camera2D camera_eee = {0};
 Vector2 playerPos = {-20, 410};
 Vector2 game_zone = {1200,700};
 Vector2 exit_zone = {50,700};
-string pop_up = "Find and Solve the Clue";
-string game_pop_up = " ";
-string game_rules = "Lights On Game Rules:\nTurn on all the lights to win.\nPress X to exit the game.";
+string pop_up_eee = "Find and Solve the Clue";
+string game_pop_up_eee = " ";
+string game_rules_eee = "Lights On Game Rules:\nTurn on all the lights to win.\nPress X to exit the game.";
 
-Camera2D camera_eee = {0};
+// block ends
 
+bool walk_music_playing = false;
 bool show_rules_popup = false;
 bool show_ok_button = false;
 
 
 void init_eee()
-{
-    // InitWindow(GetMonitorWidth(0), GetMonitorHeight(0), "DU_Conquer/EEE DEPT");
-    // InitAudioDevice();
-    conquered_sound = LoadSound("resources/conquered.mp3"); 
-    pop_up_sound = LoadSound("resources/pop_up.mp3"); 
-    click_sound = LoadSound("resources/click.mp3");
-    error_sound = LoadSound("resources/error.mp3");
-    bgm_eee = LoadMusicStream("resources/bgm_eee.mp3");
-    SetMusicVolume(bgm_eee, 0.13f);
-    PlayMusicStream(bgm_eee);
-    walk_music = LoadMusicStream("resources/walk.mp3");
+{  // change
+    SetMusicVolume(bgm_eee, 0.13f);//change
+    PlayMusicStream(bgm_eee);//change
     SetMusicVolume(walk_music, 1.0f);
-    character = LoadTexture("resources/character.png");
-    bg_image_eee = LoadTexture("resources/EEE_EX.png");
-    scale = (float)GetMonitorHeight(0) / bg_image_eee.height;
+    bg_image_eee = LoadTexture("resources/EEE_EX.png"); //change
+    scale = (float)GetMonitorHeight(0) / bg_image_eee.height; // change
     float y_pos_floor = (float)GetMonitorHeight(0) - scale*350;
     playerPos = (Vector2){-10, y_pos_floor};
     
     game_zone = {scale*1200,y_pos_floor}; 
     exit_zone = {scale*10,y_pos_floor}; 
-    camera_eee.target = playerPos;  
-    camera_eee.offset = (Vector2){ GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
-    camera_eee.rotation = 0.0f;
-    camera_eee.zoom = 1.0f;
-    InitLightsOn();
+    camera_eee.target = playerPos;  // change
+    camera_eee.offset = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };// change
+    camera_eee.rotation = 0.0f;// change
+    camera_eee.zoom = 1.0f;// change
+    InitLightsOn(); //change
 }
 
 void unload_eee()
 {
     UnloadLightsOn();
-    UnloadTexture(character);
-    UnloadTexture(bg_image_eee);
-    UnloadSound(pop_up_sound);
-    UnloadSound(conquered_sound);
-    UnloadSound(click_sound);
-    UnloadSound(error_sound);
-    UnloadMusicStream(bgm_eee);
-    UnloadMusicStream(walk_music);
-    // CloseAudioDevice();
-    // CloseWindow();
+    UnloadTexture(bg_image_eee);  // change
 }
 
-void logic_draw_eee()
+void logic_draw_eee() //change
 {
-    // while (!WindowShouldClose()) 
-    // {
-        UpdateMusicStream(bgm_eee);
-        if(!game_win_eee2) pop_up = "Find and Solve the Clue";
-        if (dept_status == Dept) 
+        UpdateMusicStream(bgm_eee); //change
+        if(!game_win_eee2) pop_up_eee = "Find and Solve the Clue"; //change
+        if (dept_status == Dept_eee) // change
         {
             bool moving = false;
             if (IsKeyDown(KEY_A)) {
@@ -113,8 +86,8 @@ void logic_draw_eee()
             bool eKeyHandled = false;
 
             if (CheckCollisionCircles(playerPos, 50.0f,game_zone, 50.0f)) {
-                pop_up = "Press E to Solve";
-                if(IsKeyPressed(KEY_E) && !game_win_eee2 && !show_rules_popup)
+                pop_up_eee = "Press E to Solve";  //change
+                if(IsKeyPressed(KEY_E) && !game_win_eee2 && !show_rules_popup) //change
                 {
                     PlaySound(pop_up_sound);
                     PlaySound(click_sound);
@@ -125,7 +98,7 @@ void logic_draw_eee()
             }
 
             if (CheckCollisionCircles(playerPos, 50.0f,exit_zone, 50.0f)) {
-                pop_up = "Press E to Exit";
+                pop_up_eee = "Press E to Exit"; // change
                 if(IsKeyPressed(KEY_E))
                 {
                     PlaySound(click_sound);
@@ -142,28 +115,28 @@ void logic_draw_eee()
                 PlaySound(error_sound);
             }
         } 
-        else if(dept_status == Game)
+        else if(dept_status == Game_eee) // change
         {
-            UpdateLightsOn();
+            UpdateLightsOn();  // change
             if (checkLightsOnWinStatus() || IsKeyDown(KEY_X)) {
-                dept_status = Dept;
-                game_pop_up = "EEE Conqured!! Abort";
-                game_win_eee2 = true;
+                dept_status = Dept_eee;  // change
+                game_pop_up_eee = "EEE Conqured!! Abort"; // change
+                game_win_eee2 = true;  // change
                 PlaySound(conquered_sound);
-                UnloadLightsOn();
+                UnloadLightsOn();  // change
             }
 
             if(IsKeyDown(KEY_Q))
             {
-                UnloadLightsOn();
+                UnloadLightsOn();  //change
             }
         }
 
         if(playerPos.x<=-20) playerPos.x = -20;
-        else if(playerPos.x>=bg_image_eee.width*scale) playerPos.x = bg_image_eee.width*scale;
+        else if(playerPos.x>=bg_image_eee.width*scale) playerPos.x = bg_image_eee.width*scale;  // change
     
-        scale = (float)GetMonitorHeight(0) / bg_image_eee.height;
-        float scaledWidth = bg_image_eee.width * scale;
+        scale = (float)GetMonitorHeight(0) / bg_image_eee.height;  // change
+        float scaledWidth = bg_image_eee.width * scale;  // change
 
         float cam = playerPos.x;
 
@@ -172,16 +145,12 @@ void logic_draw_eee()
         if (cam < halfScreen) cam = halfScreen;
         if (cam > scaledWidth - halfScreen) cam = scaledWidth - halfScreen;
 
-        camera_eee.target = (Vector2){ cam, GetScreenHeight() / 2.0f};
+        camera_eee.target = (Vector2){ cam, screenHeight / 2.0f};  // change
 
-        // BeginDrawing();
-        // ClearBackground(BLACK);
+        BeginMode2D(camera_eee);  // change
 
-        BeginMode2D(camera_eee);
-
-        scale = (float)GetMonitorHeight(0) / bg_image_eee.height;
-        // float scaledWidth = image.width * scale;
-        DrawTextureEx(bg_image_eee, (Vector2){0, 0}, 0.0f, scale, WHITE);
+        scale = (float)GetMonitorHeight(0) / bg_image_eee.height;  // change
+        DrawTextureEx(bg_image_eee, (Vector2){0, 0}, 0.0f, scale, WHITE); // change
         DrawTexture(character, playerPos.x, playerPos.y, WHITE);
         DrawCircleV(game_zone, 20, RED);
         DrawCircleV(exit_zone, 20, GREEN);
@@ -189,25 +158,25 @@ void logic_draw_eee()
         EndMode2D();
 
         
-        if (dept_status == Game) DrawLightsOn();
+        if (dept_status == Game_eee) DrawLightsOn();  // change
 
-        DrawText(game_pop_up.c_str(), 20, GetMonitorHeight(0)-100, 20, GREEN);
+        DrawText(game_pop_up_eee.c_str(), 20, screenHeight-100, 20, GREEN);   // change
 
-        if (game_win_eee2 && CheckCollisionCircles(playerPos, 50.0f, exit_zone, 50.0f)) {
-            DrawText("Press E to Exit", 20, GetMonitorHeight(0)-70, 20, RAYWHITE);
-        } else if (!game_win_eee2) {
-            DrawText(pop_up.c_str(), 20, GetMonitorHeight(0)-50, 20, RAYWHITE);
+        if (game_win_eee2 && CheckCollisionCircles(playerPos, 50.0f, exit_zone, 50.0f)) {  // change
+            DrawText("Press E to Exit", 20, screenHeight-70, 20, RAYWHITE);
+        } else if (!game_win_eee2) { // change
+            DrawText(pop_up_eee.c_str(), 20, screenHeight-50, 20, RAYWHITE);  // change
         }
 
         if (show_rules_popup) {
-            int screenW = GetMonitorWidth(0);
-            int screenH = GetMonitorHeight(0);
+            int screenW = screenWidth;
+            int screenH = screenHeight;
 
             // Draw box behind popup
             DrawRectangle(screenW / 2 - 220, screenH / 2 - 100, 440, 200, Fade(BLACK, 0.9f));
             DrawRectangleLines(screenW / 2 - 220, screenH / 2 - 100, 440, 200, LIGHTGRAY);
 
-            DrawText(game_rules.c_str(), screenW/2 - MeasureText(game_rules.c_str(), 20)/2, screenH/2 - 60, 20, RAYWHITE);
+            DrawText(game_rules_eee.c_str(), screenW/2 - MeasureText(game_rules_eee.c_str(), 20)/2, screenH/2 - 60, 20, RAYWHITE);  // change
 
             Rectangle okBtn = { screenW/2 - 50, screenH/2 + 30, 100, 40 };
             Vector2 mouse = GetMousePosition();
@@ -225,7 +194,7 @@ void logic_draw_eee()
                 Vector2 mouse = GetMousePosition();
                 if (CheckCollisionPointRec(mouse, okBtn)) {
                     PlaySound(click_sound);
-                    dept_status = Game;
+                    dept_status = Game_eee;  // change
                     show_rules_popup = false;
                     show_ok_button = false;
                 }
@@ -237,9 +206,6 @@ void logic_draw_eee()
             
         }
 
-        loading_screen("Department Of EEE\nUniversity of Dhaka");
-
-        // EndDrawing();
+        loading_screen("Department Of EEE\nUniversity of Dhaka");   // change
     }
-// }
 

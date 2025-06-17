@@ -5,7 +5,6 @@
 #include <string.h>
 
 
-double time_loading_start = 0;
 void loading_screen(std::string text)
 {
     double t = GetTime()-time_loading_start;

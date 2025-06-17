@@ -39,6 +39,10 @@ void logic_draw_map()
     {
         state_of_game = LAYER_EEE;
     }
+    if(IsKeyPressed(KEY_H))
+    {
+        state_of_game = LAYER_NUCLEAR;
+    }
 
     if (IsKeyDown(KEY_W)) {
             x_co_ordinate -= cosTheta * speed;
@@ -66,7 +70,7 @@ void logic_draw_map()
         DrawTextureEx(character_map,
             (Vector2){ x_co_ordinate - (character_map.width * scale) / 2, y_co_ordinate - (character_map.height * scale) / 2 },
             0.0f,
-            scale*0.25,
+            scale*0.21,
             WHITE);
 
         EndMode2D();
