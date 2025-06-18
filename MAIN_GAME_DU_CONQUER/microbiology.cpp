@@ -3,7 +3,7 @@
 #include "loading.h"
 #include "microbiology.h"
 #include "global.h"
-#include "minesweeper.h"
+#include "snake.h"
 using namespace std;
 
 typedef enum {
@@ -40,11 +40,11 @@ void init_microbiology() {
     camera_microbiology.rotation = 0.0f;
     camera_microbiology.zoom = 1.0f;
 
-    init_minesweeper();
+    init_snake();
 }
 
 void unload_microbiology() {
-    unload_minesweeper();
+    unload_snake();
     UnloadTexture(bg_image_microbiology);
 }
 
@@ -72,6 +72,7 @@ void logic_draw_microbiology() {
             if (IsKeyPressed(KEY_E) && !game_win_microbiology2 && !show_rules_popup) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
+                init_snake();
                 show_rules_popup = true;
                 show_ok_button = true;
                 eKeyHandled = true;
@@ -82,7 +83,7 @@ void logic_draw_microbiology() {
             pop_up_microbiology = "Press E to Exit";
             if (IsKeyPressed(KEY_E)) {
                 PlaySound(click_sound);
-                unload_minesweeper();
+                unload_snake();
                 eKeyHandled = true;
                 state_of_game = LAYER_MAP;
             } else if (IsKeyPressed(KEY_E)) {
@@ -94,16 +95,16 @@ void logic_draw_microbiology() {
             PlaySound(error_sound);
         }
     } else if (dept_status_microbiology == Game_microbiology) {
-        logic_minesweeper();
+        logic_snake();
         if (game_win_microbiology2 || IsKeyDown(KEY_X)) {
             dept_status_microbiology = Dept_microbiology;
             game_pop_up_microbiology = "microbiology Conqured!! Abort";
             game_win_microbiology2 = true;
             PlaySound(conquered_sound);
-            unload_minesweeper();
+            unload_snake();
         }
         if (IsKeyDown(KEY_Q)) {
-            unload_minesweeper();
+            unload_snake();
             dept_status_microbiology = Dept_microbiology;
         }
     }
@@ -133,7 +134,7 @@ void logic_draw_microbiology() {
     }
 
     if (dept_status_microbiology == Game_microbiology) {
-        draw_minesweeper();
+        draw_snake();
     }
 
     DrawText(game_pop_up_microbiology.c_str(), 20, screenHeight - 100, 20, GREEN);

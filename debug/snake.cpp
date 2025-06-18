@@ -16,7 +16,6 @@ Vector2 food;
 Texture2D background, foodImage, wormHead, wormBody;
 bool gameOver = false;
 
-extern bool game_win_microbiology2;  // Declare external flag to mark win
 
 const int screenWidthg = 800;
 const int screenHeightg = 600;
@@ -93,7 +92,7 @@ void logic_snake() {
 }
 
 void draw_snake() {
-    DrawTexture(background, screenWidth/2-foodImage.width/2, screenHeight/2-foodImage.height/2, WHITE);
+    DrawTexture(background, 0, 0, WHITE);
     DrawTexture(foodImage, food.x, food.y, WHITE);
 
     for (int i = 0; i < worm.size; i++) {

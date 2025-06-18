@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "raymath.h"
 #include "global.h"
 
 #define MAX_SEGMENTS 100
@@ -14,7 +15,7 @@ Vector2 nextDirection;
 Vector2 food;
 Texture2D background, foodImage, wormHead, wormBody;
 bool gameOver = false;
-// bool game_microbiology = false;
+
 
 const int screenWidthg = 800;
 const int screenHeightg = 600;
@@ -43,11 +44,11 @@ void init_snake() {
     };
 
     gameOver = false;
-    game_microbiology = false;
+    game_win_microbiology2 = false;
 }
 
 void logic_snake() {
-    if (worm.size > 15) game_microbiology = true;
+    if (worm.size > 15) game_win_microbiology2 = true;
 
     if (!gameOver) {
         if (IsKeyPressed(KEY_UP) && currentDirection.y == 0) nextDirection = (Vector2){0, -step};
@@ -59,31 +60,25 @@ void logic_snake() {
         worm.position[0] = Vector2Add(worm.position[0], currentDirection);
         currentDirection = nextDirection;
 
-        if (worm.position[0].x < 0 || worm.position[0].x >= screenWidth ||
-            worm.position[0].y < 0 || worm.position[0].y >= screenHeightg) gameOver = true;
+        if (worm.position[0].x < 0 || worm.position[0].x >= screenWidthg ||
+            worm.position[0].y < 0 || worm.position[0].y >= screenHeightg)
+            gameOver = true;
 
         for (int i = 1; i < worm.size; i++) {
-            if (Vector2Distance(worm.position[0], worm.position[i]) < step / 2) gameOver = true;
+            if (Vector2Distance(worm.position[0], worm.position[i]) < step / 2)
+                gameOver = true;
         }
 
         Rectangle headRect = { worm.position[0].x, worm.position[0].y, cellSize, cellSize };
         Rectangle foodRect = { food.x, food.y, cellSize, cellSize };
 
-        
-    Vector2 headCenter = { headRect.x + cellSize / 2.0f, headRect.y + cellSize / 2.0f };
-    Vector2 foodCenter = { foodRect.x + cellSize / 2.0f, foodRect.y + cellSize / 2.0f };
-    if (Vector2Distance(headCenter, foodCenter) < cellSize / 2.0f) {
-        if (worm.size < MAX_SEGMENTS) {
-            worm.position[worm.size] = worm.position[worm.size - 1];
-            worm.size++;
-        }
-        food = (Vector2){
-            (float)(rand() % (screenWidthg / cellSize)) * cellSize,
-            (float)(rand() % (screenHeightg / cellSize)) * cellSize
-        };
-    }
-    
-
+        Vector2 headCenter = { headRect.x + cellSize / 2.0f, headRect.y + cellSize / 2.0f };
+        Vector2 foodCenter = { foodRect.x + cellSize / 2.0f, foodRect.y + cellSize / 2.0f };
+        if (Vector2Distance(headCenter, foodCenter) < cellSize / 2.0f) {
+            if (worm.size < MAX_SEGMENTS) {
+                worm.position[worm.size] = worm.position[worm.size - 1];
+                worm.size++;
+            }
             food = (Vector2){
                 (float)(rand() % (screenWidthg / cellSize)) * cellSize,
                 (float)(rand() % (screenHeightg / cellSize)) * cellSize
@@ -129,7 +124,7 @@ void draw_snake() {
     DrawText(TextFormat("Score: %d", worm.size), 10, 10, 20, DARKGRAY);
 
     if (gameOver) {
-        DrawText("GAME OVER! Press R to restart.", screenWidth / 2 - 230, screenHeightg / 2, 30, RED);
+        DrawText("GAME OVER! Press R to restart.", screenWidthg / 2 - 230, screenHeightg / 2, 30, RED);
     }
 }
 
