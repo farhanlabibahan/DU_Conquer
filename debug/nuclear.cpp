@@ -105,6 +105,7 @@ void logic_draw_nuclear() {
         }
         if (IsKeyDown(KEY_Q)) {
             unload_minesweeper();
+            dept_status_nuclear = Dept_nuclear;
         }
     }
 
@@ -114,7 +115,7 @@ void logic_draw_nuclear() {
     scale = (float)GetMonitorHeight(0) / bg_image_nuclear.height;
     float scaledWidth = bg_image_nuclear.width * scale;
     float cam = playerPos_nuclear.x;
-    float halfScreen = GetMonitorWidth(0) / 2.0f;
+    float halfScreen = screenWidth / 2.0f;
     if (cam < halfScreen) cam = halfScreen;
     if (cam > scaledWidth - halfScreen) cam = scaledWidth - halfScreen;
     camera_nuclear.target = (Vector2){ cam, screenHeight / 2.0f };
@@ -128,7 +129,7 @@ void logic_draw_nuclear() {
     DrawCircleV(playerPos_nuclear, 20, BLUE);
     EndMode2D();
 
-    if (dept_status_nuclear == Game_nuclear || !game_pop_up_nuclear.empty()) {
+    if (dept_status_nuclear == Game_nuclear) {
         DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 0.6f));
     }
 
