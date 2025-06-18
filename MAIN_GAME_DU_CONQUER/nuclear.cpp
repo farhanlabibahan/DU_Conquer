@@ -34,7 +34,7 @@ void init_nuclear()// change
     SetMusicVolume(bgm_nuclear, 0.13f);//change
     PlayMusicStream(bgm_nuclear);//change
     SetMusicVolume(walk_music, 1.0f);
-    bg_image_nuclear = LoadTexture("resources/EEE_EX.png"); //change
+    bg_image_nuclear = LoadTexture("resources/HISTORY_EX.png"); //change
     scale = screenHeight / bg_image_nuclear.height; // change
     float y_pos_floor = screenHeight - scale*350;
     playerPos_nuclear = (Vector2){-10, y_pos_floor};
@@ -45,12 +45,12 @@ void init_nuclear()// change
     camera_nuclear.offset = (Vector2){ screenWidth / 2.0f, screenHeight / 2.0f };// change
     camera_nuclear.rotation = 0.0f;// change
     camera_nuclear.zoom = 1.0f;// change
-    init_minesweeper(); //change
+    // init_minesweeper(); //change
 }
 
 void unload_nuclear()
 {
-    unload_minesweeper();
+    // unload_minesweeper();
     UnloadTexture(bg_image_nuclear);  // change
 }
 
@@ -102,7 +102,7 @@ void logic_draw_nuclear() //change
                 if(IsKeyPressed(KEY_E))
                 {
                     PlaySound(click_sound);
-                    unload_minesweeper();
+                    // unload_minesweeper();
                     eKeyHandled = true;
                     state_of_game = LAYER_MAP;
                 }
@@ -123,12 +123,12 @@ void logic_draw_nuclear() //change
                 game_pop_up_nuclear = "NUCLEAR Conqured!! Abort"; // change
                 game_win_nuclear2 = true;  // change
                 PlaySound(conquered_sound);
-                unload_minesweeper();  // change
+                // unload_minesweeper();  // change
             }
 
             if(IsKeyDown(KEY_Q))
             {
-                unload_minesweeper();  //change
+                // unload_minesweeper();  //change
             }
         }
 
@@ -158,7 +158,7 @@ void logic_draw_nuclear() //change
         // EndMode2D();
 
         
-        if (dept_status_nuclear == Game_nuclear) draw_minesweeper();  // change
+        // if (dept_status_nuclear == Game_nuclear) draw_minesweeper();  // change
 
         DrawText(game_pop_up_nuclear.c_str(), 20, screenHeight-100, 20, GREEN);   // change
 
