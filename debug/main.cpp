@@ -2,8 +2,7 @@
 #include "global.h"
 #include "menu.h"
 #include "map.h"
-#include "nuclear.h"
-// #include "nuclear.h"
+#include "microbiology.h"
 #include "loading.h"
 #include <iostream>
 
@@ -24,7 +23,7 @@ int main() {
 
     init_map();
     init_menu();
-    init_nuclear();
+    init_microbiology();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -36,9 +35,9 @@ int main() {
             prev_state_of_game = state_of_game;
         }
 
-        if (state_of_game == LAYER_MENU) logic_draw_nuclear();
+        if (state_of_game == LAYER_MENU) logic_draw_microbiology();
         else if (state_of_game == LAYER_MAP) logic_draw_map();
-        else if (state_of_game == LAYER_NUCLEAR) logic_draw_nuclear();
+        // else if (state_of_game == LAYER_NUCLEAR) logic_draw_nuclear();
         // else if (state_of_game == LAYER_NUCLEAR) logic_draw_nuclear();
         else if (state_of_game == LAYER_EXIT) break;
 
@@ -47,7 +46,7 @@ int main() {
 
     unload_map();
     unload_menu();
-    unload_nuclear();
+    unload_microbiology();
     unload_assets();
 
     CloseAudioDevice();

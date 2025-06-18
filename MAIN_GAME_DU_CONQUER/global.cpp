@@ -14,6 +14,7 @@ bool nuclear_game = false;
 bool ducsu_game = false;
 bool genetics_game = false;
 
+
 //loading
 double time_loading_start = 0.0;
 
@@ -26,7 +27,7 @@ Music walk_music;
 Texture2D character;
 
 // dept wise bgm
-Music bgm_eee,bgm_nuclear;
+Music bgm_eee,bgm_nuclear,bgm_microbiology;
 
 // Load all game assets
 void init_assets() {
@@ -37,6 +38,7 @@ void init_assets() {
 
     bgm_eee = LoadMusicStream("resources/bgm_eee.mp3");
     bgm_nuclear = bgm_eee;
+    bgm_microbiology = bgm_eee;
     walk_music = LoadMusicStream("resources/walk.mp3");
 
     character = LoadTexture("resources/character.png");
@@ -54,3 +56,6 @@ void unload_assets() {
 
     UnloadTexture(character);
 }
+
+
+g++ main.cpp utilities/menu.cpp utilities/map.cpp  -o game -lraylib  OpenGL  IOKit -framework CoreAudio -framework CoreVideo && ./game

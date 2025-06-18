@@ -1,6 +1,6 @@
 # === Configuration ===
 CXX = g++
-SRC = main.cpp global.cpp menu.cpp map2.cpp nuclear.cpp minesweeper.cpp loading.cpp
+SRC = main.cpp global.cpp menu.cpp map2.cpp microbiology.cpp loading.cpp snake.cpp
 OUT = game
 
 UNAME := $(shell uname)

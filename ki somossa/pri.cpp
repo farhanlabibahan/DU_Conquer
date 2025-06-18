@@ -10,7 +10,7 @@ int main() {
     SetTargetFPS(60);
 
     // Load tile texture
-    Texture2D tileset = LoadTexture("master_tilesheet.png");
+    Texture2D tileset = LoadTexture("tileson.png");
 
     // Parse map.json
     tson::Tileson parser;
@@ -67,19 +67,18 @@ int main() {
                     (float)rect.height
                 };
 
-                // Convert to isometric position
-                int x = std::get<0>(pos);
-                int y = std::get<1>(pos);
+               
 
-                float isoX = (x - y) * (tileWidth / 2.0f);
-                float isoY = (x + y) * (tileHeight / 2.0f);
+int x = std::get<0>(pos);
+int y = std::get<1>(pos);
 
-                Rectangle dest = {
-                    isoX,
-                    isoY,
-                    (float)tileWidth,
-                    (float)tileHeight
-                };
+Rectangle dest = {
+    static_cast<float>(x * tileWidth),
+    static_cast<float>(y * tileHeight),
+    static_cast<float>(tileWidth),
+    static_cast<float>(tileHeight)
+};
+
 
                 DrawTexturePro(tileset, src, dest, {0, 0}, 0.0f, WHITE);
             }

@@ -23,13 +23,14 @@ extern bool eee_game_2;
 extern bool nuclear_game;
 extern bool ducsu_game;
 extern bool genetics_game;
+extern bool game_win_microbiology2;
 
 //loading
 extern double time_loading_start;
 
 // Game assets
 extern Sound conquered_sound, pop_up_sound, click_sound, error_sound;
-extern Music bgm_eee, walk_music,bgm_nuclear;
+extern Music bgm_eee,walk_music,bgm_nuclear,bgm_microbiology;
 extern Texture2D character;
 
 // Asset management
