@@ -79,8 +79,12 @@ void Reveal(int x, int y) {
     tile->revealed = true;
     if (tile->hasMine) {
         livesLeft--;
-        if (livesLeft <= 0) GameState_nuclear = STATE_END;
-        return;
+        if (livesLeft <= 0 || flagsLeft <=0) 
+        {
+            GameState_nuclear = STATE_SPLASH;
+            return;
+        }
+        
     }
 
     if (tile->adjacentMines == 0) {
@@ -168,8 +172,7 @@ void logic_minesweeper() {
 
         flagsLeft = NUM_MINES;
         livesLeft = MAX_LIVES;
-        gameWon = false;
-        nuclear_game = false;
+        
     }
 }
 
@@ -180,8 +183,8 @@ void draw_minesweeper() {
     float gridScale = fminf((float)VIRTUAL_WIDTH / GRID_WIDTH, (float)(VIRTUAL_HEIGHT - HEADER_HEIGHT) / GRID_HEIGHT);
 
     if (GameState_nuclear == STATE_SPLASH) {
-        int splashWidth = 400;
-        int splashHeight = 400;
+        int splashWidth = 300;
+        int splashHeight = 300;
         int splashX = (VIRTUAL_WIDTH - splashWidth) / 2;
         int splashY = (VIRTUAL_HEIGHT - splashHeight) / 2;
 
