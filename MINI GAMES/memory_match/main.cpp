@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <algorithm>
+#include <random>
 
 struct Card {
     Rectangle rect;
@@ -87,7 +88,7 @@ void LoadPhaseCards(int count) {
 }
 
 void ShuffleCards() {
-    std::random_shuffle(cards.begin(), cards.end());
+    std::shuffle(cards.begin(), cards.end(), std::default_random_engine(GetRandomValue(0, 99999)));
 }
 
 void UpdateDucsuMemoryMatch(float delta) {
@@ -196,3 +197,33 @@ void logic_draw_ducsu_memory_match() {
     EndDrawing();
 }
 
+// Minimal main() function for standalone compilation and testing
+int main() {
+    InitWindow(screenWidth, screenHeight, "DUCSU Memory Match");
+    SetTargetFPS(60);
+    InitDucsuMemoryMatch();
+
+    while (!WindowShouldClose()) {
+        logic_draw_ducsu_memory_match();
+    }
+
+    UnloadTexture(bg_ducsu);
+    CloseWindow();
+    return 0;
+}
+
+    BeginDrawing();
+    ClearBackground(BLACK);
+    DrawTexturePro(
+        bg_ducsu,
+        Rectangle{ 0, 0, (float)bg_ducsu.width, (float)bg_ducsu.height },
+        Rectangle{ 0, 0, (float)screenWidth, (float)screenHeight },
+        Vector2{ 0, 0 },
+        0.0f,
+        WHITE
+    );
+    DrawDucsuMemoryMatch();
+    EndDrawing();
+}
+
+        
