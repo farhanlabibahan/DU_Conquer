@@ -6,13 +6,11 @@
 #include "genetics.h"
 #include <iostream>
 
-
 int main() {
     InitWindow(GetMonitorWidth(0), GetMonitorHeight(0), "DU_Conquer");
     ToggleFullscreen();
     InitAudioDevice();
 
-    // Initialize global assets
     init_assets();
 
     screenWidth = GetScreenWidth();
@@ -25,11 +23,9 @@ int main() {
     init_menu();
     init_genetics();
 
-
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawText("DU_CONQUER", screenWidth / 2, screenHeight / 2, 50, MAGENTA);
 
         if (state_of_game != prev_state_of_game) {
             time_loading_start = GetTime();
@@ -37,7 +33,6 @@ int main() {
         }
 
         if (state_of_game == LAYER_MENU) logic_draw_genetics();
-       
 
         EndDrawing();
     }

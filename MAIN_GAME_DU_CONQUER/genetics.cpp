@@ -2,8 +2,8 @@
 #include <string>
 #include "loading.h"
 #include "genetics.h"
+#include "game_of_life.h"
 #include "global.h"
-#include "minesweeper.h"
 using namespace std;
 
 typedef enum {
@@ -11,9 +11,10 @@ typedef enum {
     Game_genetics
 } dept_state_genetics;
 
+GridSimulation grids;  // ✅ now global here
+
 dept_state_genetics dept_status_genetics = Dept_genetics;
 Texture2D bg_image_genetics;
-bool game_win_genetics2;
 Camera2D camera_genetics = {0};
 Vector2 playerPos_genetics = {-20, 410};
 Vector2 game_zone_genetics = {1200,700};
@@ -41,11 +42,11 @@ void init_genetics() {
     camera_genetics.rotation = 0.0f;
     camera_genetics.zoom = 1.0f;
 
-    init_minesweeper();
+    init_game_of_life();
 }
 
 void unload_genetics() {
-    unload_minesweeper();
+    unload_game_of_life();
     UnloadTexture(bg_image_genetics);
 }
 
@@ -83,7 +84,7 @@ void logic_draw_genetics() {
             pop_up_genetics = "Press E to Exit";
             if (IsKeyPressed(KEY_E)) {
                 PlaySound(click_sound);
-                unload_minesweeper();
+                unload_game_of_life();
                 eKeyHandled = true;
                 state_of_game = LAYER_MAP;
             } else if (IsKeyPressed(KEY_E)) {
@@ -95,22 +96,23 @@ void logic_draw_genetics() {
             PlaySound(error_sound);
         }
     } else if (dept_status_genetics == Game_genetics) {
-        logic_minesweeper();
+        logic_game_of_life(grids);
         if (game_win_genetics2 || IsKeyDown(KEY_X)) {
             dept_status_genetics = Dept_genetics;
             game_pop_up_genetics = "genetics Conqured!! Abort";
             game_win_genetics2 = true;
             PlaySound(conquered_sound);
-            unload_minesweeper();
+            unload_game_of_life();
         }
         if (IsKeyDown(KEY_Q)) {
-            unload_minesweeper();
+            unload_game_of_life();
             dept_status_genetics = Dept_genetics;
         }
     }
 
     if (playerPos_genetics.x <= -20) playerPos_genetics.x = -20;
-    else if (playerPos_genetics.x >= bg_image_genetics.width * scale) playerPos_genetics.x = bg_image_genetics.width * scale;
+    else if (playerPos_genetics.x >= bg_image_genetics.width * scale)
+        playerPos_genetics.x = bg_image_genetics.width * scale;
 
     scale = (float)GetMonitorHeight(0) / bg_image_genetics.height;
     float scaledWidth = bg_image_genetics.width * scale;
@@ -131,10 +133,7 @@ void logic_draw_genetics() {
 
     if (dept_status_genetics == Game_genetics) {
         DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 0.6f));
-    }
-
-    if (dept_status_genetics == Game_genetics) {
-        draw_minesweeper();
+        draw_game_of_life(grids);
     }
 
     DrawText(game_pop_up_genetics.c_str(), 20, screenHeight - 100, 20, GREEN);
@@ -151,7 +150,6 @@ void logic_draw_genetics() {
 
         DrawRectangle(screenW / 2 - 220, screenH / 2 - 100, 440, 200, Fade(BLACK, 0.9f));
         DrawRectangleLines(screenW / 2 - 220, screenH / 2 - 100, 440, 200, LIGHTGRAY);
-
         DrawText(game_rules_genetics.c_str(), screenW / 2 - MeasureText(game_rules_genetics.c_str(), 20) / 2, screenH / 2 - 60, 20, RAYWHITE);
 
         Rectangle okBtn = { screenW / 2 - 50, screenH / 2 + 30, 100, 40 };
@@ -170,6 +168,8 @@ void logic_draw_genetics() {
             if (CheckCollisionPointRec(mouse, okBtn)) {
                 PlaySound(click_sound);
                 dept_status_genetics = Game_genetics;
+                game_win_genetics2 = false;
+                grids.init_cells();  // ✅ start the simulation
                 show_rules_popup = false;
                 show_ok_button = false;
             }

@@ -14,7 +14,7 @@ bool nuclear_game = false;
 bool ducsu_game = false;
 bool genetics_game = false;
 bool game_win_microbiology2 = false;
-game_win_genetics2 = false;
+bool game_win_genetics2 = false;
 
 //loading
 double time_loading_start = 0.0;
