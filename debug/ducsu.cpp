@@ -31,7 +31,7 @@ void init_ducsu() {
     PlayMusicStream(bgm_ducsu);
     SetMusicVolume(walk_music, 1.0f);
     float y_pos_floor = (float)screenHeight - scale * 350;
-    bg_image_ducsu = LoadTexture("resources/EEE_EX.png");
+    bg_image_ducsu = LoadTexture("Panorama Images/DUCSU.png");
     playerPos_ducsu = (Vector2){-10, y_pos_floor};
     game_zone_ducsu = {scale * 1200, y_pos_floor};
     exit_zone_ducsu = {scale * 10, y_pos_floor};
