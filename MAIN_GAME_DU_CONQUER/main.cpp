@@ -5,6 +5,7 @@
 #include "eee.h"
 #include "nuclear.h"
 #include "loading.h"
+#include "genetics.h"
 #include <iostream>
 
 
@@ -25,6 +26,8 @@ int main() {
     init_map();
     init_menu();
     init_eee();
+    init_genetics();
+    init_nuclear();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -40,6 +43,7 @@ int main() {
         else if (state_of_game == LAYER_MAP) logic_draw_map();
         else if (state_of_game == LAYER_EEE) logic_draw_eee();
         else if (state_of_game == LAYER_NUCLEAR) logic_draw_nuclear();
+        else if (state_of_game == LAYER_GENETICS) logic_draw_genetics();
         else if (state_of_game == LAYER_EXIT) break;
 
         EndDrawing();
@@ -48,6 +52,8 @@ int main() {
     unload_map();
     unload_menu();
     unload_eee();
+    unload_genetics();
+    unload_nuclear();
     unload_assets();
 
     CloseAudioDevice();

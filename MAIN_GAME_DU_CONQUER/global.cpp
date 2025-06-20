@@ -27,7 +27,7 @@ Music walk_music;
 Texture2D character;
 
 // dept wise bgm
-Music bgm_eee,bgm_nuclear,bgm_microbiology;
+Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics;
 
 // Load all game assets
 void init_assets() {
@@ -39,6 +39,7 @@ void init_assets() {
     bgm_eee = LoadMusicStream("resources/bgm_eee.mp3");
     bgm_nuclear = bgm_eee;
     bgm_microbiology = bgm_eee;
+    bgm_genetics = bgm_eee;
     walk_music = LoadMusicStream("resources/walk.mp3");
 
     character = LoadTexture("resources/character.png");

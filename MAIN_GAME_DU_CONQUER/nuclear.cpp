@@ -21,9 +21,9 @@ Vector2 exit_zone_nuclear = {50,700};
 string pop_up_nuclear = "Find and Solve the Clue";
 string game_pop_up_nuclear = " ";
 string game_rules_nuclear = "Lights On Game Rules:\nTurn on all the lights to win.\nPress X to exit the game.";
-bool walk_music_playing = false;
-bool show_rules_popup = false;
-bool show_ok_button = false;
+bool walk_music_playing_nuclear = false;
+bool show_rules_popup_nuclear = false;
+bool show_ok_button_nuclear = false;
 
 void init_nuclear() {
     SetMusicVolume(bgm_nuclear, 0.13f);
@@ -58,23 +58,23 @@ void logic_draw_nuclear() {
         if (IsKeyDown(KEY_A)) { playerPos_nuclear.x -= 13; moving = true; }
         if (IsKeyDown(KEY_D)) { playerPos_nuclear.x += 13; moving = true; }
 
-        if (moving && !walk_music_playing) {
+        if (moving && !walk_music_playing_nuclear) {
             PlayMusicStream(walk_music);
-            walk_music_playing = true;
-        } else if (!moving && walk_music_playing) {
+            walk_music_playing_nuclear = true;
+        } else if (!moving && walk_music_playing_nuclear) {
             StopMusicStream(walk_music);
-            walk_music_playing = false;
+            walk_music_playing_nuclear = false;
         }
-        if (walk_music_playing) UpdateMusicStream(walk_music);
+        if (walk_music_playing_nuclear) UpdateMusicStream(walk_music);
 
         bool eKeyHandled = false;
         if (CheckCollisionCircles(playerPos_nuclear, 50.0f, game_zone_nuclear, 50.0f)) {
             pop_up_nuclear = "Press E to Solve";
-            if (IsKeyPressed(KEY_E) && !game_win_nuclear2 && !show_rules_popup) {
+            if (IsKeyPressed(KEY_E) && !game_win_nuclear2 && !show_rules_popup_nuclear) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
-                show_rules_popup = true;
-                show_ok_button = true;
+                show_rules_popup_nuclear = true;
+                show_ok_button_nuclear = true;
                 eKeyHandled = true;
             }
         }
@@ -145,7 +145,7 @@ void logic_draw_nuclear() {
         DrawText(pop_up_nuclear.c_str(), 20, screenHeight - 50, 20, RAYWHITE);
     }
 
-    if (show_rules_popup) {
+    if (show_rules_popup_nuclear) {
         int screenW = screenWidth;
         int screenH = screenHeight;
 
@@ -166,12 +166,12 @@ void logic_draw_nuclear() {
         DrawRectangleRec(okBtn, btnColor);
         DrawText("OK", screenW / 2 - MeasureText("OK", 20) / 2, screenH / 2 + 40, 20, WHITE);
 
-        if (show_ok_button && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        if (show_ok_button_nuclear && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             if (CheckCollisionPointRec(mouse, okBtn)) {
                 PlaySound(click_sound);
                 dept_status_nuclear = Game_nuclear;
-                show_rules_popup = false;
-                show_ok_button = false;
+                show_rules_popup_nuclear = false;
+                show_ok_button_nuclear = false;
             }
         } else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             PlaySound(error_sound);

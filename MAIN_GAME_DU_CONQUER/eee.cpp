@@ -24,9 +24,9 @@ string game_rules_eee = "Lights On Game Rules:\nTurn on all the lights to win.\n
 
 // block ends
 
-bool walk_music_playing = false;
-bool show_rules_popup = false;
-bool show_ok_button = false;
+bool walk_music_playing_eee = false;
+bool show_rules_popup_eee = false;
+bool show_ok_button_eee = false;
 
 
 void init_eee()
@@ -70,16 +70,16 @@ void logic_draw_eee() //change
                 moving = true;
             }
 
-            if (moving && !walk_music_playing) {
+            if (moving && !walk_music_playing_eee) {
                 PlayMusicStream(walk_music);
-                walk_music_playing = true;
+                walk_music_playing_eee = true;
             }
-            else if (!moving && walk_music_playing) {
+            else if (!moving && walk_music_playing_eee) {
                 StopMusicStream(walk_music);
-                walk_music_playing = false;
+                walk_music_playing_eee = false;
             }
 
-            if (walk_music_playing) {
+            if (walk_music_playing_eee) {
                 UpdateMusicStream(walk_music);
             }
 
@@ -87,12 +87,12 @@ void logic_draw_eee() //change
 
             if (CheckCollisionCircles(playerPos, 50.0f,game_zone, 50.0f)) {
                 pop_up_eee = "Press E to Solve";  //change
-                if(IsKeyPressed(KEY_E) && !game_win_eee2 && !show_rules_popup) //change
+                if(IsKeyPressed(KEY_E) && !game_win_eee2 && !show_rules_popup_eee) //change
                 {
                     PlaySound(pop_up_sound);
                     PlaySound(click_sound);
-                    show_rules_popup = true;
-                    show_ok_button = true;
+                    show_rules_popup_eee = true;
+                    show_ok_button_eee = true;
                     eKeyHandled = true;
                 }
             }
@@ -168,7 +168,7 @@ void logic_draw_eee() //change
             DrawText(pop_up_eee.c_str(), 20, screenHeight-50, 20, RAYWHITE);  // change
         }
 
-        if (show_rules_popup) {
+        if (show_rules_popup_eee) {
             int screenW = screenWidth;
             int screenH = screenHeight;
 
@@ -190,13 +190,13 @@ void logic_draw_eee() //change
             DrawRectangleRec(okBtn, btnColor);
             DrawText("OK", screenW/2 - MeasureText("OK", 20)/2, screenH/2 + 40, 20, WHITE);
 
-            if (show_ok_button && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            if (show_ok_button_eee && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                 Vector2 mouse = GetMousePosition();
                 if (CheckCollisionPointRec(mouse, okBtn)) {
                     PlaySound(click_sound);
                     dept_status = Game_eee;  // change
-                    show_rules_popup = false;
-                    show_ok_button = false;
+                    show_rules_popup_eee = false;
+                    show_ok_button_eee = false;
                 }
             }
             else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {

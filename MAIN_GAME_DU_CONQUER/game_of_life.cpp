@@ -3,6 +3,7 @@
 #define GAME_OF_LIFE_H
 
 #include "raylib.h"
+#include "global.h"
 
 class GridSimulation {
 public:
@@ -145,7 +146,7 @@ void logic_game_of_life(GridSimulation &grids) {
             grids.simulate();
         }
     } else if (!question_answered && IsKeyPressed(KEY_A) || IsKeyPressed(KEY_B)) {
-        game_win_genetics2 = true;
+        genetics_game = true;
         question_answered = true;
         question_popup = false;
     }

@@ -13,7 +13,8 @@ typedef enum {
     LAYER_MAP,
     LAYER_EXIT,
     LAYER_EEE,
-    LAYER_NUCLEAR
+    LAYER_NUCLEAR,
+    LAYER_GENETICS
 } layer;
 
 extern layer state_of_game;
@@ -29,7 +30,7 @@ extern double time_loading_start;
 
 // Game assets
 extern Sound conquered_sound, pop_up_sound, click_sound, error_sound;
-extern Music bgm_eee, walk_music,bgm_nuclear;
+extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics;
 extern Texture2D character;
 
 // Asset management

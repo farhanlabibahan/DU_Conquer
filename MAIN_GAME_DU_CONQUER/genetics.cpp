@@ -8,7 +8,7 @@ using namespace std;
 
 typedef enum {
     Dept_genetics,
-    Game_genetics
+    genetics_game_pop
 } dept_state_genetics;
 
 GridSimulation grids;  // ✅ now global here
@@ -22,9 +22,9 @@ Vector2 exit_zone_genetics = {50,700};
 string pop_up_genetics = "Find and Solve the Clue";
 string game_pop_up_genetics = " ";
 string game_rules_genetics = "Lights On Game Rules:\nTurn on all the lights to win.\nPress X to exit the game.";
-bool walk_music_playing = false;
-bool show_rules_popup = false;
-bool show_ok_button = false;
+bool walk_music_playing_genetics = false;
+bool show_rules_popup_genetics = false;
+bool show_ok_button_genetics = false;
 
 void init_genetics() {
     SetMusicVolume(bgm_genetics, 0.13f);
@@ -52,30 +52,30 @@ void unload_genetics() {
 
 void logic_draw_genetics() {
     UpdateMusicStream(bgm_genetics);
-    if (!game_win_genetics2) pop_up_genetics = "Find and Solve the Clue";
+    if (!genetics_game) pop_up_genetics = "Find and Solve the Clue";
 
     if (dept_status_genetics == Dept_genetics) {
         bool moving = false;
         if (IsKeyDown(KEY_A)) { playerPos_genetics.x -= 13; moving = true; }
         if (IsKeyDown(KEY_D)) { playerPos_genetics.x += 13; moving = true; }
 
-        if (moving && !walk_music_playing) {
+        if (moving && !walk_music_playing_genetics) {
             PlayMusicStream(walk_music);
-            walk_music_playing = true;
-        } else if (!moving && walk_music_playing) {
+            walk_music_playing_genetics = true;
+        } else if (!moving && walk_music_playing_genetics) {
             StopMusicStream(walk_music);
-            walk_music_playing = false;
+            walk_music_playing_genetics = false;
         }
-        if (walk_music_playing) UpdateMusicStream(walk_music);
+        if (walk_music_playing_genetics) UpdateMusicStream(walk_music);
 
         bool eKeyHandled = false;
         if (CheckCollisionCircles(playerPos_genetics, 50.0f, game_zone_genetics, 50.0f)) {
             pop_up_genetics = "Press E to Solve";
-            if (IsKeyPressed(KEY_E) && !game_win_genetics2 && !show_rules_popup) {
+            if (IsKeyPressed(KEY_E) && !genetics_game && !show_rules_popup_genetics) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
-                show_rules_popup = true;
-                show_ok_button = true;
+                show_rules_popup_genetics = true;
+                show_ok_button_genetics = true;
                 eKeyHandled = true;
             }
         }
@@ -95,12 +95,12 @@ void logic_draw_genetics() {
         if (IsKeyPressed(KEY_E) && !eKeyHandled) {
             PlaySound(error_sound);
         }
-    } else if (dept_status_genetics == Game_genetics) {
+    } else if (dept_status_genetics == genetics_game_pop) {
         logic_game_of_life(grids);
-        if (game_win_genetics2 || IsKeyDown(KEY_X)) {
+        if (genetics_game || IsKeyDown(KEY_X)) {
             dept_status_genetics = Dept_genetics;
             game_pop_up_genetics = "genetics Conqured!! Abort";
-            game_win_genetics2 = true;
+            genetics_game = true;
             PlaySound(conquered_sound);
             unload_game_of_life();
         }
@@ -131,20 +131,20 @@ void logic_draw_genetics() {
     DrawCircleV(playerPos_genetics, 20, BLUE);
     EndMode2D();
 
-    if (dept_status_genetics == Game_genetics) {
+    if (dept_status_genetics == genetics_game_pop) {
         DrawRectangle(0, 0, screenWidth, screenHeight, Fade(BLACK, 0.6f));
         draw_game_of_life(grids);
     }
 
     DrawText(game_pop_up_genetics.c_str(), 20, screenHeight - 100, 20, GREEN);
 
-    if (game_win_genetics2 && CheckCollisionCircles(playerPos_genetics, 50.0f, exit_zone_genetics, 50.0f)) {
+    if (genetics_game && CheckCollisionCircles(playerPos_genetics, 50.0f, exit_zone_genetics, 50.0f)) {
         DrawText("Press E to Exit", 20, screenHeight - 70, 20, RAYWHITE);
-    } else if (!game_win_genetics2) {
+    } else if (!genetics_game) {
         DrawText(pop_up_genetics.c_str(), 20, screenHeight - 50, 20, RAYWHITE);
     }
 
-    if (show_rules_popup) {
+    if (show_rules_popup_genetics) {
         int screenW = screenWidth;
         int screenH = screenHeight;
 
@@ -164,14 +164,14 @@ void logic_draw_genetics() {
         DrawRectangleRec(okBtn, btnColor);
         DrawText("OK", screenW / 2 - MeasureText("OK", 20) / 2, screenH / 2 + 40, 20, WHITE);
 
-        if (show_ok_button && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        if (show_ok_button_genetics && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             if (CheckCollisionPointRec(mouse, okBtn)) {
                 PlaySound(click_sound);
-                dept_status_genetics = Game_genetics;
-                game_win_genetics2 = false;
+                dept_status_genetics = genetics_game_pop;
+                genetics_game = false;
                 grids.init_cells();  // ✅ start the simulation
-                show_rules_popup = false;
-                show_ok_button = false;
+                show_rules_popup_genetics = false;
+                show_ok_button_genetics = false;
             }
         } else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             PlaySound(error_sound);

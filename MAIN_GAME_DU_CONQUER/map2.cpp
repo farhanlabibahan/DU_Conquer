@@ -35,13 +35,17 @@ void logic_draw_map()
     {
         state_of_game = LAYER_MENU;
     }
-    if(IsKeyPressed(KEY_G))
+    if(IsKeyPressed(KEY_E))
     {
         state_of_game = LAYER_EEE;
     }
-    if(IsKeyPressed(KEY_H))
+    if(IsKeyPressed(KEY_N))
     {
         state_of_game = LAYER_NUCLEAR;
+    }
+    if(IsKeyPressed(KEY_G))
+    {
+        state_of_game = LAYER_GENETICS;
     }
 
     if (IsKeyDown(KEY_W)) {
