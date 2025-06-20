@@ -58,4 +58,3 @@ void unload_assets() {
 }
 
 
-g++ main.cpp utilities/menu.cpp utilities/map.cpp  -o game -lraylib  OpenGL  IOKit -framework CoreAudio -framework CoreVideo && ./game
