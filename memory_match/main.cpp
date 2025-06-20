@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <random>
 
 // === CONSTANTS ===
 const int screenWidth = 800;
@@ -14,6 +15,7 @@ float roundTimer = 0.0f;
 float phaseTimer = 0.0f;
 bool inputEnabled = false;
 
+Texture2D bgImage;
 Rectangle startButton = { 330, 500, 140, 50 };
 
 enum GamePhase { PHASE_START, PHASE_SHOES, PHASE_SNACKS, PHASE_CANDIDATE, PHASE_SUCCESS, PHASE_FAIL };
@@ -60,13 +62,18 @@ int correctCandidateIndex = 0;
 
 // === FORWARD DECLARATIONS ===
 void ShuffleLayout();
-void DrawRoundShoes(float delta, Vector2 mouse);
-void DrawRoundSnack(float delta, Vector2 mouse);
-void DrawRoundCandidate(float delta, Vector2 mouse);
+
+void DrawGlow(Rectangle rect, Color color) {
+    for (int i = 10; i > 0; i--) {
+        DrawRectangleLinesEx({ rect.x - i, rect.y - i, rect.width + i * 2, rect.height + i * 2 }, 1, Fade(color, 0.05f));
+    }
+}
+
 void logic_draw_memory_challenge() {
     float delta = GetFrameTime();
     BeginDrawing();
-    ClearBackground(DARKGRAY);
+    ClearBackground(BLACK);
+    DrawTexture(bgImage, 0, 0, WHITE);
 
     Vector2 mouse = GetMousePosition();
 
@@ -90,6 +97,7 @@ void logic_draw_memory_challenge() {
         for (int i = 0; i < (int)shoes.size(); i++) {
             if (inputEnabled || i != missingShoeIndex) {
                 DrawRectangleRec(shoes[i].rect, shoes[i].color);
+                if (inputEnabled) DrawGlow(shoes[i].rect, shoes[i].color);
             }
         }
 
@@ -139,6 +147,7 @@ void logic_draw_memory_challenge() {
         DrawText("Round 3: Who is the right candidate?", 220, 40, 20, SKYBLUE);
         for (int i = 0; i < (int)candidates.size(); i++) {
             DrawRectangleRec(candidates[i].rect, candidates[i].color);
+            DrawGlow(candidates[i].rect, candidates[i].color);
             DrawText(candidates[i].name.c_str(), candidates[i].rect.x + 10, candidates[i].rect.y + 10, 18, BLACK);
             DrawText(candidates[i].symbol.c_str(), candidates[i].rect.x + 40, candidates[i].rect.y + 40, 30, WHITE);
         }
@@ -181,25 +190,24 @@ void logic_draw_memory_challenge() {
     EndDrawing();
 }
 
-// === GAME FUNCTIONS ===
-
 void ShuffleLayout() {
-    // === SHOE LAYOUT ===
+    std::random_device rd;
+    std::mt19937 g(rd());
+
     shoes.clear();
     for (int i = 0; i < 6; i++) {
         Shoe s;
-        s.rect = { 100 + (i % 3) * 200.0f + GetRandomValue(-20, 20), 200 + (i / 3) * 120.0f + GetRandomValue(-10, 10), 60, 60 };
-        s.color = Color{ GetRandomValue(100, 255), GetRandomValue(100, 255), GetRandomValue(100, 255), 255 };
+        s.rect = { 100 + (i % 3) * 200.0f + (float)GetRandomValue(-20, 20), 200 + (i / 3) * 120.0f + (float)GetRandomValue(-10, 10), 60, 60 };
+        s.color = Color{ (unsigned char)GetRandomValue(100, 255), (unsigned char)GetRandomValue(100, 255), (unsigned char)GetRandomValue(100, 255), 255 };
         shoes.push_back(s);
     }
     missingShoeIndex = GetRandomValue(0, (int)shoes.size() - 1);
 
-    // === SNACK LAYOUT ===
     snackBoxes.clear();
     const char* snacks[] = { "shingara", "samosa", "cake", "banana", "chips", "roll" };
     std::vector<Vector2> positions;
-    for (int i = 0; i < 6; i++) positions.push_back({ 100 + (i % 3) * 200.0f + GetRandomValue(-20, 20), 240 + (i / 3) * 110.0f + GetRandomValue(-10, 10) });
-    std::random_shuffle(positions.begin(), positions.end());
+    for (int i = 0; i < 6; i++) positions.push_back({ 100 + (i % 3) * 200.0f + (float)GetRandomValue(-20, 20), 240 + (i / 3) * 110.0f + (float)GetRandomValue(-10, 10) });
+    std::shuffle(positions.begin(), positions.end(), g);
     for (int i = 0; i < 6; i++) {
         SnackBox box;
         box.rect = { positions[i].x, positions[i].y, 80, 60 };
@@ -209,7 +217,6 @@ void ShuffleLayout() {
     correctSnackIndex = GetRandomValue(0, (int)snackBoxes.size() - 1);
     snackBoxes[correctSnackIndex].content = "shingara";
 
-    // === CANDIDATE LAYOUT ===
     candidates.clear();
     const char* names[] = { "Mehedi", "Tumpa", "Shuvo", "Jamal" };
     const char* symbols[] = { "📢", "📚", "🐸", "🚩" };
@@ -217,18 +224,17 @@ void ShuffleLayout() {
         Candidate c;
         c.name = names[i];
         c.symbol = symbols[i];
-        c.color = Color{ GetRandomValue(80, 220), GetRandomValue(80, 220), GetRandomValue(80, 220), 255 };
-        c.rect = { 120 + i * 160.0f + GetRandomValue(-15, 15), 300 + GetRandomValue(-10, 10), 100, 100 };
+        c.color = Color{ (unsigned char)GetRandomValue(80, 220), (unsigned char)GetRandomValue(80, 220), (unsigned char)GetRandomValue(80, 220), 255 };
+        c.rect = { 120 + i * 160.0f + (float)GetRandomValue(-15, 15), 300 + (float)GetRandomValue(-10, 10), 100, 100 };
         candidates.push_back(c);
     }
     correctCandidateIndex = GetRandomValue(0, 3);
 }
 
-void logic_draw_memory_challenge();
-
-// === MAIN ===
 int main() {
     InitWindow(screenWidth, screenHeight, "DUCSU Memory Match");
+    InitAudioDevice();
+    bgImage = LoadTexture("/mnt/c/Users/User/Pictures/Camera Roll/depts image/DUCSU.png");
     SetTargetFPS(60);
     ShuffleLayout();
 
@@ -236,7 +242,7 @@ int main() {
         logic_draw_memory_challenge();
     }
 
+    UnloadTexture(bgImage);
     CloseWindow();
     return 0;
 }
-
