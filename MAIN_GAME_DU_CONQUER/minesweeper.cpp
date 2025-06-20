@@ -15,14 +15,14 @@
 #define VIRTUAL_WIDTH 600
 #define VIRTUAL_HEIGHT 800
 
-typedef enum { STATE_SPLASH, STATE_PLAYING, STATE_END } vGameState_nuclear;
-vGameState_nuclear GameState_nuclear = STATE_SPLASH;
-
 bool firstClick = true;
 bool gameWon = false;
+bool gameover = false;
+bool mineTriggered = false;
 int flagsLeft = NUM_MINES;
 int livesLeft = MAX_LIVES;
 float gameTimer = 0, gameStartTime = 0;
+int triggeredMineX = -1, triggeredMineY = -1;
 
 typedef struct {
     bool revealed;
@@ -79,12 +79,10 @@ void Reveal(int x, int y) {
     tile->revealed = true;
     if (tile->hasMine) {
         livesLeft--;
-        if (livesLeft <= 0 || flagsLeft <=0) 
-        {
-            GameState_nuclear = STATE_SPLASH;
-            return;
-        }
-        
+        triggeredMineX = x;
+        triggeredMineY = y;
+        if (livesLeft <= 0) gameover = true;
+        return;
     }
 
     if (tile->adjacentMines == 0) {
@@ -101,7 +99,6 @@ void CheckWinCondition() {
     if (revealedCount == GRID_WIDTH * GRID_HEIGHT - NUM_MINES) {
         gameWon = true;
         nuclear_game = true;
-        GameState_nuclear = STATE_END;
     }
 }
 
@@ -110,7 +107,6 @@ void init_minesweeper() {
 
     bombTexture = LoadTexture("resources/explosion.png");
     flagTexture = LoadTexture("resources/flag.png");
-    splashTexture = LoadTexture("resources/splash_bomb.png");
     target = LoadRenderTexture(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 
     flagsLeft = NUM_MINES;
@@ -119,7 +115,10 @@ void init_minesweeper() {
     gameTimer = 0;
     gameStartTime = 0;
     gameWon = false;
-    GameState_nuclear = STATE_SPLASH;
+    gameover = false;
+    mineTriggered = false;
+    triggeredMineX = -1;
+    triggeredMineY = -1;
     nuclear_game = false;
 
     for (int y = 0; y < GRID_HEIGHT; y++)
@@ -132,47 +131,41 @@ void logic_minesweeper() {
     float offsetX = (screenWidth - VIRTUAL_WIDTH) / 2.0f + (VIRTUAL_WIDTH - GRID_WIDTH * gridScale) / 2.0f;
     float offsetY = (screenHeight - VIRTUAL_HEIGHT) / 2.0f + HEADER_HEIGHT;
 
-    if (GameState_nuclear == STATE_PLAYING) {
-        gameTimer = GetTime() - gameStartTime;
-        if (gameTimer >= MAX_TIME) GameState_nuclear = STATE_END;
+    gameTimer = GetTime() - gameStartTime;
+    if (gameTimer >= MAX_TIME) {
+        gameover = true;
+        nuclear_game = true;
+    }
 
-        Vector2 mouse = GetMousePosition();
-        int x = (mouse.x - offsetX) / gridScale;
-        int y = (mouse.y - offsetY) / gridScale;
+    Vector2 mouse = GetMousePosition();
+    int x = (mouse.x - offsetX) / gridScale;
+    int y = (mouse.y - offsetY) / gridScale;
 
-        if ((IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))) {
-            if (x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
-                if (firstClick) {
-                    PlaceMines(x, y);
-                    firstClick = false;
-                }
+    if (!gameover && x >= 0 && x < GRID_WIDTH && y >= 0 && y < GRID_HEIGHT) {
+        if (firstClick && (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) || IsMouseButtonPressed(MOUSE_RIGHT_BUTTON))) {
+            PlaceMines(x, y);
+            gameStartTime = GetTime();
+            firstClick = false;
+        }
 
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    Reveal(x, y);
-                    CheckWinCondition();
-                } else if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
-                    Tile *tile = &grid[y][x];
-                    if (!tile->revealed) {
-                        tile->flagged = !tile->flagged;
-                        flagsLeft += tile->flagged ? -1 : 1;
-                    }
-                }
+        if (IsMouseButtonPressed(MOUSE_RIGHT_BUTTON)) {
+            Tile *tile = &grid[y][x];
+            if (!tile->revealed) {
+                tile->flagged = !tile->flagged;
+                flagsLeft += tile->flagged ? -1 : 1;
+            }
+        }
+
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            if (!grid[y][x].flagged) {
+                Reveal(x, y);
+                CheckWinCondition();
             }
         }
     }
 
-    if ((GameState_nuclear == STATE_SPLASH || GameState_nuclear == STATE_END) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-        GameState_nuclear = STATE_PLAYING;
-        gameStartTime = GetTime();
-        firstClick = true;
-
-        for (int y = 0; y < GRID_HEIGHT; y++)
-            for (int x = 0; x < GRID_WIDTH; x++)
-                grid[y][x] = (Tile){0};
-
-        flagsLeft = NUM_MINES;
-        livesLeft = MAX_LIVES;
-        
+    if (gameover && IsKeyPressed(KEY_R)) {
+        init_minesweeper();
     }
 }
 
@@ -181,51 +174,48 @@ void draw_minesweeper() {
     ClearBackground(DARKGRAY);
 
     float gridScale = fminf((float)VIRTUAL_WIDTH / GRID_WIDTH, (float)(VIRTUAL_HEIGHT - HEADER_HEIGHT) / GRID_HEIGHT);
+    float startX = (VIRTUAL_WIDTH - GRID_WIDTH * gridScale) / 2.0f;
+    float startY = HEADER_HEIGHT;
 
-    if (GameState_nuclear == STATE_SPLASH) {
-        int splashWidth = 300;
-        int splashHeight = 300;
-        int splashX = (VIRTUAL_WIDTH - splashWidth) / 2;
-        int splashY = (VIRTUAL_HEIGHT - splashHeight) / 2;
+    float scaleBomb = gridScale / bombTexture.width;
+    float scaleFlag = gridScale / flagTexture.width;
 
-        Rectangle dest = { (float)splashX, (float)splashY, (float)splashWidth, (float)splashHeight };
-        Rectangle src = { 0, 0, (float)splashTexture.width, (float)splashTexture.height };
+    for (int y = 0; y < GRID_HEIGHT; y++) {
+        for (int x = 0; x < GRID_WIDTH; x++) {
+            float px = startX + x * gridScale;
+            float py = startY + y * gridScale;
+            Rectangle rect = { px, py, gridScale, gridScale };
 
-        DrawRectangleRec(dest, Fade(BLACK, 0.6f));
-        DrawTexturePro(splashTexture, src, dest, (Vector2){0, 0}, 0, WHITE);
-        DrawText("Click to Start", VIRTUAL_WIDTH / 2 - 90, splashY + splashHeight + 20, 20, WHITE);
-    } else {
-        float startX = (VIRTUAL_WIDTH - GRID_WIDTH * gridScale) / 2.0f;
-        float startY = HEADER_HEIGHT;
+            Tile tile = grid[y][x];
 
-        float scaleBomb = gridScale / bombTexture.width;
-        float scaleFlag = gridScale / flagTexture.width;
+            if (tile.revealed) {
+                DrawRectangleRec(rect, LIGHTGRAY);
+                if (tile.hasMine)
+                    DrawTextureEx(bombTexture, (Vector2){px, py}, 0, scaleBomb, WHITE);
+                else if (tile.adjacentMines > 0)
+                    DrawText(TextFormat("%d", tile.adjacentMines), px + gridScale * 0.3f, py + gridScale * 0.2f, (int)(gridScale * 0.5f), BLUE);
+            } else {
+                DrawRectangleRec(rect, GRAY);
+                if (tile.flagged)
+                    DrawTextureEx(flagTexture, (Vector2){px, py}, 0, scaleFlag, WHITE);
+            }
 
-        for (int y = 0; y < GRID_HEIGHT; y++) {
-            for (int x = 0; x < GRID_WIDTH; x++) {
-                float px = startX + x * gridScale;
-                float py = startY + y * gridScale;
-                Rectangle rect = { px, py, gridScale, gridScale };
+            DrawRectangleLinesEx(rect, 1, DARKGRAY);
 
-                if (grid[y][x].revealed) {
-                    DrawRectangleRec(rect, LIGHTGRAY);
-                    if (grid[y][x].hasMine)
-                        DrawTextureEx(bombTexture, (Vector2){px, py}, 0, scaleBomb, WHITE);
-                    else if (grid[y][x].adjacentMines > 0)
-                        DrawText(TextFormat("%d", grid[y][x].adjacentMines), px + gridScale * 0.3f, py + gridScale * 0.2f, (int)(gridScale * 0.5f), BLUE);
-                } else {
-                    DrawRectangleRec(rect, GRAY);
-                    if (grid[y][x].flagged)
-                        DrawTextureEx(flagTexture, (Vector2){px, py}, 0, scaleFlag, WHITE);
-                }
-
-                DrawRectangleLinesEx(rect, 1, DARKGRAY);
+            if (gameover && x == triggeredMineX && y == triggeredMineY) {
+                DrawRectangleLinesEx(rect, 2, RED);
             }
         }
+    }
 
-        DrawText(TextFormat("Lives: %d", livesLeft), 10, 10, 20, RED);
-        DrawText(TextFormat("Flags Left: %d", flagsLeft), 200, 10, 20, YELLOW);
-        DrawText(TextFormat("Time: %.1fs", gameTimer), 420, 10, 20, LIGHTGRAY);
+    DrawText(TextFormat("Lives: %d", livesLeft), 10, 10, 20, RED);
+    DrawText(TextFormat("Flags Left: %d", flagsLeft), 200, 10, 20, YELLOW);
+    DrawText(TextFormat("Time: %.1fs", gameTimer), 420, 10, 20, LIGHTGRAY);
+
+    if (gameover) {
+        DrawText("GAME OVER! Press R to restart.", VIRTUAL_WIDTH / 2 - 180, VIRTUAL_HEIGHT / 2 - 20, 20, RED);
+    } else if (gameWon) {
+        DrawText("YOU WIN!", VIRTUAL_WIDTH / 2 - 60, VIRTUAL_HEIGHT / 2 - 20, 30, GREEN);
     }
 
     EndTextureMode();
