@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <random>
+#include <cctype> // For tolower usage
 
 using namespace std;
 
@@ -133,6 +134,12 @@ void ShuffleSnacks() {
     }
     snackAttempts = 0;
     allSnacksCollected = false;
+}
+
+string ToLower(const string& s) {
+    string result = s;
+    transform(result.begin(), result.end(), result.begin(), [](unsigned char c){ return tolower(c); });
+    return result;
 }
 
 void logic_draw_memory_challenge() {
