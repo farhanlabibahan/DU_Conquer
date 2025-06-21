@@ -13,6 +13,7 @@ typedef enum {
 
 dept_state_microbiology dept_status_microbiology = Dept_microbiology;
 Texture2D bg_image_microbiology;
+bool game_win_microbiology2;
 Camera2D camera_microbiology = {0};
 Vector2 playerPos_microbiology = {-20, 410};
 Vector2 game_zone_microbiology = {1200,700};

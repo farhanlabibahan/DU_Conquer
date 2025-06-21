@@ -27,7 +27,7 @@ Music walk_music;
 Texture2D character;
 
 // dept wise bgm
-Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics;
+Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,;
 
 // Load all game assets
 void init_assets() {

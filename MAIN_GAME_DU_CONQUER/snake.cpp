@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "global.h"
+#include "snake.h"
 
 #define MAX_SEGMENTS 100
 
@@ -44,11 +45,11 @@ void init_snake() {
     };
 
     gameOver = false;
-    game_win_microbiology2 = false;
+    microbiology_game= false;
 }
 
 void logic_snake() {
-    if (worm.size > 15) game_win_microbiology2 = true;
+    if (worm.size > 15) microbiology_game = true;
 
     if (!gameOver) {
         if (IsKeyPressed(KEY_UP) && currentDirection.y == 0) nextDirection = (Vector2){0, -step};
@@ -91,12 +92,62 @@ void logic_snake() {
     }
 }
 
-void draw_snake() {
-    DrawTexture(background, 0, 0, WHITE);
-    DrawTexture(foodImage, food.x, food.y, WHITE);
+// // void draw_snake() {
+//     DrawTexture(background, 0, 0, WHITE);
+//     DrawTexture(foodImage, food.x, food.y, WHITE);
 
+//     for (int i = 0; i < worm.size; i++) {
+//         Vector2 drawPos = worm.position[i];
+//         Texture2D segmentTexture = (i == 0) ? wormHead : wormBody;
+
+//         Rectangle destRect = {
+//             drawPos.x + cellSize / 2.0f,
+//             drawPos.y + cellSize / 2.0f,
+//             cellSize,
+//             cellSize
+//         };
+
+//         Vector2 origin = {
+//             segmentTexture.width / 2.0f,
+//             segmentTexture.height / 2.0f
+//         };
+
+//         DrawTexturePro(
+//             segmentTexture,
+//             (Rectangle){0, 0, segmentTexture.width, segmentTexture.height},
+//             destRect,
+//             origin,
+//             0.0f,
+//             WHITE
+//         );
+//     }
+
+//     DrawText(TextFormat("Score: %d", worm.size), 10, 10, 20, DARKGRAY);
+
+//     if (gameOver) {
+//         DrawText("GAME OVER! Press R to restart.", screenWidthg / 2 - 230, screenHeightg / 2, 30, RED);
+//     }
+// }
+void draw_snake() {
+    // Compute center offset to center the 800x600 game area
+    Vector2 offset = {
+        (screenWidth - screenWidthg) / 2.0f,
+        (screenHeight - screenHeightg) / 2.0f
+    };
+
+    // Draw background
+    DrawTexture(background, offset.x, offset.y, WHITE);
+
+    // Draw food
+    DrawTexture(foodImage, offset.x + food.x, offset.y + food.y, WHITE);
+
+    // Draw worm segments
     for (int i = 0; i < worm.size; i++) {
-        Vector2 drawPos = worm.position[i];
+        Vector2 drawPos = {
+            offset.x + worm.position[i].x,
+            offset.y + worm.position[i].y
+        };
+
         Texture2D segmentTexture = (i == 0) ? wormHead : wormBody;
 
         Rectangle destRect = {
@@ -121,12 +172,17 @@ void draw_snake() {
         );
     }
 
-    DrawText(TextFormat("Score: %d", worm.size), 10, 10, 20, DARKGRAY);
+    // Draw score
+    DrawText(TextFormat("Score: %d", worm.size), offset.x + 10, offset.y + 10, 20, DARKGRAY);
 
+    // Game over popup
     if (gameOver) {
-        DrawText("GAME OVER! Press R to restart.", screenWidthg / 2 - 230, screenHeightg / 2, 30, RED);
+        const char* msg = "GAME OVER! Press R to restart.";
+        int msgWidth = MeasureText(msg, 30);
+        DrawText(msg, screenWidth / 2 - msgWidth / 2, screenHeight / 2, 30, RED);
     }
 }
+
 
 void unload_snake() {
     UnloadTexture(background);
