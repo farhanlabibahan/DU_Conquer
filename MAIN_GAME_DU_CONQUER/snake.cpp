@@ -45,7 +45,7 @@ void init_snake() {
     };
 
     gameOver = false;
-    microbiology_game= false;
+    // microbiology_game= false;
 }
 
 void logic_snake() {

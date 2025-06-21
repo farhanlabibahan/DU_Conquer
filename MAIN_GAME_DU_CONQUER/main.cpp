@@ -46,7 +46,7 @@ int main() {
         else if (state_of_game == LAYER_EEE) logic_draw_eee();
         else if (state_of_game == LAYER_NUCLEAR) logic_draw_nuclear();
         else if (state_of_game == LAYER_GENETICS) logic_draw_genetics();
-        else if (state_of_game == LAYER_MICROBIOLOGY) logic_draw_genetics();
+        else if (state_of_game == LAYER_MICROBIOLOGY) logic_draw_microbiology();
         else if (state_of_game == LAYER_EXIT) break;
 
         EndDrawing();

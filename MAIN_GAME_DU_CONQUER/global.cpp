@@ -13,6 +13,7 @@ bool eee_game_2 = false;
 bool nuclear_game = false;
 bool ducsu_game = false;
 bool genetics_game = false;
+bool microbiology_game = false;
 
 
 //loading
@@ -27,7 +28,7 @@ Music walk_music;
 Texture2D character;
 
 // dept wise bgm
-Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,;
+Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics;
 
 // Load all game assets
 void init_assets() {
