@@ -21,9 +21,9 @@ Vector2 exit_zone_microbiology = {50,700};
 string pop_up_microbiology = "Find and Solve the Clue";
 string game_pop_up_microbiology = " ";
 string game_rules_microbiology = "Lights On Game Rules:\nTurn on all the lights to win.\nPress X to exit the game.";
-bool walk_music_playing = false;
-bool show_rules_popup = false;
-bool show_ok_button = false;
+bool walk_music_playing_microbiology = false;
+bool show_rules_popup_microbiology = false;
+bool show_ok_button_microbiology = false;
 
 void init_microbiology() {
     SetMusicVolume(bgm_microbiology, 0.13f);
@@ -58,24 +58,24 @@ void logic_draw_microbiology() {
         if (IsKeyDown(KEY_A)) { playerPos_microbiology.x -= 13; moving = true; }
         if (IsKeyDown(KEY_D)) { playerPos_microbiology.x += 13; moving = true; }
 
-        if (moving && !walk_music_playing) {
+        if (moving && !walk_music_playing_microbiology) {
             PlayMusicStream(walk_music);
-            walk_music_playing = true;
-        } else if (!moving && walk_music_playing) {
+            walk_music_playing_microbiology = true;
+        } else if (!moving && walk_music_playing_microbiology) {
             StopMusicStream(walk_music);
-            walk_music_playing = false;
+            walk_music_playing_microbiology = false;
         }
-        if (walk_music_playing) UpdateMusicStream(walk_music);
+        if (walk_music_playing_microbiology) UpdateMusicStream(walk_music);
 
         bool eKeyHandled = false;
         if (CheckCollisionCircles(playerPos_microbiology, 50.0f, game_zone_microbiology, 50.0f)) {
             pop_up_microbiology = "Press E to Solve";
-            if (IsKeyPressed(KEY_E) && !game_win_microbiology2 && !show_rules_popup) {
+            if (IsKeyPressed(KEY_E) && !game_win_microbiology2 && !show_rules_popup_microbiology) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
                 init_snake();
-                show_rules_popup = true;
-                show_ok_button = true;
+                show_rules_popup_microbiology = true;
+                show_ok_button_microbiology = true;
                 eKeyHandled = true;
             }
         }
@@ -146,7 +146,7 @@ void logic_draw_microbiology() {
         DrawText(pop_up_microbiology.c_str(), 20, screenHeight - 50, 20, RAYWHITE);
     }
 
-    if (show_rules_popup) {
+    if (show_rules_popup_microbiology) {
         int screenW = screenWidth;
         int screenH = screenHeight;
 
@@ -167,12 +167,12 @@ void logic_draw_microbiology() {
         DrawRectangleRec(okBtn, btnColor);
         DrawText("OK", screenW / 2 - MeasureText("OK", 20) / 2, screenH / 2 + 40, 20, WHITE);
 
-        if (show_ok_button && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        if (show_ok_button_microbiology && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             if (CheckCollisionPointRec(mouse, okBtn)) {
                 PlaySound(click_sound);
                 dept_status_microbiology = Game_microbiology;
-                show_rules_popup = false;
-                show_ok_button = false;
+                show_rules_popup_microbiology = false;
+                show_ok_button_microbiology = false;
             }
         } else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             PlaySound(error_sound);
