@@ -85,7 +85,7 @@ void logic_draw_map()
 
         // text
         DrawText(TextFormat("X: %f Y: %f",x_co_ordinate, y_co_ordinate), 10, 70, 30, RED);
-        DrawFPS(10, 40);
+        // DrawFPS(10, 40);
 
 
     loading_screen("Dhaka University Map");

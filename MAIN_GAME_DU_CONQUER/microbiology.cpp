@@ -13,7 +13,6 @@ typedef enum {
 
 dept_state_microbiology dept_status_microbiology = Dept_microbiology;
 Texture2D bg_image_microbiology;
-bool game_win_microbiology2;
 Camera2D camera_microbiology = {0};
 Vector2 playerPos_microbiology = {-20, 410};
 Vector2 game_zone_microbiology = {1200,700};
@@ -51,7 +50,7 @@ void unload_microbiology() {
 
 void logic_draw_microbiology() {
     UpdateMusicStream(bgm_microbiology);
-    if (!game_win_microbiology2) pop_up_microbiology = "Find and Solve the Clue";
+    if (!microbiology_game) pop_up_microbiology = "Find and Solve the Clue";
 
     if (dept_status_microbiology == Dept_microbiology) {
         bool moving = false;
@@ -70,7 +69,7 @@ void logic_draw_microbiology() {
         bool eKeyHandled = false;
         if (CheckCollisionCircles(playerPos_microbiology, 50.0f, game_zone_microbiology, 50.0f)) {
             pop_up_microbiology = "Press E to Solve";
-            if (IsKeyPressed(KEY_E) && !game_win_microbiology2 && !show_rules_popup_microbiology) {
+            if (IsKeyPressed(KEY_E) && !microbiology_game && !show_rules_popup_microbiology) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
                 init_snake();
@@ -97,10 +96,10 @@ void logic_draw_microbiology() {
         }
     } else if (dept_status_microbiology == Game_microbiology) {
         logic_snake();
-        if (game_win_microbiology2 || IsKeyDown(KEY_X)) {
+        if (microbiology_game || IsKeyDown(KEY_X)) {
             dept_status_microbiology = Dept_microbiology;
             game_pop_up_microbiology = "microbiology Conqured!! Abort";
-            game_win_microbiology2 = true;
+            microbiology_game = true;
             PlaySound(conquered_sound);
             unload_snake();
         }
@@ -140,9 +139,9 @@ void logic_draw_microbiology() {
 
     DrawText(game_pop_up_microbiology.c_str(), 20, screenHeight - 100, 20, GREEN);
 
-    if (game_win_microbiology2 && CheckCollisionCircles(playerPos_microbiology, 50.0f, exit_zone_microbiology, 50.0f)) {
+    if (microbiology_game && CheckCollisionCircles(playerPos_microbiology, 50.0f, exit_zone_microbiology, 50.0f)) {
         DrawText("Press E to Exit", 20, screenHeight - 70, 20, RAYWHITE);
-    } else if (!game_win_microbiology2) {
+    } else if (!microbiology_game) {
         DrawText(pop_up_microbiology.c_str(), 20, screenHeight - 50, 20, RAYWHITE);
     }
 

@@ -153,6 +153,8 @@ void logic_game_of_life(GridSimulation &grids) {
 }
 
 void draw_game_of_life(GridSimulation &grids) {
+
+    DrawText("Observe the bacterial colony for 2 minutes",screenWidth/2-MeasureText("Observe the bacterial colony for 2 minutes", 30)/2,20*scale,30,WHITE);
     grids.draw_cells(screenWidth / 2 - (cols * gridSize / 2), screenHeight / 2 - (rows * gridSize / 2));
 
     if (question_popup) {

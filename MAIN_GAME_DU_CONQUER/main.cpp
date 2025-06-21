@@ -49,6 +49,7 @@ int main() {
         else if (state_of_game == LAYER_MICROBIOLOGY) logic_draw_microbiology();
         else if (state_of_game == LAYER_EXIT) break;
 
+        DrawFPS(10,20);
         EndDrawing();
     }
 

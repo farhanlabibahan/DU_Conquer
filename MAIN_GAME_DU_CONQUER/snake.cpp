@@ -21,7 +21,7 @@ bool gameOver = false;
 const int screenWidthg = 800;
 const int screenHeightg = 600;
 const int cellSize = 40;
-const float step = cellSize * 0.55f;
+const float step = cellSize * 0.15f;
 
 void init_snake() {
     background = LoadTexture("resources/bg.jpg");
