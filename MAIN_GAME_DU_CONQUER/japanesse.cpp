@@ -3,7 +3,7 @@
 #include "loading.h"
 #include "japanesse.h"
 #include "global.h"
-#include "minesweeper.h"
+#include "kanji.h"
 using namespace std;
 
 typedef enum {
@@ -13,7 +13,6 @@ typedef enum {
 
 dept_state_japanesse dept_status_japanesse = Dept_japanesse;
 Texture2D bg_image_japanesse;
-bool game_win_japanesse2;
 Camera2D camera_japanesse = {0};
 Vector2 playerPos_japanesse = {-20, 410};
 Vector2 game_zone_japanesse = {1200,700};
@@ -41,17 +40,17 @@ void init_japanesse() {
     camera_japanesse.rotation = 0.0f;
     camera_japanesse.zoom = 1.0f;
 
-    init_minesweeper();
+    init_kanji();
 }
 
 void unload_japanesse() {
-    unload_minesweeper();
+    unload_kanji();
     UnloadTexture(bg_image_japanesse);
 }
 
 void logic_draw_japanesse() {
     UpdateMusicStream(bgm_japanesse);
-    if (!game_win_japanesse2) pop_up_japanesse = "Find and Solve the Clue";
+    if (!japanesse_game) pop_up_japanesse = "Find and Solve the Clue";
 
     if (dept_status_japanesse == Dept_japanesse) {
         bool moving = false;
@@ -70,7 +69,7 @@ void logic_draw_japanesse() {
         bool eKeyHandled = false;
         if (CheckCollisionCircles(playerPos_japanesse, 50.0f, game_zone_japanesse, 50.0f)) {
             pop_up_japanesse = "Press E to Solve";
-            if (IsKeyPressed(KEY_E) && !game_win_japanesse2 && !show_rules_popup_japanesse) {
+            if (IsKeyPressed(KEY_E) && !japanesse_game && !show_rules_popup_japanesse) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
                 show_rules_popup_japanesse = true;
@@ -83,7 +82,7 @@ void logic_draw_japanesse() {
             pop_up_japanesse = "Press E to Exit";
             if (IsKeyPressed(KEY_E)) {
                 PlaySound(click_sound);
-                unload_minesweeper();
+                unload_kanji();
                 eKeyHandled = true;
                 state_of_game = LAYER_MAP;
             } else if (IsKeyPressed(KEY_E)) {
@@ -95,16 +94,16 @@ void logic_draw_japanesse() {
             PlaySound(error_sound);
         }
     } else if (dept_status_japanesse == Game_japanesse) {
-        logic_minesweeper();
-        if (game_win_japanesse2 || IsKeyDown(KEY_X)) {
+        logic_kanji();
+        if (japanesse_game || IsKeyDown(KEY_X)) {
             dept_status_japanesse = Dept_japanesse;
             game_pop_up_japanesse = "japanesse Conqured!! Abort";
-            game_win_japanesse2 = true;
+            japanesse_game = true;
             PlaySound(conquered_sound);
-            unload_minesweeper();
+            unload_kanji();
         }
         if (IsKeyDown(KEY_Q)) {
-            unload_minesweeper();
+            unload_kanji();
             dept_status_japanesse = Dept_japanesse;
         }
     }
@@ -134,14 +133,14 @@ void logic_draw_japanesse() {
     }
 
     if (dept_status_japanesse == Game_japanesse) {
-        draw_minesweeper();
+        draw_kanji();
     }
 
     DrawText(game_pop_up_japanesse.c_str(), 20, screenHeight - 100, 20, GREEN);
 
-    if (game_win_japanesse2 && CheckCollisionCircles(playerPos_japanesse, 50.0f, exit_zone_japanesse, 50.0f)) {
+    if (japanesse_game && CheckCollisionCircles(playerPos_japanesse, 50.0f, exit_zone_japanesse, 50.0f)) {
         DrawText("Press E to Exit", 20, screenHeight - 70, 20, RAYWHITE);
-    } else if (!game_win_japanesse2) {
+    } else if (!japanesse_game) {
         DrawText(pop_up_japanesse.c_str(), 20, screenHeight - 50, 20, RAYWHITE);
     }
 

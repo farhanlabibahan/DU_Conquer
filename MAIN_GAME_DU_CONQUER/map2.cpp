@@ -51,6 +51,10 @@ void logic_draw_map()
     {
         state_of_game = LAYER_MICROBIOLOGY;
     }
+    if(IsKeyPressed(KEY_J))
+    {
+        state_of_game = LAYER_JAPANESSE;
+    }
 
     if (IsKeyDown(KEY_W)) {
             x_co_ordinate -= cosTheta * speed;

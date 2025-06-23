@@ -6,6 +6,7 @@
 #include "nuclear.h"
 #include "loading.h"
 #include "genetics.h"
+#include "japanesse.h"
 #include "microbiology.h"
 #include <iostream>
 
@@ -30,6 +31,7 @@ int main() {
     init_genetics();
     init_nuclear();
     init_microbiology();
+    init_japanesse();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -47,6 +49,7 @@ int main() {
         else if (state_of_game == LAYER_NUCLEAR) logic_draw_nuclear();
         else if (state_of_game == LAYER_GENETICS) logic_draw_genetics();
         else if (state_of_game == LAYER_MICROBIOLOGY) logic_draw_microbiology();
+        else if (state_of_game == LAYER_JAPANESSE) logic_draw_japanesse();
         else if (state_of_game == LAYER_EXIT) break;
 
         DrawFPS(10,20);
@@ -60,6 +63,7 @@ int main() {
     unload_nuclear();
     unload_microbiology();
     unload_assets();
+    unload_japanesse();
 
     CloseAudioDevice();
     CloseWindow();

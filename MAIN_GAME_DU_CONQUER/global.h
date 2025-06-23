@@ -15,7 +15,9 @@ typedef enum {
     LAYER_EEE,
     LAYER_NUCLEAR,
     LAYER_GENETICS,
-    LAYER_MICROBIOLOGY
+    LAYER_MICROBIOLOGY,
+    LAYER_JAPANESSE,
+    LAYER_ICTCELL
 } layer;
 
 extern layer state_of_game;
@@ -26,13 +28,14 @@ extern bool nuclear_game;
 extern bool ducsu_game;
 extern bool genetics_game;
 extern bool microbiology_game;
+extern bool japanesse_game;
 
 //loading
 extern double time_loading_start;
 
 // Game assets
 extern Sound conquered_sound, pop_up_sound, click_sound, error_sound;
-extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology;
+extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse;
 extern Texture2D character;
 
 // Asset management
