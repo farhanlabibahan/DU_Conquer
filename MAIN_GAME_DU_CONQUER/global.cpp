@@ -43,7 +43,7 @@ void init_assets() {
     bgm_nuclear = bgm_eee;
     bgm_microbiology = bgm_eee;
     bgm_genetics = bgm_eee;
-    bgm_japanesse = bgm_eee;
+    bgm_japanesse = LoadMusicStream("resources/japanese_bgm.mp3");
     bgm_eee_first = bgm_eee;
     walk_music = LoadMusicStream("resources/walk.mp3");
 
