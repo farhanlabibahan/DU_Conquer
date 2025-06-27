@@ -57,8 +57,9 @@ void init_kanji() {
         // 小 (Small) – simplified 3 strokes
         {
             {{0, 0}, {0, 140}},           // Center vertical
-            {{-40, 60}, {-10, 140}},      // Left diagonal
-            {{40, 60}, {10, 140}}         // Right diagonal
+            {{0,140},{-15,140}},
+            {{-10, 60}, {-40, 120}},      // Left diagonal
+            {{10, 60}, {40, 120}}         // Right diagonal
         }
     };
 

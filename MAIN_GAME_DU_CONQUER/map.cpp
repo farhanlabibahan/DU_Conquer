@@ -57,7 +57,7 @@ void logic_draw_map() {
 
         if(IsKeyPressed(KEY_G))
         {
-            state_of_game = LAYER_EEE;
+            state_of_game = LAYER_JAPANESSE;
             // return;
         }
 
