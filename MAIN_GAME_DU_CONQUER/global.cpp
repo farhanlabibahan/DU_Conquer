@@ -36,7 +36,7 @@ Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_fi
 void init_assets() {
     conquered_sound = LoadSound("resources/conquered.mp3");
     pop_up_sound = LoadSound("resources/pop_up.mp3");
-    click_sound = LoadSound("resources/click.mp3");
+    click_sound = LoadSound("resources/click.wav");
     error_sound = LoadSound("resources/error.mp3");
 
     bgm_eee = LoadMusicStream("resources/bgm_eee.mp3");

@@ -11,7 +11,7 @@ Sound hoverSound;
 
 void InitHoverSounds()
 {
-    hoverSound = LoadSound("resources/click.mp3");
+    hoverSound = LoadSound("resources/click.wav");
 }
 
 void PlayHoverSound()
