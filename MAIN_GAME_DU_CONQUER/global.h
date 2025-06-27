@@ -11,6 +11,7 @@ extern int screenHeight;
 typedef enum {
     LAYER_MENU,
     LAYER_MAP,
+    LAYER_EEE_FIRST,
     LAYER_EXIT,
     LAYER_EEE,
     LAYER_NUCLEAR,
@@ -24,6 +25,7 @@ extern layer state_of_game;
 
 // dept wise game list
 extern bool eee_game_2;
+extern bool eee_game_1;
 extern bool nuclear_game;
 extern bool ducsu_game;
 extern bool genetics_game;
@@ -35,7 +37,7 @@ extern double time_loading_start;
 
 // Game assets
 extern Sound conquered_sound, pop_up_sound, click_sound, error_sound;
-extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse;
+extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first;
 extern Texture2D character;
 
 // Asset management

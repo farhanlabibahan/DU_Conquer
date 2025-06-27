@@ -55,6 +55,11 @@ void logic_draw_map()
     {
         state_of_game = LAYER_JAPANESSE;
     }
+    if(IsKeyPressed(KEY_R))
+    {
+        state_of_game = LAYER_EEE_FIRST;
+    }
+    
 
     if (IsKeyDown(KEY_W)) {
             x_co_ordinate -= cosTheta * speed;

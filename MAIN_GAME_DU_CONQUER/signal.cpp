@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <raymath.h>
+#include "signal.h"
 #include "global.h"
 
 #define SCREEN_WIDTH 1280
@@ -21,10 +22,6 @@ float currentPhase = 0.0f;
 
 bool signalFailed = false;
 bool showPopup = false;
-
-int totalTime = 45;
-float timer = 0;
-float resultPopupTimer = 0;
 
 float noise(float t) {
     return 0.5f * ((float)rand() / RAND_MAX - 0.5f);
@@ -141,33 +138,16 @@ void init_signal() {
 
     eee_game_1 = false;
     signalFailed = false;
-    totalTime = 45;
-    timer = 0;
-    resultPopupTimer = 0;
     showPopup = true;
 }
 
 void logic_signal() {
-    if (eee_game_1 || signalFailed) return;
-
-    timer += GetFrameTime();
-    if (timer >= 1.0f) {
-        totalTime--;
-        timer = 0;
-    }
-
-    if (totalTime <= 0) signalFailed = true;
-    currentFrequency += sinf(GetTime() * 0.5f) * 0.002f;
+    if (eee_game_1) return;
 
     float strength = getSignalStrength(currentFrequency, currentAmplitude, currentPhase);
     if (strength > 0.96f) eee_game_1 = true;
 
-    if ((eee_game_1 || signalFailed) && showPopup) {
-        resultPopupTimer += GetFrameTime();
-        if (resultPopupTimer > 2.0f) {
-            showPopup = false;
-        }
-    }
+    currentFrequency += sinf(GetTime() * 0.5f) * 0.002f;
 }
 
 void draw_signal() {
@@ -181,7 +161,6 @@ void draw_signal() {
     DrawRectangleRec(popup, DARKGRAY);
     DrawRectangleLinesEx(popup, 4, SKYBLUE);
     DrawText("SIGNAL SEEKER", px + 200, py, 28, WHITE);
-    DrawText(TextFormat("Time Left: %d sec", totalTime), px + 440, py + 5, 20, RED);
 
     Rectangle waveArea = {px, py + 50, SIGNAL_WIDTH, SIGNAL_HEIGHT};
     DrawRectangleRec(waveArea, BLACK);

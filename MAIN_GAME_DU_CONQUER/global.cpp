@@ -10,6 +10,7 @@ layer state_of_game = LAYER_MENU;
 
 //dept wise games
 bool eee_game_2 = false;
+bool eee_game_1 = false;
 bool nuclear_game = false;
 bool ducsu_game = false;
 bool genetics_game = false;
@@ -29,7 +30,7 @@ Music walk_music;
 Texture2D character;
 
 // dept wise bgm
-Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse;
+Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_first;
 
 // Load all game assets
 void init_assets() {
@@ -43,6 +44,7 @@ void init_assets() {
     bgm_microbiology = bgm_eee;
     bgm_genetics = bgm_eee;
     bgm_japanesse = bgm_eee;
+    bgm_eee_first = bgm_eee;
     walk_music = LoadMusicStream("resources/walk.mp3");
 
     character = LoadTexture("resources/character.png");
