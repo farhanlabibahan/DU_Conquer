@@ -16,8 +16,6 @@ int main() {
     InitWindow(GetMonitorWidth(0), GetMonitorHeight(0), "DU_Conquer");
     ToggleFullscreen();
     InitAudioDevice();
-
-    // Initialize global assets
     init_assets();
 
     screenWidth = GetScreenWidth();

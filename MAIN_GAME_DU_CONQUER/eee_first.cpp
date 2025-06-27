@@ -28,7 +28,7 @@ void init_eee_first() {
     SetMusicVolume(bgm_eee_first, 0.13f);
     PlayMusicStream(bgm_eee_first);
     SetMusicVolume(walk_music, 1.0f);
-    bg_image_eee_first = LoadTexture("resources/HISTORY_EX.png");
+    bg_image_eee_first = LoadTexture("resources/eeeeeee.png");
     scale = (float)GetMonitorHeight(0) / bg_image_eee_first.height;
     float y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
     playerPos_eee_first = (Vector2){-10, y_pos_floor};

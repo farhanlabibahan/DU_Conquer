@@ -30,7 +30,7 @@ void init_genetics() {
     SetMusicVolume(bgm_genetics, 0.13f);
     PlayMusicStream(bgm_genetics);
     SetMusicVolume(walk_music, 1.0f);
-    bg_image_genetics = LoadTexture("resources/HISTORY_EX.png");
+    bg_image_genetics = LoadTexture("resources/genetics.png");
     scale = (float)GetMonitorHeight(0) / bg_image_genetics.height;
     float y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
     playerPos_genetics = (Vector2){-10, y_pos_floor};

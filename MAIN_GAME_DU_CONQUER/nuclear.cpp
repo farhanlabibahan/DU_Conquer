@@ -29,7 +29,7 @@ void init_nuclear() {
     SetMusicVolume(bgm_nuclear, 0.13f);
     PlayMusicStream(bgm_nuclear);
     SetMusicVolume(walk_music, 1.0f);
-    bg_image_nuclear = LoadTexture("resources/HISTORY_EX.png");
+    bg_image_nuclear = LoadTexture("resources/nuclear.png");
     scale = (float)GetMonitorHeight(0) / bg_image_nuclear.height;
     float y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
     playerPos_nuclear = (Vector2){-10, y_pos_floor};

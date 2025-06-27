@@ -28,7 +28,7 @@ void init_microbiology() {
     SetMusicVolume(bgm_microbiology, 0.13f);
     PlayMusicStream(bgm_microbiology);
     SetMusicVolume(walk_music, 1.0f);
-    bg_image_microbiology = LoadTexture("resources/HISTORY_EX.png");
+    bg_image_microbiology = LoadTexture("resources/microbiology.png");
     scale = (float)GetMonitorHeight(0) / bg_image_microbiology.height;
     float y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
     playerPos_microbiology = (Vector2){-10, y_pos_floor};

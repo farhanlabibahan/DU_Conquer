@@ -28,7 +28,7 @@ void init_japanesse() {
     SetMusicVolume(bgm_japanesse, 0.13f);
     PlayMusicStream(bgm_japanesse);
     SetMusicVolume(walk_music, 1.0f);
-    bg_image_japanesse = LoadTexture("resources/HISTORY_EX.png");
+    bg_image_japanesse = LoadTexture("resources/japanesse.png");
     scale = (float)GetMonitorHeight(0) / bg_image_japanesse.height;
     float y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
     playerPos_japanesse = (Vector2){-10, y_pos_floor};
