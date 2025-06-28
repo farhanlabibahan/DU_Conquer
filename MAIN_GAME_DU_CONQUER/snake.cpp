@@ -49,7 +49,7 @@ void init_snake() {
 }
 
 void logic_snake() {
-    if (worm.size > 15) microbiology_game = true;
+    if (worm.size > 20) microbiology_game = true;
 
     if (!gameOver) {
         if (IsKeyPressed(KEY_UP) && currentDirection.y == 0) nextDirection = (Vector2){0, -step};
@@ -173,7 +173,7 @@ void draw_snake() {
     }
 
     // Draw score
-    DrawText(TextFormat("Score: %d", worm.size), offset.x + 10, offset.y + 10, 20, DARKGRAY);
+    DrawText(TextFormat("Score: %d", worm.size-2), offset.x + 10, offset.y + 10, 20, DARKGRAY);
 
     // Game over popup
     if (gameOver) {
