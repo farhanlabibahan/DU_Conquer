@@ -174,7 +174,7 @@ void draw_snake() {
 
     // Draw score
     DrawText(TextFormat("Score: %d", worm.size-2), offset.x + 10, offset.y + 10, 20, DARKGRAY);
-
+    // Draw
     // Game over popup
     if (gameOver) {
         const char* msg = "GAME OVER! Press R to restart.";

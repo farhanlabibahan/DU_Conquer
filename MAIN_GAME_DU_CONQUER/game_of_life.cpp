@@ -38,8 +38,8 @@ int cols = windowWidth / gridSize;
 std::vector<std::vector<std::pair<std::pair<int, int>, int>>> cells(rows, std::vector<std::pair<std::pair<int, int>, int>>(cols));
 std::vector<std::vector<std::pair<std::pair<int, int>, int>>> tempCells(rows, std::vector<std::pair<std::pair<int, int>, int>>(cols));
 
-Color green = {0, 255, 0, 255};
-Color grey = {29, 29, 29, 255};
+Color green = {255, 0, 170, 255};
+Color grey = {29, 29, 29, 150};
 
 float sim_timer = 0.0f;
 bool ask_question = false;
@@ -51,8 +51,8 @@ void GridSimulation::init_cells() {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             cells[i][j].first = {i, j};
-            int random = rand() % 5;
-            cells[i][j].second = (random == 4) ? 1 : 0;
+            int random = rand() % 4;
+            cells[i][j].second = (random == 3) ? 1 : 0;
         }
     }
 }
