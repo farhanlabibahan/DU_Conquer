@@ -6,7 +6,7 @@
 // Declare functions
 void init_character_dept();
 Vector2 walk_character_dept();
-void draw_char_dept(float possx,float possy,float scale);
+void draw_char_dept(Vector2 poss,float scale);
 void unload_character_dept();
 
 extern bool moving;

@@ -45,7 +45,7 @@ Vector2 walk_character_dept() {
         framesCounter++;
         if (framesCounter >= (60 / framesSpeed)) {
             framesCounter = 0;
-            currentFrame--;
+            currentFrame++;
             if (currentFrame > 7) currentFrame = 0;
         }
     } else {
@@ -55,7 +55,7 @@ Vector2 walk_character_dept() {
     return offset;
 }
 
-void draw_char_dept(float possx, float possy,float scale) {
+void draw_char_dept(Vector2 poss,float scale) {
     int frameRow = currentFrame / 4;
     int frameCol = currentFrame % 4;
 
@@ -72,15 +72,15 @@ void draw_char_dept(float possx, float possy,float scale) {
     }
 
     Rectangle dest = {
-        possx
-        , possy,
+        poss.x
+        , poss.y,
         frameRec.width * scale*2.5f,
         frameRec.height * scale*2.5f
     };
 
     Vector2 origin = { 0, 0 };
-    cout<<"position in character dept"<<possx<<endl;
- cout<<"position in character dept"<<possy<<endl;
+    cout<<"position in character dept"<<poss.x<<endl;
+ cout<<"position in character dept"<<poss.y<<endl;
 
     DrawTexturePro(character_dept, source, dest, origin, 0.0f, WHITE);
 }
