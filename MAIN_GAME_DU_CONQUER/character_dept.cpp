@@ -31,13 +31,13 @@ Vector2 walk_character_dept() {
     if (IsKeyDown(KEY_A)) {
         facingRight = false;
         // character_dept_pos.x -= 2.0f;
-        offset.x = -2;
+        offset.x = -5;
         moving = true;
     }
     else if (IsKeyDown(KEY_D)) {
         facingRight = true;
         // character_dept_pos.x += 2.0f;
-        offset.x = 2;
+        offset.x = 5;
         moving = true;
     }
 
