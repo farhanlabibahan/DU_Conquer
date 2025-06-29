@@ -19,6 +19,7 @@ Camera2D camera_genetics = {0};
 Vector2 playerPos_genetics = {-20, 410};
 Vector2 game_zone_genetics = {1200,700};
 Vector2 exit_zone_genetics = {50,700};
+float y_pos_floor;
 string pop_up_genetics = "Find and Solve the Clue";
 string game_pop_up_genetics = " ";
 string game_rules_genetics = "Lights On Game Rules:\nTurn on all the lights to win.\nPress X to exit the game.";
@@ -32,7 +33,7 @@ void init_genetics() {
     SetMusicVolume(walk_music, 1.0f);
     bg_image_genetics = LoadTexture("resources/genetics.png");
     scale = (float)GetMonitorHeight(0) / bg_image_genetics.height;
-    float y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
+    y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
     playerPos_genetics = (Vector2){-10, y_pos_floor};
     game_zone_genetics = {scale * 1200, y_pos_floor};
     exit_zone_genetics = {scale * 10, y_pos_floor};
