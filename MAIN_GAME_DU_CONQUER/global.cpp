@@ -1,11 +1,13 @@
 #include "global.h"
+#include "character_dept.h"
+#include "raylib.h"
 // #include "raylib.h"
 
 // Global variable definitions
 double x_co_ordinate = 4523, y_co_ordinate = 2873;
 double scale = 0;
-int screenWidth = 0;
-int screenHeight = 0;
+int screenWidth = GetScreenWidth();
+int screenHeight = GetScreenHeight();
 layer state_of_game = LAYER_MENU;
 
 //dept wise games

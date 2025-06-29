@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include<iostream>
 #include <string>
 #include "loading.h"
 #include "japanesse.h"
@@ -14,7 +15,8 @@ typedef enum {
 dept_state_japanesse dept_status_japanesse = Dept_japanesse;
 Texture2D bg_image_japanesse;
 Camera2D camera_japanesse = {0};
-Vector2 playerPos_japanesse = {-20, 410};
+Vector2 playerPos_japanesse = {60,120};
+float x=60,y=120;
 Vector2 game_zone_japanesse = {1200,700};
 Vector2 exit_zone_japanesse = {50,700};
 string pop_up_japanesse = "Find and Solve the Clue";
@@ -53,9 +55,12 @@ void logic_draw_japanesse() {
     if (!japanesse_game) pop_up_japanesse = "Find and Solve the Clue";
 
     if (dept_status_japanesse == Dept_japanesse) {
-        bool moving = false;
-        if (IsKeyDown(KEY_A)) { playerPos_japanesse.x -= 13; moving = true; }
-        if (IsKeyDown(KEY_D)) { playerPos_japanesse.x += 13; moving = true; }
+        // bool moving = false;
+        // if (IsKeyDown(KEY_A)) { playerPos_japanesse.x -= 13; moving = true; }
+        // if (IsKeyDown(KEY_D)) { playerPos_japanesse.x += 13; moving = true; }
+
+        Vector2 offset_japanesse = walk_character_dept();
+        playerPos_japanesse.x += offset_japanesse.x;
 
         if (moving && !walk_music_playing_japanesse) {
             PlayMusicStream(walk_music);
@@ -122,7 +127,11 @@ void logic_draw_japanesse() {
     BeginMode2D(camera_japanesse);
     scale = (float)GetMonitorHeight(0) / bg_image_japanesse.height;
     DrawTextureEx(bg_image_japanesse, (Vector2){0, 0}, 0.0f, scale, WHITE);
-    DrawTexture(character, playerPos_japanesse.x, playerPos_japanesse.y, WHITE);
+    // DrawTexture(character, playerPos_japanesse.x, playerPos_japanesse.y, WHITE);
+    // draw_char_dept(playerPos_japanesse,scale);
+    draw_char_dept(x,y, scale);
+    cout<<"japposx "<<x<<endl;
+    cout<<"japposy "<<y<<endl;
     DrawCircleV(game_zone_japanesse, 20, RED);
     DrawCircleV(exit_zone_japanesse, 20, GREEN);
     DrawCircleV(playerPos_japanesse, 20, BLUE);
