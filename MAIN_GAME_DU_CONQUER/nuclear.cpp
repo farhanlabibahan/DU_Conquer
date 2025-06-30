@@ -13,11 +13,11 @@ typedef enum {
 
 dept_state_nuclear dept_status_nuclear = Dept_nuclear;
 Texture2D bg_image_nuclear;
-bool game_win_nuclear2;
+// bool nuclear_game;
 Camera2D camera_nuclear = {0};
-Vector2 playerPos_nuclear = {-20, 410};
-Vector2 game_zone_nuclear = {1200,700};
-Vector2 exit_zone_nuclear = {50,700};
+Vector2 playerPos_nuclear;
+Vector2 game_zone_nuclear;
+Vector2 exit_zone_nuclear;
 string pop_up_nuclear = "Find and Solve the Clue";
 string game_pop_up_nuclear = " ";
 string game_rules_nuclear = "Lights On Game Rules:\nTurn on all the lights to win.\nPress X to exit the game.";
@@ -31,10 +31,9 @@ void init_nuclear() {
     SetMusicVolume(walk_music, 1.0f);
     bg_image_nuclear = LoadTexture("resources/nuclear.png");
     scale = (float)GetMonitorHeight(0) / bg_image_nuclear.height;
-    float y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
-    playerPos_nuclear = (Vector2){-10, y_pos_floor};
-    game_zone_nuclear = {scale * 1200, y_pos_floor};
-    exit_zone_nuclear = {scale * 10, y_pos_floor};
+    playerPos_nuclear = {0*scale,screenHeight-400*scale};
+    exit_zone_nuclear = {0*scale,screenHeight-400*scale};
+    game_zone_nuclear = {2500*scale,screenHeight-400*scale};
 
     camera_nuclear.target = playerPos_nuclear;
     camera_nuclear.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
@@ -51,12 +50,16 @@ void unload_nuclear() {
 
 void logic_draw_nuclear() {
     UpdateMusicStream(bgm_nuclear);
-    if (!game_win_nuclear2) pop_up_nuclear = "Find and Solve the Clue";
+    if (!nuclear_game) pop_up_nuclear = "Find and Solve the Clue";
 
     if (dept_status_nuclear == Dept_nuclear) {
-        bool moving = false;
-        if (IsKeyDown(KEY_A)) { playerPos_nuclear.x -= 13; moving = true; }
-        if (IsKeyDown(KEY_D)) { playerPos_nuclear.x += 13; moving = true; }
+        // bool moving = false;
+        // if (IsKeyDown(KEY_A)) { playerPos_nuclear.x -= 13; moving = true; }
+        // if (IsKeyDown(KEY_D)) { playerPos_nuclear.x += 13; moving = true; }
+
+
+        Vector2 offset_nuclear = walk_character_dept();
+        playerPos_nuclear.x += offset_nuclear.x;
 
         if (moving && !walk_music_playing_nuclear) {
             PlayMusicStream(walk_music);
@@ -68,9 +71,10 @@ void logic_draw_nuclear() {
         if (walk_music_playing_nuclear) UpdateMusicStream(walk_music);
 
         bool eKeyHandled = false;
-        if (CheckCollisionCircles(playerPos_nuclear, 50.0f, game_zone_nuclear, 50.0f)) {
-            pop_up_nuclear = "Press E to Solve";
-            if (IsKeyPressed(KEY_E) && !game_win_nuclear2 && !show_rules_popup_nuclear) {
+        if (CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera_nuclear), game_zone_nuclear, 100.0f)) {
+            // pop_up_nuclear = "Press E to Solve"; // Visual feedback
+            
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)&& !nuclear_game && !show_rules_popup_nuclear) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
                 show_rules_popup_nuclear = true;
@@ -83,28 +87,28 @@ void logic_draw_nuclear() {
             pop_up_nuclear = "Press E to Exit";
             if (IsKeyPressed(KEY_E)) {
                 PlaySound(click_sound);
-                unload_minesweeper();
+                // unload_minesweeper();
                 eKeyHandled = true;
                 state_of_game = LAYER_MAP;
-            } else if (IsKeyPressed(KEY_E)) {
+            } else if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 PlaySound(error_sound);
             }
         }
 
-        if (IsKeyPressed(KEY_E) && !eKeyHandled) {
+        if ((IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && !eKeyHandled) {
             PlaySound(error_sound);
         }
     } else if (dept_status_nuclear == Game_nuclear) {
         logic_minesweeper();
-        if (game_win_nuclear2 || IsKeyDown(KEY_X)) {
+        if (nuclear_game || IsKeyDown(KEY_X)) {
             dept_status_nuclear = Dept_nuclear;
             game_pop_up_nuclear = "nuclear Conqured!! Abort";
-            game_win_nuclear2 = true;
+            nuclear_game = true;
             PlaySound(conquered_sound);
-            unload_minesweeper();
+            // unload_minesweeper();
         }
         if (IsKeyDown(KEY_Q)) {
-            unload_minesweeper();
+            // unload_minesweeper();
             dept_status_nuclear = Dept_nuclear;
         }
     }
@@ -123,10 +127,11 @@ void logic_draw_nuclear() {
     BeginMode2D(camera_nuclear);
     scale = (float)GetMonitorHeight(0) / bg_image_nuclear.height;
     DrawTextureEx(bg_image_nuclear, (Vector2){0, 0}, 0.0f, scale, WHITE);
-    DrawTexture(character, playerPos_nuclear.x, playerPos_nuclear.y, WHITE);
-    DrawCircleV(game_zone_nuclear, 20, RED);
-    DrawCircleV(exit_zone_nuclear, 20, GREEN);
-    DrawCircleV(playerPos_nuclear, 20, BLUE);
+    // DrawTexture(character, playerPos_nuclear.x, playerPos_nuclear.y, WHITE);
+    draw_char_dept(playerPos_nuclear,scale);
+    // DrawCircleV(game_zone_nuclear, 20, RED);
+    // DrawCircleV(exit_zone_nuclear, 20, GREEN);
+    // DrawCircleV(playerPos_nuclear, 20, BLUE);
     EndMode2D();
 
     if (dept_status_nuclear == Game_nuclear) {
@@ -139,9 +144,9 @@ void logic_draw_nuclear() {
 
     DrawText(game_pop_up_nuclear.c_str(), 20, screenHeight - 100, 20, GREEN);
 
-    if (game_win_nuclear2 && CheckCollisionCircles(playerPos_nuclear, 50.0f, exit_zone_nuclear, 50.0f)) {
+    if (nuclear_game && CheckCollisionCircles(playerPos_nuclear, 50.0f, exit_zone_nuclear, 50.0f)) {
         DrawText("Press E to Exit", 20, screenHeight - 70, 20, RAYWHITE);
-    } else if (!game_win_nuclear2) {
+    } else if (!nuclear_game) {
         DrawText(pop_up_nuclear.c_str(), 20, screenHeight - 50, 20, RAYWHITE);
     }
 
@@ -166,8 +171,8 @@ void logic_draw_nuclear() {
         DrawRectangleRec(okBtn, btnColor);
         DrawText("OK", screenW / 2 - MeasureText("OK", 20) / 2, screenH / 2 + 40, 20, WHITE);
 
-        if (show_ok_button_nuclear && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            if (CheckCollisionPointRec(mouse, okBtn)) {
+        if (show_ok_button_nuclear) {
+            if (CheckCollisionPointRec(mouse, okBtn) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 PlaySound(click_sound);
                 dept_status_nuclear = Game_nuclear;
                 show_rules_popup_nuclear = false;

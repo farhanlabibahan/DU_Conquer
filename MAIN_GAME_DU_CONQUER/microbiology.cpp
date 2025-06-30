@@ -14,9 +14,9 @@ typedef enum {
 dept_state_microbiology dept_status_microbiology = Dept_microbiology;
 Texture2D bg_image_microbiology;
 Camera2D camera_microbiology = {0};
-Vector2 playerPos_microbiology = {-20, 410};
-Vector2 game_zone_microbiology = {1200,700};
-Vector2 exit_zone_microbiology = {50,700};
+Vector2 playerPos_microbiology;
+Vector2 game_zone_microbiology;
+Vector2 exit_zone_microbiology;
 string pop_up_microbiology = "Find and Solve the Clue";
 string game_pop_up_microbiology = " ";
 string game_rules_microbiology = "Lights On Game Rules:\nTurn on all the lights to win.\nPress X to exit the game.";
@@ -30,10 +30,10 @@ void init_microbiology() {
     SetMusicVolume(walk_music, 1.0f);
     bg_image_microbiology = LoadTexture("resources/microbiology.png");
     scale = (float)GetMonitorHeight(0) / bg_image_microbiology.height;
-    float y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
-    playerPos_microbiology = (Vector2){-10, y_pos_floor};
-    game_zone_microbiology = {scale * 1200, y_pos_floor};
-    exit_zone_microbiology = {scale * 10, y_pos_floor};
+    
+    playerPos_microbiology = {4700*scale,screenHeight-400*scale};
+    exit_zone_microbiology = {4700*scale,screenHeight-400*scale};
+    game_zone_microbiology = {2000*scale,screenHeight-400*scale};
 
     camera_microbiology.target = playerPos_microbiology;
     camera_microbiology.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
@@ -53,9 +53,12 @@ void logic_draw_microbiology() {
     if (!microbiology_game) pop_up_microbiology = "Find and Solve the Clue";
 
     if (dept_status_microbiology == Dept_microbiology) {
-        bool moving = false;
-        if (IsKeyDown(KEY_A)) { playerPos_microbiology.x -= 13; moving = true; }
-        if (IsKeyDown(KEY_D)) { playerPos_microbiology.x += 13; moving = true; }
+        // bool moving = false;
+        // if (IsKeyDown(KEY_A)) { playerPos_microbiology.x -= 13; moving = true; }
+        // if (IsKeyDown(KEY_D)) { playerPos_microbiology.x += 13; moving = true; }
+
+         Vector2 offset_microbiology = walk_character_dept();
+        playerPos_microbiology.x += offset_microbiology.x;
 
         if (moving && !walk_music_playing_microbiology) {
             PlayMusicStream(walk_music);
@@ -67,9 +70,10 @@ void logic_draw_microbiology() {
         if (walk_music_playing_microbiology) UpdateMusicStream(walk_music);
 
         bool eKeyHandled = false;
-        if (CheckCollisionCircles(playerPos_microbiology, 50.0f, game_zone_microbiology, 50.0f)) {
-            pop_up_microbiology = "Press E to Solve";
-            if (IsKeyPressed(KEY_E) && !microbiology_game && !show_rules_popup_microbiology) {
+        if (CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera_microbiology), game_zone_microbiology, 100.0f)) {
+            // pop_up_microbiology = "Press E to Solve"; // Visual feedback
+            
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)&& !microbiology_game && !show_rules_popup_microbiology) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
                 init_snake();
@@ -123,10 +127,11 @@ void logic_draw_microbiology() {
     BeginMode2D(camera_microbiology);
     scale = (float)GetMonitorHeight(0) / bg_image_microbiology.height;
     DrawTextureEx(bg_image_microbiology, (Vector2){0, 0}, 0.0f, scale, WHITE);
-    DrawTexture(character, playerPos_microbiology.x, playerPos_microbiology.y, WHITE);
-    DrawCircleV(game_zone_microbiology, 20, RED);
-    DrawCircleV(exit_zone_microbiology, 20, GREEN);
-    DrawCircleV(playerPos_microbiology, 20, BLUE);
+    // DrawTexture(character, playerPos_microbiology.x, playerPos_microbiology.y, WHITE);
+    draw_char_dept(playerPos_microbiology,scale);
+    // DrawCircleV(game_zone_microbiology, 20, RED);
+    // DrawCircleV(exit_zone_microbiology, 20, GREEN);
+    // DrawCircleV(playerPos_microbiology, 20, BLUE);
     EndMode2D();
 
     if (dept_status_microbiology == Game_microbiology) {

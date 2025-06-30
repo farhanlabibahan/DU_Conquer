@@ -73,7 +73,7 @@ static bool IsMouseOver(Rectangle rect) {
     return CheckCollisionPointRec(mouse, rect);
 }
 
-void InitLightsOn() {
+void init_lights_on() {
     lightOn = LoadTexture("resources/light_on.png");
     lightOff = LoadTexture("resources/light_off.png");
     randomizeGrid();
@@ -85,7 +85,7 @@ void InitLightsOn() {
     blockMessageTimer = 0.0f;
 }
 
-void UpdateLightsOn() {
+void logic_lights_on() {
     int screenW = GetMonitorWidth(0);
     int screenH = GetMonitorHeight(0);
     int centerX = (screenW - WINDOW_WIDTH) / 2;
@@ -134,7 +134,7 @@ void UpdateLightsOn() {
     }
 }
 
-void DrawLightsOn() {
+void draw_lights_on() {
     int screenW = GetMonitorWidth(0);
     int screenH = GetMonitorHeight(0);
     int centerX = (screenW - WINDOW_WIDTH) / 2;
@@ -181,7 +181,7 @@ void DrawLightsOn() {
     EndScissorMode();
 }
 
-void UnloadLightsOn() {
+void unload_lights_on() {
     UnloadTexture(lightOn);
     UnloadTexture(lightOff);
 }
