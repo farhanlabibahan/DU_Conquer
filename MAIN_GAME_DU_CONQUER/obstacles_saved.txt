@@ -1,0 +1,8 @@
+
+add_isometric_obstacle(
+    (Vector2){4383.16f, 2623.3f},
+    (Vector2){4418.89f, 2607.84f},
+    (Vector2){4450.69f, 2627.42f},
+    (Vector2){4411.25f, 2648.82f}
+);
+
