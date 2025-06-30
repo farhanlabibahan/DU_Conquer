@@ -53,8 +53,15 @@ bool pointInQuad(Vector2 p, const IsoObstacle& q) {
 }
 
 bool is_colliding(Vector2 point) {
+    float radius = 10.0f;
     for (const auto& quad : isoObstacles) {
-        if (pointInQuad(point, quad)) return true;
+        for (float angle = 0; angle < 2 * PI; angle += PI / 8) {
+            Vector2 offset = {
+                point.x + radius * cosf(angle),
+                point.y + radius * sinf(angle)
+            };
+            if (pointInQuad(offset, quad)) return true;
+        }
     }
     return false;
 }
@@ -150,12 +157,14 @@ void logic_draw_map() {
     DrawTexture(map_texture, 0, 0, WHITE);
 
     // Draw character
-    DrawTextureEx(character_map,
-        (Vector2){
-            x_co_ordinate - (character_map.width * 0.25f) / 2,
-            y_co_ordinate - (character_map.height * 0.25f) / 2
-        },
-        0.0f, 0.25f, WHITE);
+    // DrawTextureEx(character_map,
+    //     (Vector2){
+    //         x_co_ordinate - (character_map.width * 0.25f) / 2,
+    //         y_co_ordinate - (character_map.height * 0.25f) / 2
+    //     },
+    //     0.0f, 0.25f, WHITE);
+
+    DrawCircle(x_co_ordinate,y_co_ordinate,10.0f,RED);
 
     // Draw all obstacles (fill + red outline)
     for (const auto& quad : isoObstacles) {
