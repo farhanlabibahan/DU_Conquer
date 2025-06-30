@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include<iostream>
 #include <string>
 #include "loading.h"
 #include "japanesse.h"
@@ -14,9 +15,9 @@ typedef enum {
 dept_state_japanesse dept_status_japanesse = Dept_japanesse;
 Texture2D bg_image_japanesse;
 Camera2D camera_japanesse = {0};
-Vector2 playerPos_japanesse = {-20, 410};
-Vector2 game_zone_japanesse = {1200,700};
-Vector2 exit_zone_japanesse = {50,700};
+Vector2 playerPos_japanesse;
+Vector2 game_zone_japanesse;
+Vector2 exit_zone_japanesse;
 string pop_up_japanesse = "Find and Solve the Clue";
 string game_pop_up_japanesse = " ";
 string game_rules_japanesse = "Lights On Game Rules:\nTurn on all the lights to win.\nPress X to exit the game.";
@@ -31,9 +32,10 @@ void init_japanesse() {
     bg_image_japanesse = LoadTexture("resources/japanesse.png");
     scale = (float)GetMonitorHeight(0) / bg_image_japanesse.height;
     float y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
-    playerPos_japanesse = (Vector2){-10, y_pos_floor};
-    game_zone_japanesse = {scale * 1200, y_pos_floor};
-    exit_zone_japanesse = {scale * 10, y_pos_floor};
+   // playerPos_japanesse = (Vector2){-10, y_pos_floor};
+    playerPos_japanesse = {2200*scale,GetMonitorHeight(0)-400*scale};
+    exit_zone_japanesse = {2200*scale,GetMonitorHeight(0)-400*scale};
+    game_zone_japanesse = {1950*scale,GetMonitorHeight(0)-400*scale};
 
     camera_japanesse.target = playerPos_japanesse;
     camera_japanesse.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
@@ -53,9 +55,12 @@ void logic_draw_japanesse() {
     if (!japanesse_game) pop_up_japanesse = "Find and Solve the Clue";
 
     if (dept_status_japanesse == Dept_japanesse) {
-        bool moving = false;
-        if (IsKeyDown(KEY_A)) { playerPos_japanesse.x -= 13; moving = true; }
-        if (IsKeyDown(KEY_D)) { playerPos_japanesse.x += 13; moving = true; }
+        // bool moving = false;
+        // if (IsKeyDown(KEY_A)) { playerPos_japanesse.x -= 13; moving = true; }
+        // if (IsKeyDown(KEY_D)) { playerPos_japanesse.x += 13; moving = true; }
+
+        Vector2 offset_japanesse = walk_character_dept();
+        playerPos_japanesse.x += offset_japanesse.x;
 
         if (moving && !walk_music_playing_japanesse) {
             PlayMusicStream(walk_music);
@@ -67,14 +72,16 @@ void logic_draw_japanesse() {
         if (walk_music_playing_japanesse) UpdateMusicStream(walk_music);
 
         bool eKeyHandled = false;
-        if (CheckCollisionCircles(playerPos_japanesse, 50.0f, game_zone_japanesse, 50.0f)) {
-            pop_up_japanesse = "Press E to Solve";
-            if (IsKeyPressed(KEY_E) && !japanesse_game && !show_rules_popup_japanesse) {
+        // CheckCollisionPointCircle(mousePos, point, pointRadius);
+        Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), camera_japanesse);
+        if (CheckCollisionPointCircle(mousePos, game_zone_japanesse, 100.0f)) {
+            // pop_up_japanesse = "Press E to Solve"; // Visual feedback
+            
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)&& !japanesse_game && !show_rules_popup_japanesse) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
                 show_rules_popup_japanesse = true;
                 show_ok_button_japanesse = true;
-                eKeyHandled = true;
             }
         }
 
@@ -97,7 +104,7 @@ void logic_draw_japanesse() {
         logic_kanji();
         if (japanesse_game || IsKeyDown(KEY_X)) {
             dept_status_japanesse = Dept_japanesse;
-            game_pop_up_japanesse = "japanesse Conqured!! Abort";
+            game_pop_up_japanesse = "Nihongo gakka o kōryaku shita!!";
             japanesse_game = true;
             PlaySound(conquered_sound);
             unload_kanji();
@@ -122,10 +129,14 @@ void logic_draw_japanesse() {
     BeginMode2D(camera_japanesse);
     scale = (float)GetMonitorHeight(0) / bg_image_japanesse.height;
     DrawTextureEx(bg_image_japanesse, (Vector2){0, 0}, 0.0f, scale, WHITE);
-    DrawTexture(character, playerPos_japanesse.x, playerPos_japanesse.y, WHITE);
-    DrawCircleV(game_zone_japanesse, 20, RED);
-    DrawCircleV(exit_zone_japanesse, 20, GREEN);
-    DrawCircleV(playerPos_japanesse, 20, BLUE);
+    // DrawTexture(character, playerPos_japanesse.x, playerPos_japanesse.y, WHITE);
+    draw_char_dept(playerPos_japanesse,scale);
+   
+    // cout<<"japposx "<<playerPos_japanesse.x<<endl;
+    // cout<<"japposy "<<playerPos_japanesse.y<<endl;
+    // DrawCircleV(game_zone_japanesse, 20, RED);
+    // DrawCircleV(exit_zone_japanesse, 20, GREEN);
+    // DrawCircleV(playerPos_japanesse, 20, BLUE);
     EndMode2D();
 
     if (dept_status_japanesse == Game_japanesse) {

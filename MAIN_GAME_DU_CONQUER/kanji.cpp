@@ -163,7 +163,7 @@ void draw_kanji() {
     // Cursor
     DrawCircleV(mouse, 6, DARKBLUE);
 
-    DrawText("Draw Outline of these japanesse characters", screenWidth/2 - MeasureText("Draw Outline of these japanesse characters",32)/2, centerY - 110*scale, 32, MAGENTA);
+    DrawText("Draw Outline of these japanesse characters", screenWidth/2 - MeasureText("Draw Outline of these japanesse characters",32)/2, centerY - 150*scale, 32, MAGENTA);
     
     // Messages
     if (japanesse_game) {

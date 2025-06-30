@@ -2,6 +2,7 @@
 #define GLOBAL_H
 
 #include "raylib.h"
+#include "character_dept.h"
 
 extern double x_co_ordinate, y_co_ordinate;
 extern double scale;

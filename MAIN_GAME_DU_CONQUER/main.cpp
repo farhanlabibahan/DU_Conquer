@@ -9,6 +9,7 @@
 #include "japanesse.h"
 #include "microbiology.h"
 #include "eee_first.h"
+#include "character_dept.h"
 #include <iostream>
 
 
@@ -32,6 +33,7 @@ int main() {
     init_microbiology();
     init_japanesse();
     init_eee_first();
+    init_character_dept();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -66,6 +68,7 @@ int main() {
     unload_assets();
     unload_japanesse();
     unload_eee_first();
+    unload_character_dept();
 
     CloseAudioDevice();
     CloseWindow();

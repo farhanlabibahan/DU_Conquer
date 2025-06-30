@@ -1,0 +1,20 @@
+
+# Ignore Windows shortcuts and metadata
+*.lnk
+*:Zone.Identifier
+
+# Ignore design/source files
+*.psd
+
+# Ignore specific maps and resources you don't want in Git
+ki somossa/aponerbestie.json
+ki somossa/circuit.png
+ki somossa/final_try/
+ki somossa/map2.png
+ki somossa/map234.json
+ki somossa/mapcircuit.json
+ki somossa/mapcircuit2.json
+ki somossa/mapcircuit2.tmx
+ki somossa/testrun.json
+shitt/resources/
+
