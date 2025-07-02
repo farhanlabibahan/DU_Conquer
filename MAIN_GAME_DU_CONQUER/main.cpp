@@ -10,6 +10,8 @@
 #include "microbiology.h"
 #include "eee_first.h"
 #include "character_dept.h"
+#include "vc_bunglaw.h"
+#include "lift.h"
 #include <iostream>
 
 
@@ -34,6 +36,8 @@ int main() {
     init_japanesse();
     init_eee_first();
     init_character_dept();
+    init_vc_bunglaw();
+    init_lift();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -53,6 +57,8 @@ int main() {
         else if (state_of_game == LAYER_MICROBIOLOGY) logic_draw_microbiology();
         else if (state_of_game == LAYER_JAPANESSE) logic_draw_japanesse();
         else if (state_of_game == LAYER_EEE_FIRST) logic_draw_eee_first();
+        else if (state_of_game == LAYER_VC_BUNGLAW) logic_draw_vc_bunglaw();
+        else if (state_of_game == LAYER_LIFT) logic_draw_lift();
         else if (state_of_game == LAYER_EXIT) break;
 
         DrawFPS(10,20);
@@ -69,6 +75,8 @@ int main() {
     unload_japanesse();
     unload_eee_first();
     unload_character_dept();
+    unload_vc_bunglaw();
+    unload_lift();
 
     CloseAudioDevice();
     CloseWindow();

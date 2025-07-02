@@ -50,6 +50,8 @@ void logic_draw_map()
     if(IsKeyPressed(KEY_M)) state_of_game = LAYER_MICROBIOLOGY;
     if(IsKeyPressed(KEY_J)) state_of_game = LAYER_JAPANESSE;
     if(IsKeyPressed(KEY_R)) state_of_game = LAYER_EEE_FIRST;
+    if(IsKeyPressed(KEY_V)) state_of_game = LAYER_VC_BUNGLAW;
+    if(IsKeyPressed(KEY_L)) state_of_game = LAYER_LIFT;
 
     // Handle movement
     if (IsKeyDown(KEY_W)) {
