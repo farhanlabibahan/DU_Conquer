@@ -10,6 +10,7 @@
 #include "microbiology.h"
 #include "eee_first.h"
 #include "character_dept.h"
+#include "character_map.h"
 #include "vc_bunglaw.h"
 #include "lift.h"
 #include <iostream>
@@ -17,7 +18,7 @@
 
 int main() {
     InitWindow(GetMonitorWidth(0), GetMonitorHeight(0), "DU_Conquer");
-    // ToggleFullscreen();
+    ToggleFullscreen();
     InitAudioDevice();
     init_assets();
 
@@ -38,6 +39,7 @@ int main() {
     init_character_dept();
     init_vc_bunglaw();
     init_lift();
+    init_character_map();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -77,6 +79,7 @@ int main() {
     unload_character_dept();
     unload_vc_bunglaw();
     unload_lift();
+    unload_character_map();
 
     CloseAudioDevice();
     CloseWindow();
