@@ -73,8 +73,7 @@ void logic_draw_japanesse() {
 
         bool eKeyHandled = false;
         // CheckCollisionPointCircle(mousePos, point, pointRadius);
-        Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), camera_japanesse);
-        if (CheckCollisionPointCircle(mousePos, game_zone_japanesse, 100.0f)) {
+        if (CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera_japanesse), game_zone_japanesse, 100.0f)) {
             // pop_up_japanesse = "Press E to Solve"; // Visual feedback
             
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)&& !japanesse_game && !show_rules_popup_japanesse) {
@@ -92,7 +91,7 @@ void logic_draw_japanesse() {
                 unload_kanji();
                 eKeyHandled = true;
                 state_of_game = LAYER_MAP;
-            } else if (IsKeyPressed(KEY_E)) {
+            } else if (IsKeyPressed(KEY_E) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 PlaySound(error_sound);
             }
         }

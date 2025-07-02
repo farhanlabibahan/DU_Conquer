@@ -19,7 +19,9 @@ typedef enum {
     LAYER_GENETICS,
     LAYER_MICROBIOLOGY,
     LAYER_JAPANESSE,
-    LAYER_ICTCELL
+    LAYER_ICTCELL,
+    LAYER_VC_BUNGLAW,
+    LAYER_LIFT
 } layer;
 
 extern layer state_of_game;
@@ -32,13 +34,15 @@ extern bool ducsu_game;
 extern bool genetics_game;
 extern bool microbiology_game;
 extern bool japanesse_game;
+extern bool shooting_game;
+extern bool lift_game;
 
 //loading
 extern double time_loading_start;
 
 // Game assets
 extern Sound conquered_sound, pop_up_sound, click_sound, error_sound;
-extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first;
+extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw;
 extern Texture2D character;
 
 // Asset management

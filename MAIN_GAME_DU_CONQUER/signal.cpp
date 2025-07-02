@@ -136,7 +136,7 @@ void init_signal() {
     currentAmplitude = 0.5f;
     currentPhase = 0.0f;
 
-    eee_game_1 = false;
+    // eee_game_1 = false;
     signalFailed = false;
     showPopup = true;
 }

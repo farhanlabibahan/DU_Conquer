@@ -18,6 +18,8 @@ bool ducsu_game = false;
 bool genetics_game = false;
 bool microbiology_game = false;
 bool japanesse_game = false;
+bool shooting_game = false;
+bool lift_game = false;
 
 
 //loading
@@ -32,7 +34,7 @@ Music walk_music;
 Texture2D character;
 
 // dept wise bgm
-Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_first;
+Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_lift;
 
 // Load all game assets
 void init_assets() {
@@ -48,6 +50,8 @@ void init_assets() {
     bgm_japanesse = LoadMusicStream("resources/japanese_bgm.mp3");
     bgm_eee_first = bgm_eee;
     walk_music = LoadMusicStream("resources/walk.mp3");
+    bgm_vc_bunglaw = bgm_eee;
+    bgm_lift = bgm_eee;
 
     character = LoadTexture("resources/character.png");
 }

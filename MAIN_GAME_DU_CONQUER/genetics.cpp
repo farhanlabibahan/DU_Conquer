@@ -16,9 +16,9 @@ GridSimulation grids;  // ✅ now global here
 dept_state_genetics dept_status_genetics = Dept_genetics;
 Texture2D bg_image_genetics;
 Camera2D camera_genetics = {0};
-Vector2 playerPos_genetics = {-20, 410};
-Vector2 game_zone_genetics = {1200,700};
-Vector2 exit_zone_genetics = {50,700};
+Vector2 playerPos_genetics;
+Vector2 game_zone_genetics;
+Vector2 exit_zone_genetics;
 float y_pos_floor;
 string pop_up_genetics = "Find and Solve the Clue";
 string game_pop_up_genetics = " ";
@@ -33,10 +33,9 @@ void init_genetics() {
     SetMusicVolume(walk_music, 1.0f);
     bg_image_genetics = LoadTexture("resources/genetics.png");
     scale = (float)GetMonitorHeight(0) / bg_image_genetics.height;
-    y_pos_floor = (float)GetMonitorHeight(0) - scale * 350;
-    playerPos_genetics = (Vector2){-10, y_pos_floor};
-    game_zone_genetics = {scale * 1200, y_pos_floor};
-    exit_zone_genetics = {scale * 10, y_pos_floor};
+    playerPos_genetics = {4700*scale,screenHeight-400*scale};
+    exit_zone_genetics = {4700*scale,screenHeight-400*scale};
+    game_zone_genetics = {2000*scale,screenHeight-400*scale};
 
     camera_genetics.target = playerPos_genetics;
     camera_genetics.offset = (Vector2){screenWidth / 2.0f, screenHeight / 2.0f};
@@ -56,9 +55,12 @@ void logic_draw_genetics() {
     if (!genetics_game) pop_up_genetics = "Find and Solve the Clue";
 
     if (dept_status_genetics == Dept_genetics) {
-        bool moving = false;
-        if (IsKeyDown(KEY_A)) { playerPos_genetics.x -= 13; moving = true; }
-        if (IsKeyDown(KEY_D)) { playerPos_genetics.x += 13; moving = true; }
+    //     bool moving = false;
+    //     if (IsKeyDown(KEY_A)) { playerPos_genetics.x -= 13; moving = true; }
+    //     if (IsKeyDown(KEY_D)) { playerPos_genetics.x += 13; moving = true; }
+
+    Vector2 offset_genetics = walk_character_dept();
+        playerPos_genetics.x += offset_genetics.x;
 
         if (moving && !walk_music_playing_genetics) {
             PlayMusicStream(walk_music);
@@ -70,9 +72,10 @@ void logic_draw_genetics() {
         if (walk_music_playing_genetics) UpdateMusicStream(walk_music);
 
         bool eKeyHandled = false;
-        if (CheckCollisionCircles(playerPos_genetics, 50.0f, game_zone_genetics, 50.0f)) {
-            pop_up_genetics = "Press E to Solve";
-            if (IsKeyPressed(KEY_E) && !genetics_game && !show_rules_popup_genetics) {
+        if (CheckCollisionPointCircle(GetScreenToWorld2D(GetMousePosition(), camera_genetics), game_zone_genetics, 100.0f)) {
+            // pop_up_genetics = "Press E to Solve"; // Visual feedback
+            
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)&& !genetics_game && !show_rules_popup_genetics) {
                 PlaySound(pop_up_sound);
                 PlaySound(click_sound);
                 show_rules_popup_genetics = true;
@@ -88,7 +91,7 @@ void logic_draw_genetics() {
                 unload_game_of_life();
                 eKeyHandled = true;
                 state_of_game = LAYER_MAP;
-            } else if (IsKeyPressed(KEY_E)) {
+            } else if (IsKeyPressed(KEY_E) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 PlaySound(error_sound);
             }
         }
@@ -126,10 +129,11 @@ void logic_draw_genetics() {
     BeginMode2D(camera_genetics);
     scale = (float)GetMonitorHeight(0) / bg_image_genetics.height;
     DrawTextureEx(bg_image_genetics, (Vector2){0, 0}, 0.0f, scale, WHITE);
-    DrawTexture(character, playerPos_genetics.x, playerPos_genetics.y, WHITE);
-    DrawCircleV(game_zone_genetics, 20, RED);
-    DrawCircleV(exit_zone_genetics, 20, GREEN);
-    DrawCircleV(playerPos_genetics, 20, BLUE);
+    // DrawTexture(character, playerPos_genetics.x, playerPos_genetics.y, WHITE);
+    draw_char_dept(playerPos_genetics,scale);
+    // DrawCircleV(game_zone_genetics, 20, RED);
+    // DrawCircleV(exit_zone_genetics, 20, GREEN);
+    // DrawCircleV(playerPos_genetics, 20, BLUE);
     EndMode2D();
 
     if (dept_status_genetics == genetics_game_pop) {
