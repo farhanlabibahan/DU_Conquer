@@ -3,7 +3,7 @@
 using namespace std;
 
 
-Texture2D character_dept;
+Texture2D character_deptl,character_deptr,character_dept;
 // Vector2 character_dept_pos = { -20, 410 };
 Rectangle frameRec;
 int currentFrame = 0;
@@ -13,14 +13,15 @@ bool facingRight = true;
 bool moving = false;
 
 void init_character_dept() {
-    character_dept = LoadTexture("resources/LEFT_SS.png");
-
+    character_deptl= LoadTexture("resources/sprite_left.png");
+     character_deptr = LoadTexture("resources/sprite_right.png");
+    
     // character_dept_pos = { -20, 410 };
 
     frameRec = {
         0.0f, 0.0f,
-        (float)character_dept.width / 4,
-        (float)character_dept.height / 2
+        (float)character_deptl.width / 5,
+        (float)character_deptr.height / 2
     };
 }
 
@@ -46,18 +47,18 @@ Vector2 walk_character_dept() {
         if (framesCounter >= (60 / framesSpeed)) {
             framesCounter = 0;
             currentFrame++;
-            if (currentFrame > 7) currentFrame = 0;
+            if (currentFrame > 9) currentFrame = 0;
         }
     } else {
-        currentFrame = 7;
+        currentFrame = 0;
     }
 
     return offset;
 }
 
 void draw_char_dept(Vector2 poss,float scale) {
-    int frameRow = currentFrame / 4;
-    int frameCol = currentFrame % 4;
+    int frameRow = currentFrame / 5;
+    int frameCol = currentFrame % 5;
 
     Rectangle source = {
         frameCol * frameRec.width,
@@ -66,10 +67,10 @@ void draw_char_dept(Vector2 poss,float scale) {
         frameRec.height
     };
 
-    if (facingRight) {
-        source.width = -frameRec.width;  // Flip horizontally
-        source.x += frameRec.width;      // Adjust origin for flipping
-    }
+    // if (facingRight) {
+    //     source.width = -frameRec.width;  // Flip horizontally
+    //     source.x += frameRec.width;      // Adjust origin for flipping
+    // }
 
     Rectangle dest = {
         poss.x
@@ -79,12 +80,13 @@ void draw_char_dept(Vector2 poss,float scale) {
     };
 
     Vector2 origin = { 0, 0 };
+    character_dept=facingRight?character_deptr:character_deptl;
     cout<<"position in character dept"<<poss.x<<endl;
  cout<<"position in character dept"<<poss.y<<endl;
-
     DrawTexturePro(character_dept, source, dest, origin, 0.0f, WHITE);
 }
 
 void unload_character_dept() {
-    UnloadTexture(character_dept);
+    UnloadTexture(character_deptl);
+    UnloadTexture(character_deptr);
 }
