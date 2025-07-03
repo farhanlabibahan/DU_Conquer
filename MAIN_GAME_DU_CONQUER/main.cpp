@@ -13,6 +13,8 @@
 #include "character_map.h"
 #include "vc_bunglaw.h"
 #include "lift.h"
+#include "cctv.h"
+#include "maze.h"
 #include <iostream>
 
 
@@ -40,6 +42,8 @@ int main() {
     init_vc_bunglaw();
     init_lift();
     init_character_map();
+    init_cctv();
+    init_maze();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -61,6 +65,8 @@ int main() {
         else if (state_of_game == LAYER_EEE_FIRST) logic_draw_eee_first();
         else if (state_of_game == LAYER_VC_BUNGLAW) logic_draw_vc_bunglaw();
         else if (state_of_game == LAYER_LIFT) logic_draw_lift();
+        else if (state_of_game == LAYER_CCTV)logic_draw_cctv();
+        else if (state_of_game == LAYER_MAZE)logic_draw_maze();
         else if (state_of_game == LAYER_EXIT) break;
 
         DrawFPS(10,20);
@@ -80,7 +86,8 @@ int main() {
     unload_vc_bunglaw();
     unload_lift();
     unload_character_map();
-
+    unload_cctv();
+    unload_maze();
     CloseAudioDevice();
     CloseWindow();
 

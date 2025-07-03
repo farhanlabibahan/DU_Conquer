@@ -16,6 +16,7 @@ public:
     bool isLiftButtonPressed();
 };
 
+
 // Public lift functions
 void init_lift();
 void unload_lift();

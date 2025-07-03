@@ -21,7 +21,9 @@ typedef enum {
     LAYER_JAPANESSE,
     LAYER_ICTCELL,
     LAYER_VC_BUNGLAW,
-    LAYER_LIFT
+    LAYER_LIFT,
+    LAYER_CCTV,
+    LAYER_MAZE
 } layer;
 
 extern layer state_of_game;
@@ -35,14 +37,19 @@ extern bool genetics_game;
 extern bool microbiology_game;
 extern bool japanesse_game;
 extern bool shooting_game;
+extern bool cctv_game;
 extern bool lift_game;
+extern bool maze_game;
+
+//sabotage things
+extern bool lift_sabotage;
 
 //loading
 extern double time_loading_start;
 
 // Game assets
 extern Sound conquered_sound, pop_up_sound, click_sound, error_sound;
-extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw;
+extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_cctv;
 extern Texture2D character;
 
 // Asset management

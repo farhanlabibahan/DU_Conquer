@@ -6,14 +6,16 @@
 
 Texture2D lift_image, lift_behind;
 Sound lift_ting_sound;
+Music warning_lift_bgm;
 int offsetX = 550, offsetY = 450;
 double currentFloor = 1;
 int wantedFloor = 1;
 bool isInMotionLift = false;
-double liftSpeed = 0.01;
+double liftSpeed = 0.005;
 int showOnScreen = 1;
 bool lift_pop_up_show = false;
 std::string pop_up_lift = "Press E to Exit the Elevator";
+bool oneFloorPassed = false;
 
 Vector2 exitZoneLift;
 Vector2 playerPos_lift;
@@ -26,14 +28,30 @@ liftButton::liftButton(int num, float x, float y) : floor_num(num) {
     buttonRect = { x, y, 30 * scale, 30 * scale };
 }
 
+float alpha_lift = 0.5;
+int alpha_up = 1;
+void lift_sabotage_draw()
+{
+    alpha_lift += 0.005 * alpha_up;
+    if(alpha_lift > 0.7f) alpha_up = -1;
+    else if(alpha_lift < 0.4f) alpha_up = 1;
+
+    Color lift_alert = Fade(RED, alpha_lift);
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), lift_alert);
+}
+
 void liftButton::DrawButton() {
     Color btn_color = isPressed ? RED : WHITE;
-    DrawRectangleRec(buttonRect, GRAY);
+
+    Vector2 center = { buttonRect.x + buttonRect.width / 2, buttonRect.y + buttonRect.height / 2 };
+    float radius = buttonRect.width / 2;
+    DrawCircleV(center, radius + 3 * scale, DARKGRAY); 
+    DrawCircleV(center, radius, isPressed ? ORANGE : SKYBLUE);  
     DrawText(TextFormat("%d", floor_num),
-             buttonRect.x + 8 * scale,
-             buttonRect.y + 5 * scale,
+             center.x - 5 * scale,
+             center.y - 6 * scale,
              15 * scale,
-             btn_color);
+             WHITE);
 }
 
 bool liftButton::isLiftButtonPressed() {
@@ -50,16 +68,17 @@ bool liftButton::isLiftButtonPressed() {
 
 void init_lift() {
     lift_image = LoadTexture("resources/lift.png");
-    lift_behind = LoadTexture("resources/eeeeeee.png");
+    lift_behind = LoadTexture("resources/EEE_EX.png");
     lift_ting_sound = LoadSound("resources/lift_ting.mp3");
+    warning_lift_bgm = LoadMusicStream("resources/warning_lift.mp3");
     playerPos_lift = { 0, screenHeight - 400 * scale };
     exitZoneLift = { 0, screenHeight - 400 * scale };
 
     scrollOffset = 0.0f;
 
     liftButtons.clear();
-    offsetX = 600 * scale;
-    offsetY = 120 * scale;
+    offsetX = 640 * scale;
+    offsetY = 650 * scale;
 
     const int buttonHeight = 30;
     const int buttonSpacing = 20;
@@ -75,6 +94,7 @@ void unload_lift() {
     UnloadTexture(lift_image);
     UnloadTexture(lift_behind);
     UnloadSound(lift_ting_sound);
+    UnloadMusicStream(warning_lift_bgm);
 }
 
 void CheckExitZone() {
@@ -97,36 +117,46 @@ void logic_draw_lift() {
 
     scale = (float)GetMonitorHeight(0) / lift_image.height;
 
-    float drawScale = 0.5f;
+    float drawScale = scale;
     float texHeight = lift_behind.height * drawScale;
     float scrollSpeed = 2.0f;
 
     if (isInMotionLift) {
-        scrollOffset += scrollSpeed;
+        double direction = wantedFloor - currentFloor;
+        if (direction > 0) {
+            scrollOffset += scrollSpeed; 
+        } else {
+            scrollOffset -= scrollSpeed;  
+        }
+
         if (scrollOffset >= texHeight)
-            scrollOffset -= texHeight; 
+            scrollOffset -= texHeight;
+        else if (scrollOffset <= -texHeight)
+            scrollOffset += texHeight;
     }
 
-    DrawTextureEx(lift_behind, (Vector2){ 0, -scrollOffset }, 0.0f, drawScale, WHITE);
-    DrawTextureEx(lift_behind, (Vector2){ 0, -scrollOffset + texHeight }, 0.0f, drawScale, WHITE);
+    DrawTextureEx(lift_behind, (Vector2){ 0, scrollOffset }, 0.0f, drawScale, WHITE);
+    DrawTextureEx(lift_behind, (Vector2){ 0, scrollOffset - texHeight }, 0.0f, drawScale, WHITE);
+    DrawTextureEx(lift_behind, (Vector2){ 0, scrollOffset + texHeight }, 0.0f, drawScale, WHITE);
 
     DrawTextureEx(lift_image, (Vector2){ 0, 0 }, 0.0f, scale, WHITE);
 
-    // ---------- Lift Panel ----------
-    Color panelColor = Color{30, 30, 30, 200};
-    DrawRectangle(offsetX * scale, offsetY * scale, 100 * scale, 150 * scale, panelColor);
 
     for (auto& btn : liftButtons) {
-        if (!isInMotionLift) btn.isLiftButtonPressed();
+
+        if (!isInMotionLift) 
+        {
+            if(btn.isLiftButtonPressed()) oneFloorPassed = true;
+        }
+        
         btn.DrawButton();
     }
 
-    // ---------- Lift Movement Logic ----------
+    //Lift Movement
     if (fabs(currentFloor - wantedFloor) < 0.01) {
         currentFloor = wantedFloor;
         showOnScreen = currentFloor;
         isInMotionLift = false;
-        // no longer set showOnScreen here
         PlaySound(lift_ting_sound);
         for (auto& btn : liftButtons) btn.isPressed = false;
     } else {
@@ -140,20 +170,30 @@ void logic_draw_lift() {
         showOnScreen = (int)floor(currentFloor);
     }
 
-    // ---------- Floor Display ----------
     DrawText(TextFormat("Floor: %d", showOnScreen),
-             offsetX * scale + 40 * scale,
-             (offsetY + 120) * scale,
-             20 * scale, WHITE);
+             (offsetX+120) * scale,
+             (offsetY-450) * scale,
+             40 * scale, WHITE);
 
-    // ---------- Character ----------
     draw_char_dept(playerPos_lift, scale);
 
-    // ---------- Pop-Up ----------
     if (lift_pop_up_show && !isInMotionLift) {
         DrawText(pop_up_lift.c_str(), 20 * scale, screenHeight - 30 * scale, 20 * scale, WHITE);
     }
 
-    // ---------- Exit Logic ----------
-    CheckExitZone();
+    if (oneFloorPassed && !lift_sabotage) {
+        if (!IsMusicStreamPlaying(warning_lift_bgm)) {
+            PlayMusicStream(warning_lift_bgm);
+        }
+        UpdateMusicStream(warning_lift_bgm);
+
+        lift_sabotage_draw();
+
+        if (IsKeyPressed(KEY_X)) {
+            lift_sabotage = true;
+            StopMusicStream(warning_lift_bgm);
+        }
+    }
+
+    if(lift_sabotage) CheckExitZone();
 }

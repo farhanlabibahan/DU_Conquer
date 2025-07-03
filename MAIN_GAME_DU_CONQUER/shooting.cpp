@@ -20,6 +20,9 @@ double last_spawn_time = GetTime();
 Vector3 prev_pos_shooting = {0};
 Camera3D camera_shooting_shooting = {0};
 
+const int starsCount_shooting = 200;
+Vector2 stars_shooting[starsCount_shooting];
+
 class Cube{
     public:
     Vector3 pos;
@@ -49,7 +52,7 @@ void generate_cubes()
     for(int i=0;i<WALL;i++)
     {
         cubes[i].pos = {(float)GetRandomValue(-50,50),(float)CUBE_HEIGHT/2,(float)GetRandomValue(-50,50)};
-        cubes[i].color = RED;
+        cubes[i].color = (Color){255, 0, 0, 220};
     }
 }
 
@@ -58,7 +61,7 @@ void generate_enemy()
     for(int i=0;i<ENEMY_AT_A_TIME;i++)
     {
         enemy[i].pos = {(float)GetRandomValue(-50,50),(float)GetRandomValue(1,PLAYER_HEIGHT-1),(float)GetRandomValue(-50,50)};
-        enemy[i].color = MAGENTA;
+        enemy[i].color = (Color){255, 255, 0, 180};
         enemy[i].time = GetTime();
         enemy[i].alive = true;
     }
@@ -116,6 +119,10 @@ void init_shooting()
     prev_pos_shooting = camera_shooting_shooting.position;
 
     generate_cubes(); // for the first time
+
+    for(int i = 0; i < starsCount_shooting; i++) {
+        stars_shooting[i] = {(float)GetRandomValue(0, screenWidth), (float)GetRandomValue(0, screenHeight)};
+    }
 }
 
 void logic_shooting()
@@ -165,6 +172,12 @@ void logic_shooting()
 void draw_shooting()
 {
             // DisableCursor();
+            for (int i = 0; i < starsCount_shooting; i++) {
+                float t = (sin(GetTime() * 2.0f + stars_shooting[i].x * 0.1f) + 1.0f) * 0.5f;
+                float brightness_shooting = t;
+                Color starColor_shooting = {255, 255, 255, (unsigned char)(brightness_shooting * 255)};
+                DrawPixelV(stars_shooting[i], starColor_shooting);
+            }
             BeginMode3D(camera_shooting_shooting); 
                 draw_cubes(); 
                 draw_enemy();
