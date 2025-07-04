@@ -5,6 +5,7 @@
 #include "business.h"
 #include "global.h"
 
+
 // Business info
 struct Business {
     const char *name;
@@ -65,6 +66,9 @@ int finalRevenue = 0;
 int profit = 0;
 bool metTarget = false;
 
+float resultTimer = 0.0f;
+bool resultDisplayed = false;
+
 void init_business() {
     
     showBusinesspopup = false;
@@ -83,12 +87,14 @@ void init_business() {
     finalRevenue = 0;
     profit = 0;
     metTarget = false;
+    resultTimer = 0.0f;
+    resultDisplayed = false;
 }
 
 Rectangle Button(float x, float y, float w, float h, const char *label) {
-    DrawRectangleRec({x, y, w, h}, LIGHTGRAY);
-    DrawRectangleLines(x, y, w, h, DARKGRAY);
-    DrawText(label, x + 10, y + 10, 20, DARKBLUE);
+    DrawRectangleRec({x, y, w, h}, (Color){50, 0, 0, 255});
+    DrawRectangleLines(x, y, w, h, RED);
+    DrawText(label, x + 10, y + 10, 20, RED);
     return {x, y, w, h};
 }
 
@@ -129,7 +135,7 @@ void draw_business() {
 
     // Business Selection
     if (selectedBusiness == -1) {
-        DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(WHITE, 0.9f));
+        DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(BLACK, 0.8f));
         DrawRectangleLines(popupX, popupY, popupWidth, popupHeight, DARKGRAY);
         DrawText("Choose Your Business:", popupX + 30, popupY + 30, 28, DARKBLUE);
 
@@ -137,13 +143,14 @@ void draw_business() {
             Rectangle btn = Button(popupX + 50, popupY + 80 + i * 70, 400, 50, businesses[i].name);
             if (CheckCollisionPointRec(GetMousePosition(), btn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                 selectedBusiness = i;
+                PlaySound(pop_up_sound);
                 showStrategypopup = true;
             }
         }
 
     // Strategy Selection
     } else if (showStrategypopup && selectedStrategy == -1) {
-        DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(WHITE, 0.9f));
+        DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(BLACK, 0.8f));
         DrawRectangleLines(popupX, popupY, popupWidth, popupHeight, DARKGRAY);
         DrawText("Pick a Strategy:", popupX + 30, popupY + 30, 28, DARKBLUE);
 
@@ -151,13 +158,14 @@ void draw_business() {
             Rectangle btn = Button(popupX + 50, popupY + 80 + i * 70, 500, 50, strategies[i]);
             if (CheckCollisionPointRec(GetMousePosition(), btn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                 selectedStrategy = i;
+                PlaySound(pop_up_sound);
                 showPlanningpopup = true;
             }
         }
 
     // Planning Selection
     } else if (showPlanningpopup && selectedPlanning == -1) {
-        DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(WHITE, 0.9f));
+        DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(BLACK, 0.8f));
         DrawRectangleLines(popupX, popupY, popupWidth, popupHeight, DARKGRAY);
         DrawText("Choose Planning:", popupX + 30, popupY + 30, 28, DARKBLUE);
 
@@ -165,13 +173,14 @@ void draw_business() {
             Rectangle btn = Button(popupX + 50, popupY + 80 + i * 70, 500, 50, planningOptions[i]);
             if (CheckCollisionPointRec(GetMousePosition(), btn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                 selectedPlanning = i;
+                PlaySound(pop_up_sound);
                 showExecutionpopup = true;
             }
         }
 
     // Execution Selection
     } else if (showExecutionpopup && selectedExecution == -1) {
-        DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(WHITE, 0.9f));
+        DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(BLACK, 0.8f));
         DrawRectangleLines(popupX, popupY, popupWidth, popupHeight, DARKGRAY);
         DrawText("Pick Execution Style:", popupX + 30, popupY + 30, 28, DARKBLUE);
 
@@ -179,6 +188,7 @@ void draw_business() {
             Rectangle btn = Button(popupX + 50, popupY + 80 + i * 70, 500, 50, executionOptions[i]);
             if (CheckCollisionPointRec(GetMousePosition(), btn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
                 selectedExecution = i;
+                PlaySound(pop_up_sound);
                 logic_business();
                 showResultpopup = true;
                 justOpenedResult = true;
@@ -187,27 +197,48 @@ void draw_business() {
 
     // Result Popup
     } else if (showResultpopup) {
-        DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(WHITE, 0.98f));
-        DrawRectangleLines(popupX, popupY, popupWidth, popupHeight, DARKGRAY);
-        DrawText(TextFormat("Total Cost: %d", totalCost), popupX + 30, popupY + 50, 26, DARKGRAY);
-        DrawText(TextFormat("Revenue: %d", finalRevenue), popupX + 30, popupY + 100, 26, DARKGRAY);
-        DrawText(TextFormat("Profit: %d", profit), popupX + 30, popupY + 150, 26, DARKGRAY);
-        DrawText(metTarget ? "You Succeeded!" : "You Failed!", popupX + 30, popupY + 220, 34, metTarget ? GREEN : RED);
+        // Show loading spinner for 10 seconds, then show result
+        extern bool bank_game;
+        if (!resultDisplayed) {
+            resultTimer += GetFrameTime();
 
-        // Reset Button
-        Rectangle resetBtn = { popupX + popupWidth - 160, popupY + popupHeight - 60, 120, 40 };
-        DrawRectangleRec(resetBtn, DARKGRAY);
-        DrawText("Reset", resetBtn.x + 20, resetBtn.y + 10, 20, WHITE);
+            // Spinner animation
+            DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(BLACK, 0.8f));
+            DrawText("Investing...", popupX + 200, popupY + 150, 28, WHITE);
+            DrawCircleLines(popupX + 300, popupY + 220, 30, RED);
+            DrawCircleSectorLines((Vector2){popupX + 300, popupY + 220}, 30, 0, resultTimer * 360, 20, RED);
 
-        if (!justOpenedResult && CheckCollisionPointRec(GetMousePosition(), resetBtn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            init_business();
+            if (resultTimer >= 10.0f) {
+                resultDisplayed = true;
+                PlaySound(conquered_sound);
+            }
+        } else {
+            DrawRectangle(popupX, popupY, popupWidth, popupHeight, Fade(BLACK, 0.8f));
+            DrawRectangleLines(popupX, popupY, popupWidth, popupHeight, DARKGRAY);
+            DrawText(TextFormat("Total Cost: %d", totalCost), popupX + 30, popupY + 50, 26, DARKGRAY);
+            DrawText(TextFormat("Revenue: %d", finalRevenue), popupX + 30, popupY + 100, 26, DARKGRAY);
+            DrawText(TextFormat("Profit: %d", profit), popupX + 30, popupY + 150, 26, DARKGRAY);
+
+            if (!bank_game) {
+                DrawText("Insufficient Funds!\n Withdraw money from Rh Bank", popupX + 30, popupY + 220, 34, RED);
+            } else {
+                DrawText(metTarget ? "You Succeeded!" : "You Failed!", popupX + 30, popupY + 220, 34, metTarget ? GREEN : RED);
+            }
+
+            Rectangle resetBtn = { popupX + popupWidth - 160, popupY + popupHeight - 60, 120, 40 };
+            DrawRectangleRec(resetBtn, DARKGRAY);
+            DrawText("Reset", resetBtn.x + 20, resetBtn.y + 10, 20, WHITE);
+
+            if (!justOpenedResult && CheckCollisionPointRec(GetMousePosition(), resetBtn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                PlaySound(pop_up_sound);
+                init_business();
+            }
+
+            justOpenedResult = false;
         }
-
-        justOpenedResult = false;
     }
 }
 
 void unload_business(){
-    
     
 }

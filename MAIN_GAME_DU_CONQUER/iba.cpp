@@ -8,20 +8,18 @@
  #include "business.h"
 using namespace std;
 
-typedef enum {
-    Dept_iba,
-    Game_iba
-} dept_state_iba;
+
 
 dept_state_iba dept_status_iba = Dept_iba;
+
 Texture2D bg_image_iba;
 Camera2D camera_iba = {0};
 Vector2 playerPos_iba;
 Vector2 pop_up_zone,game_zone_iba;
 Vector2 exit_zone_iba;
-string pop_up_iba = "Find and Solve the Clue";
-string game_pop_up_iba ="Welcome to the Startup Game!\nChoose a business, a strategy, a plan, and an execution method." ;
-string game_rules_iba = " ";
+string pop_up_iba = "Find a Investment!";
+string game_pop_up_iba ="" ;
+string game_rules_iba = "Startup Game!\nChoose a business, a strategy, a plan, and an execution method.";
 
 bool walk_music_playing_iba = false;
 bool show_rules_popup_iba = false;
@@ -48,6 +46,7 @@ void init_iba() {
     camera_iba.zoom = 1.0f;
 
     init_business();
+    game_rules_iba = "Solve the startup challenge!\nPick a model, test a plan, and simulate execution.";
 }
 
 void unload_iba() {
@@ -56,6 +55,7 @@ void unload_iba() {
 }
 
 void logic_draw_iba() {
+    scale = (float)GetMonitorHeight(0) / bg_image_iba.height;
     UpdateMusicStream(bgm_iba);
     if (!iba_game) pop_up_iba = "Find and Solve the Clue";
 
@@ -102,7 +102,7 @@ void logic_draw_iba() {
             pop_up_iba = "Press E to Exit";
             if (IsKeyPressed(KEY_E)) {
                 PlaySound(click_sound);
-                 unload_business();
+                //  unload_business();
                 eKeyHandled = true;
                 state_of_game = LAYER_MAP;
             } else if (IsKeyPressed(KEY_E) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -118,15 +118,11 @@ void logic_draw_iba() {
         logic_business();
         if (iba_game || IsKeyDown(KEY_X)) {
             dept_status_iba = Dept_iba;
-            game_pop_up_iba = "Nihongo gakka o kōryaku shita!!";
+            game_pop_up_iba = "IBA Conquered!";
             iba_game = true;
             PlaySound(conquered_sound);
-             unload_business();
         }
-        if (IsKeyDown(KEY_Q)) {
-            // unload_business();
-            dept_status_iba = Dept_iba;
-        }
+        // Removed KEY_Q close logic, replaced by visual close button below.
     }
 
     if (playerPos_iba.x <= -20) playerPos_iba.x = -20;
@@ -158,10 +154,25 @@ void logic_draw_iba() {
     }
 
     if (dept_status_iba == Game_iba) {
-         draw_business();
+        draw_business();
     }
 
-    DrawText(game_pop_up_iba.c_str(), 20, screenHeight - 100, 20, GREEN);
+    // Visual close button in Game_iba mode
+    if (dept_status_iba == Game_iba) {
+        Rectangle closeBtn = { (float)(screenWidth - 60), 20, 40, 40 };
+        Vector2 mouse = GetMousePosition();
+        Color btnColor = CheckCollisionPointRec(mouse, closeBtn) ? RED : DARKGRAY;
+
+        DrawRectangleRec(closeBtn, btnColor);
+        DrawText("X", closeBtn.x + 12, closeBtn.y + 8, 20, WHITE);
+
+        if (CheckCollisionPointRec(mouse, closeBtn) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            PlaySound(pop_up_sound);
+            dept_status_iba = Dept_iba;
+        }
+    }
+
+    DrawText(game_pop_up_iba.c_str(), 20, screenHeight - 100, 10, GREEN);
 
     if (iba_game && CheckCollisionCircles(playerPos_iba, 50.0f, exit_zone_iba, 50.0f)) {
         DrawText("Press E to Exit", 20, screenHeight - 70, 20, RAYWHITE);
@@ -176,7 +187,7 @@ void logic_draw_iba() {
         DrawRectangle(screenW / 2 - 220, screenH / 2 - 100, 440, 200, Fade(BLACK, 0.9f));
         DrawRectangleLines(screenW / 2 - 220, screenH / 2 - 100, 440, 200, LIGHTGRAY);
 
-        DrawText(game_rules_iba.c_str(), screenW / 2 - MeasureText(game_rules_iba.c_str(), 20) / 2, screenH / 2 - 60, 20, RAYWHITE);
+        DrawText(game_rules_iba.c_str(), screenW / 2 - MeasureText(game_rules_iba.c_str(), 15) / 2, screenH / 2 - 60, 15, RAYWHITE);
 
         Rectangle okBtn = { screenW / 2 - 50, screenH / 2 + 30, 100, 40 };
         Vector2 mouse = GetMousePosition();

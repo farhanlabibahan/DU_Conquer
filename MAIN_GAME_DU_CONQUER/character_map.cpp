@@ -8,9 +8,10 @@ using namespace std;
 
 Texture2D character_mapl, character_mapr, character_mapu, character_mapd;
 
-Rectangle frameRecmaph, frameRecmapv;
+Rectangle frameRecmaph, frameRecmapv,src,dest;
 int currentFramemaph = 0;
 int currentFramemapv = 0;
+int frameRowh,frameColh,frameRowv,frameColv;
 int framesCountermaph = 0;
 int framesCountermapv = 0;
 int framesSpeedmap = 11;
@@ -30,8 +31,8 @@ float sinTheta = sinf(theta);
 void init_character_map() {
     character_mapl = LoadTexture("resources/sprite_left.png");
     character_mapr = LoadTexture("resources/sprite_right.png");
-    character_mapu = LoadTexture("resources/LEFT_SS.png");
-    character_mapd = LoadTexture("resources/LEFT_SS.png");
+    character_mapu = LoadTexture("resources/back.png");
+    character_mapd = LoadTexture("resources/front.png");
 
     frameRecmaph = {
         0.0f, 0.0f,
@@ -41,7 +42,7 @@ void init_character_map() {
 
     frameRecmapv = {
         0.0f, 0.0f,
-        (float)character_mapu.width / 4,
+        (float)character_mapu.width / 3,
         (float)character_mapu.height / 2
     };
 }
@@ -107,7 +108,7 @@ Vector2 walk_character_map() {
         if (framesCountermaph >= (60 / framesSpeedmap)) {
             framesCountermaph = 0;
             currentFramemaph++;
-            if (currentFramemaph > 4) currentFramemaph = 0;
+            if (currentFramemaph > 9) currentFramemaph = 0;
         }
     } else {
         currentFramemaph = 0;
@@ -118,7 +119,7 @@ Vector2 walk_character_map() {
         if (framesCountermapv >= (60 / framesSpeedmap)) {
             framesCountermapv = 0;
             currentFramemapv++;
-            if (currentFramemapv > 3) currentFramemapv = 0;
+            if (currentFramemapv > 5) currentFramemapv = 0;
         }
     } else {
         currentFramemapv = 0;
@@ -128,41 +129,53 @@ Vector2 walk_character_map() {
 }
 
 void draw_char_map(Vector2 pos) {
-    Rectangle source;
     if (movingmaph) {
-        source = {
-            currentFramemaph * frameRecmaph.width,
-            0,
+        frameRowh = currentFramemaph / 5;
+        frameColh = currentFramemaph % 5;
+        src = {
+            frameColh * frameRecmaph.width,
+            frameRowh * frameRecmaph.height,
             frameRecmaph.width,
             frameRecmaph.height
         };
-    } else {
-        source = {
-            currentFramemapv * frameRecmapv.width,
-            0,
+    }
+    else if (movingmapv) {
+        frameRowv = currentFramemapv / 3;
+        frameColv = currentFramemapv % 3;
+        src = {
+            frameColv * frameRecmapv.width,
+            frameRowv * frameRecmapv.height,
             frameRecmapv.width,
             frameRecmapv.height
         };
     }
+    else {
+        if (facingLeftmap || facingRightmap) {
+            src = { 0, 0, frameRecmaph.width, frameRecmaph.height };
+        } else {
+            src = { 0, 0, frameRecmapv.width, frameRecmapv.height };
+        }
+    }
 
-    Rectangle dest = {
+    dest = {
         x_co_ordinate,
         y_co_ordinate,
-        source.width * 0.33f,
-        source.height * 0.33f
+        src.width * 0.33f,
+        src.height * 0.33f
     };
 
     Vector2 origin = { 0, 0 };
 
     if (facingLeftmap)
-        DrawTexturePro(character_mapl, source, dest, origin, 0.0f, WHITE);
+        DrawTexturePro(character_mapl, src, dest, origin, 0.0f, WHITE);
     else if (facingRightmap)
-        DrawTexturePro(character_mapr, source, dest, origin, 0.0f, WHITE);
+        DrawTexturePro(character_mapr, src, dest, origin, 0.0f, WHITE);
     else if (facingDown)
-        DrawTexturePro(character_mapd, source, dest, origin, 0.0f, WHITE);
+        DrawTexturePro(character_mapd, src, dest, origin, 0.0f, WHITE);
     else if (facingUp)
-        DrawTexturePro(character_mapu, source, dest, origin, 0.0f, WHITE);
+        DrawTexturePro(character_mapu, src, dest, origin, 0.0f, WHITE);
 }
+
 
 void unload_character_map() {
     UnloadTexture(character_mapu);
