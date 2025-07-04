@@ -112,6 +112,7 @@ void CheckExitZone() {
 }
 
 void logic_draw_lift() {
+    scale = screenHeight/lift_image.height;
     Vector2 offset_lift = walk_character_dept();
     playerPos_lift.x += offset_lift.x;
 

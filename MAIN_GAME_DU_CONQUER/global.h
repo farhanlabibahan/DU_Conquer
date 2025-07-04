@@ -23,7 +23,8 @@ typedef enum {
     LAYER_VC_BUNGLAW,
     LAYER_LIFT,
     LAYER_CCTV,
-    LAYER_MAZE
+    LAYER_MAZE,
+    LAYER_BANK
 } layer;
 
 extern layer state_of_game;
@@ -40,6 +41,7 @@ extern bool shooting_game;
 extern bool cctv_game;
 extern bool lift_game;
 extern bool maze_game;
+extern bool bank_game;
 
 //sabotage things
 extern bool lift_sabotage;
@@ -49,7 +51,7 @@ extern double time_loading_start;
 
 // Game assets
 extern Sound conquered_sound, pop_up_sound, click_sound, error_sound;
-extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_cctv;
+extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_cctv,bgm_bank;
 extern Texture2D character;
 
 // Asset management

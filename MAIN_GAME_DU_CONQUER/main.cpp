@@ -15,6 +15,7 @@
 #include "lift.h"
 #include "cctv.h"
 #include "maze.h"
+#include "bank.h"
 #include <iostream>
 
 
@@ -44,6 +45,7 @@ int main() {
     init_character_map();
     init_cctv();
     init_maze();
+    init_bank();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -67,6 +69,7 @@ int main() {
         else if (state_of_game == LAYER_LIFT) logic_draw_lift();
         else if (state_of_game == LAYER_CCTV)logic_draw_cctv();
         else if (state_of_game == LAYER_MAZE)logic_draw_maze();
+        else if (state_of_game == LAYER_BANK) logic_draw_bank();
         else if (state_of_game == LAYER_EXIT) break;
 
         DrawFPS(10,20);
@@ -88,6 +91,7 @@ int main() {
     unload_character_map();
     unload_cctv();
     unload_maze();
+    unload_bank();
     CloseAudioDevice();
     CloseWindow();
 

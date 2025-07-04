@@ -111,7 +111,7 @@ void init_menu()
 
 void logic_draw_menu()
 {
-
+    scale = (double)screenHeight / main_menu.height;
     // while (true) {
     if (clickedMessage && strcmp(clickedMessage, "New Game clicked!") == 0)
     {
