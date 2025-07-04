@@ -22,6 +22,7 @@ bool shooting_game = false;
 bool lift_game = false;
 bool cctv_game =false;
 bool maze_game = false;
+bool bank_game = false;
 
 //sabotage things
 bool lift_sabotage = false;
@@ -39,7 +40,7 @@ Music walk_music;
 Texture2D character;
 
 // dept wise bgm
-Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_lift,bgm_cctv;
+Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_lift,bgm_cctv,bgm_bank;
 
 // Load all game assets
 void init_assets() {
@@ -58,6 +59,7 @@ void init_assets() {
     bgm_vc_bunglaw = bgm_eee;
     bgm_lift = bgm_eee;
     bgm_cctv = bgm_eee;
+    bgm_bank = bgm_eee;
 
     character = LoadTexture("resources/character.png");
 }
