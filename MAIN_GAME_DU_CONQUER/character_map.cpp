@@ -77,7 +77,7 @@ Vector2 walk_character_map() {
     }
 
     // Down
-    if (IsKeyDown(KEY_S)) {
+    else if (IsKeyDown(KEY_S)) {
         facingDown = true;
         facingUp = false;
         facingLeftmap = false;

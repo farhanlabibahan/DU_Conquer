@@ -937,6 +937,7 @@ void logic_draw_map() {
     if(IsKeyPressed(KEY_C)) state_of_game = LAYER_CCTV;
     if(IsKeyPressed(KEY_Q)) state_of_game = LAYER_MAZE;
     if(IsKeyPressed(KEY_B)) state_of_game = LAYER_BANK;
+    if(IsKeyPressed(KEY_I)) state_of_game = LAYER_IBA;
 
     Vector2 proposed = { x_co_ordinate, y_co_ordinate };
 

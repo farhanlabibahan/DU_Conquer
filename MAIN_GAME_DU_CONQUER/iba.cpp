@@ -194,8 +194,8 @@ void logic_draw_iba() {
             if (CheckCollisionPointRec(mouse, okBtn)) {
                 PlaySound(click_sound);
                 dept_status_iba = Game_iba;
-                // show_rules_popup_iba = false;
-                // show_ok_button_iba = false;
+                show_rules_popup_iba = false;
+                show_ok_button_iba = false;
             }
         } else if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             PlaySound(error_sound);

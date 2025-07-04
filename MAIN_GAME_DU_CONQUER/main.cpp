@@ -15,7 +15,9 @@
 #include "lift.h"
 #include "cctv.h"
 #include "maze.h"
+#include "iba.h"
 #include "bank.h"
+#include "business.h"
 #include <iostream>
 
 
@@ -47,6 +49,8 @@ int main() {
     init_maze();
     init_bank();
 
+    init_iba();
+
     while (!WindowShouldClose()) {
         BeginDrawing();
         ClearBackground(BLACK);
@@ -70,6 +74,7 @@ int main() {
         else if (state_of_game == LAYER_CCTV)logic_draw_cctv();
         else if (state_of_game == LAYER_MAZE)logic_draw_maze();
         else if (state_of_game == LAYER_BANK) logic_draw_bank();
+        else if (state_of_game = LAYER_IBA)logic_draw_iba();
         else if (state_of_game == LAYER_EXIT) break;
 
         DrawFPS(10,20);
@@ -92,6 +97,7 @@ int main() {
     unload_cctv();
     unload_maze();
     unload_bank();
+    unload_iba();
     CloseAudioDevice();
     CloseWindow();
 
