@@ -914,8 +914,8 @@ add_isometric_obstacle(
 );
 
 
-    // Optional: pre-define an obstacle
-    // add_isometric_obstacle({7214, 3047}, {8214, 3047}, {8214, 4047}, {7214, 4047});
+    Optional: pre-define an obstacle
+    add_isometric_obstacle({7214, 3047}, {8214, 3047}, {8214, 4047}, {7214, 4047});
 }
 
 void logic_draw_map() {
@@ -937,26 +937,25 @@ void logic_draw_map() {
     if(IsKeyPressed(KEY_C)) state_of_game = LAYER_CCTV;
     if(IsKeyPressed(KEY_Q)) state_of_game = LAYER_MAZE;
     if(IsKeyPressed(KEY_B)) state_of_game = LAYER_BANK;
-    if(IsKeyPressed(KEY_I)) state_of_game = LAYER_IBA;
 
     Vector2 proposed = { x_co_ordinate, y_co_ordinate };
 
-    // if (IsKeyDown(KEY_W)) {
-    //     proposed.x -= cosTheta * speed;
-    //     proposed.y -= sinTheta * speed;
-    // }
-    // if (IsKeyDown(KEY_S)) {
-    //     proposed.x += cosTheta * speed;
-    //     proposed.y += sinTheta * speed;
-    // }
-    // if (IsKeyDown(KEY_A)) {
-    //     proposed.x -= cosTheta * speed;
-    //     proposed.y += sinTheta * speed;
-    // }
-    // if (IsKeyDown(KEY_D)) {
-    //     proposed.x += cosTheta * speed;
-    //     proposed.y -= sinTheta * speed;
-    // }
+    if (IsKeyDown(KEY_W)) {
+        proposed.x -= cosTheta * speed;
+        proposed.y -= sinTheta * speed;
+    }
+    if (IsKeyDown(KEY_S)) {
+        proposed.x += cosTheta * speed;
+        proposed.y += sinTheta * speed;
+    }
+    if (IsKeyDown(KEY_A)) {
+        proposed.x -= cosTheta * speed;
+        proposed.y += sinTheta * speed;
+    }
+    if (IsKeyDown(KEY_D)) {
+        proposed.x += cosTheta * speed;
+        proposed.y -= sinTheta * speed;
+    }
     
     // Check collision
     if (!is_colliding(proposed)) {
@@ -964,7 +963,7 @@ void logic_draw_map() {
         y_co_ordinate = proposed.y;
     }
 
-    // Click to mark 4 corners and save
+    Click to mark 4 corners and save
     if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         Vector2 worldClick = GetScreenToWorld2D(GetMousePosition(), camera);
         currentClickPoints.push_back(worldClick);
@@ -989,7 +988,7 @@ void logic_draw_map() {
                 file << ");\n\n";
                 file.close();
             }
-
+    
             currentClickPoints.clear();
             obstacleCount++;
         }
@@ -999,13 +998,13 @@ void logic_draw_map() {
     BeginMode2D(camera);
     DrawTexture(map_texture, 0, 0, WHITE);
 
-    // Draw character
-    // DrawTextureEx(character_map,
-    //     (Vector2){
-    //         x_co_ordinate - (character_map.width * 0.25f) / 2,
-    //         y_co_ordinate - (character_map.height * 0.25f) / 2
-    //     },
-    //     0.0f, 0.25f, WHITE);
+    Draw character
+    DrawTextureEx(character_map,
+        (Vector2){
+            x_co_ordinate - (character_map.width * 0.25f) / 2,
+            y_co_ordinate - (character_map.height * 0.25f) / 2
+        },
+        0.0f, 0.25f, WHITE);
     draw_char_map(proposed);
     
     Vector2 offset_map = walk_character_map();
@@ -1014,7 +1013,7 @@ void logic_draw_map() {
 
     DrawCircle(x_co_ordinate,y_co_ordinate,10.0f,RED);
 
-    // Draw all obstacles (fill + red outline)
+    Draw all obstacles (fill + red outline)
     for (const auto& quad : isoObstacles) {
         DrawTriangle(quad.topLeft, quad.topRight, quad.bottomRight, Fade(RED, 0.3f));
         DrawTriangle(quad.bottomRight, quad.bottomLeft, quad.topLeft, Fade(RED, 0.3f));
@@ -1025,7 +1024,7 @@ void logic_draw_map() {
         DrawLineV(quad.bottomLeft, quad.topLeft, RED);
     }
 
-    // Draw points you've clicked so far (green circles)
+    Draw points you've clicked so far (green circles)
     for (const Vector2& p : currentClickPoints) {
         DrawCircleV(p, 6, GREEN);
     }
