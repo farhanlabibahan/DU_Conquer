@@ -122,7 +122,7 @@ void logic_draw_iba() {
             iba_game = true;
             PlaySound(conquered_sound);
         }
-        // Removed KEY_Q close logic, replaced by visual close button below.
+        
     }
 
     if (playerPos_iba.x <= -20) playerPos_iba.x = -20;
@@ -142,11 +142,6 @@ void logic_draw_iba() {
     // DrawTexture(character, playerPos_iba.x, playerPos_iba.y, WHITE);
     draw_char_dept(playerPos_iba,scale);
    
-    // cout<<"japposx "<<playerPos_iba.x<<endl;
-    // cout<<"japposy "<<playerPos_iba.y<<endl;
-    // DrawCircleV(pop_up_zone, 20, RED);
-    // DrawCircleV(exit_zone_iba, 20, GREEN);
-    // DrawCircleV(playerPos_iba, 20, BLUE);
     EndMode2D();
 
     if (dept_status_iba == Game_iba) {
@@ -157,7 +152,6 @@ void logic_draw_iba() {
         draw_business();
     }
 
-    // Visual close button in Game_iba mode
     if (dept_status_iba == Game_iba) {
         Rectangle closeBtn = { (float)(screenWidth - 60), 20, 40, 40 };
         Vector2 mouse = GetMousePosition();

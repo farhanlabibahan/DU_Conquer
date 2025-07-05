@@ -26,7 +26,10 @@ typedef enum {
     LAYER_MAZE,
     LAYER_BANK,
     LAYER_IBA,
-
+    LAYER_DUCSU,
+    LAYER_ROBOTICS,
+    LAYER_LAW,
+    LAYER_CSE
 } layer;
 
 extern layer state_of_game;
@@ -45,6 +48,11 @@ extern bool lift_game;
 extern bool maze_game;
 extern bool bank_game;
 extern bool iba_game;
+extern bool cse_game;
+extern bool robotics_game;
+extern bool lift_game;
+extern bool law_game;
+extern bool gear_game;
 
 //sabotage things
 extern bool lift_sabotage;
@@ -54,7 +62,7 @@ extern double time_loading_start;
 
 // Game assets
 extern Sound conquered_sound, pop_up_sound, click_sound, error_sound;
-extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_cctv,bgm_bank,bgm_iba;
+extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_cctv,bgm_bank,bgm_iba,bgm_ducsu,bgm_cse,bgm_robotics,bgm_law;
 // extern Music bgm_eee, walk_music,bgm_nuclear,bgm_genetics,bgm_microbiology,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_cctv,bgm_iba;
 extern Texture2D character;
 

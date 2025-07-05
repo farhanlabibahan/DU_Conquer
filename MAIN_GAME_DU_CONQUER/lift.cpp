@@ -1,5 +1,6 @@
 #include "lift.h"
 #include "global.h"
+#include "gear.h"
 #include <string>
 #include <vector>
 #include <cmath>
@@ -8,11 +9,11 @@ Texture2D lift_image, lift_behind;
 Sound lift_ting_sound;
 Music warning_lift_bgm;
 int offsetX = 550, offsetY = 450;
-double currentFloor = 1;
-int wantedFloor = 1;
+double currentFloor = 0;
+int wantedFloor = 0;
 bool isInMotionLift = false;
 double liftSpeed = 0.005;
-int showOnScreen = 1;
+int showOnScreen = 0;
 bool lift_pop_up_show = false;
 std::string pop_up_lift = "Press E to Exit the Elevator";
 bool oneFloorPassed = false;
@@ -67,6 +68,7 @@ bool liftButton::isLiftButtonPressed() {
 }
 
 void init_lift() {
+    init_gear();
     lift_image = LoadTexture("resources/lift.png");
     lift_behind = LoadTexture("resources/EEE_EX.png");
     lift_ting_sound = LoadSound("resources/lift_ting.mp3");
@@ -83,10 +85,10 @@ void init_lift() {
     const int buttonHeight = 30;
     const int buttonSpacing = 20;
 
-    for (int i = 0; i < 3; i++) {
-        int floor = (i == 0) ? 1 : (i == 1) ? 4 : 9;
+    int floors[] = {0, 2, 6, 7, 9};
+    for (int i = 0; i < 5; i++) {
         float btnY = (offsetY + i * (buttonHeight + buttonSpacing)) * scale;
-        liftButtons.push_back(liftButton(floor, offsetX * scale, btnY));
+        liftButtons.push_back(liftButton(floors[i], offsetX * scale, btnY));
     }
 }
 
@@ -95,6 +97,7 @@ void unload_lift() {
     UnloadTexture(lift_behind);
     UnloadSound(lift_ting_sound);
     UnloadMusicStream(warning_lift_bgm);
+    unload_gear();
 }
 
 void CheckExitZone() {
@@ -102,9 +105,11 @@ void CheckExitZone() {
         lift_pop_up_show = true;
 
         if (IsKeyPressed(KEY_E)) {
-            if (showOnScreen == 1) state_of_game = LAYER_EEE;
-            else if (showOnScreen == 4) state_of_game = LAYER_GENETICS;
-            else if (showOnScreen == 9) state_of_game = LAYER_MICROBIOLOGY;
+            if (showOnScreen == 0) state_of_game = LAYER_MAP;
+            else if (showOnScreen == 6) state_of_game = LAYER_CSE;
+            else if (showOnScreen == 2) state_of_game = LAYER_MICROBIOLOGY;
+            else if (showOnScreen == 7) state_of_game = LAYER_GENETICS;
+            else if (showOnScreen == 9) state_of_game = LAYER_ROBOTICS;
         }
     } else {
         lift_pop_up_show = false;
@@ -112,6 +117,11 @@ void CheckExitZone() {
 }
 
 void logic_draw_lift() {
+    if (!IsMusicStreamPlaying(bgm_eee)) {
+        PlayMusicStream(bgm_eee);
+    }
+    UpdateMusicStream(bgm_eee);
+
     scale = screenHeight/lift_image.height;
     Vector2 offset_lift = walk_character_dept();
     playerPos_lift.x += offset_lift.x;
@@ -139,7 +149,6 @@ void logic_draw_lift() {
     DrawTextureEx(lift_behind, (Vector2){ 0, scrollOffset }, 0.0f, drawScale, WHITE);
     DrawTextureEx(lift_behind, (Vector2){ 0, scrollOffset - texHeight }, 0.0f, drawScale, WHITE);
     DrawTextureEx(lift_behind, (Vector2){ 0, scrollOffset + texHeight }, 0.0f, drawScale, WHITE);
-
     DrawTextureEx(lift_image, (Vector2){ 0, 0 }, 0.0f, scale, WHITE);
 
 
@@ -182,19 +191,28 @@ void logic_draw_lift() {
         DrawText(pop_up_lift.c_str(), 20 * scale, screenHeight - 30 * scale, 20 * scale, WHITE);
     }
 
-    if (oneFloorPassed && !lift_sabotage) {
+    if (oneFloorPassed && !lift_sabotage && !gear_game) {
         if (!IsMusicStreamPlaying(warning_lift_bgm)) {
             PlayMusicStream(warning_lift_bgm);
         }
         UpdateMusicStream(warning_lift_bgm);
 
         lift_sabotage_draw();
+        logic_gear();
+        draw_gear();
 
-        if (IsKeyPressed(KEY_X)) {
+        DrawText("ops! Elevator has run into trouble,Please fix the gears!", 20 * scale, screenHeight - 50 * scale, 18 * scale, WHITE);
+
+        if (IsKeyPressed(KEY_X) || gear_game) {
+            if (gear_game && !lift_sabotage) {
+                PlaySound(conquered_sound);
+            }
             lift_sabotage = true;
             StopMusicStream(warning_lift_bgm);
         }
     }
+
+    if(lift_game) DrawText("LIFT Fixed", 20 * scale, screenHeight - 80 * scale, 22 * scale, GREEN);
 
     if(lift_sabotage) CheckExitZone();
 }

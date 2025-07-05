@@ -8,10 +8,10 @@ using namespace std;
 
 Texture2D character_mapl, character_mapr, character_mapu, character_mapd;
 
-Rectangle frameRecmaph, frameRecmapv,src,dest;
+Rectangle frameRecmaph, frameRecmapv, frameRecmapd, src, dest;
 int currentFramemaph = 0;
 int currentFramemapv = 0;
-int frameRowh,frameColh,frameRowv,frameColv;
+int frameRowh, frameColh, frameRowv, frameColv;
 int framesCountermaph = 0;
 int framesCountermapv = 0;
 int framesSpeedmap = 11;
@@ -42,8 +42,14 @@ void init_character_map() {
 
     frameRecmapv = {
         0.0f, 0.0f,
-        (float)character_mapu.width / 3,
+        (float)character_mapu.width / 5,
         (float)character_mapu.height / 2
+    };
+
+    frameRecmapd = {
+        0.0f, 0.0f,
+        (float)character_mapd.width / 5,
+        (float)character_mapd.height / 2
     };
 }
 
@@ -60,8 +66,7 @@ Vector2 walk_character_map() {
         facingDown = false;
 
         offsetmap.x -= speed * cosTheta;
-        x_co_ordinate -= speed * cosTheta;
-        y_co_ordinate -= speed * sinTheta;
+        offsetmap.y -= speed * sinTheta;
         movingmaph = true;
     }
     // Right
@@ -72,11 +77,9 @@ Vector2 walk_character_map() {
         facingDown = false;
 
         offsetmap.x += speed * cosTheta;
-        x_co_ordinate += speed * cosTheta;
-        y_co_ordinate += speed * sinTheta;
+        offsetmap.y += speed * sinTheta;
         movingmaph = true;
     }
-
     // Down
     else if (IsKeyDown(KEY_S)) {
         facingDown = true;
@@ -84,9 +87,8 @@ Vector2 walk_character_map() {
         facingLeftmap = false;
         facingRightmap = false;
 
-        offsetmap.y += speed;
-        x_co_ordinate -= speed*cosTheta;
-        y_co_ordinate += speed*sinTheta;
+        offsetmap.x -= speed * cosTheta;
+        offsetmap.y += speed * sinTheta;
         movingmapv = true;
     }
     // Up
@@ -96,13 +98,12 @@ Vector2 walk_character_map() {
         facingLeftmap = false;
         facingRightmap = false;
 
-        offsetmap.y -= speed;
-        x_co_ordinate +=speed*cosTheta;
-        y_co_ordinate -= speed*sinTheta;
+        offsetmap.x += speed * cosTheta;
+        offsetmap.y -= speed * sinTheta;
         movingmapv = true;
     }
 
-    // Animate
+    // Animate horizontal movement
     if (movingmaph) {
         framesCountermaph++;
         if (framesCountermaph >= (60 / framesSpeedmap)) {
@@ -110,18 +111,21 @@ Vector2 walk_character_map() {
             currentFramemaph++;
             if (currentFramemaph > 9) currentFramemaph = 0;
         }
-    } else {
+    }
+    else {
         currentFramemaph = 0;
     }
 
+    // Animate vertical movement
     if (movingmapv) {
         framesCountermapv++;
         if (framesCountermapv >= (60 / framesSpeedmap)) {
             framesCountermapv = 0;
             currentFramemapv++;
-            if (currentFramemapv > 5) currentFramemapv = 0;
+            if (currentFramemapv > 9) currentFramemapv = 0;
         }
-    } else {
+    }
+    else {
         currentFramemapv = 0;
     }
 
@@ -129,9 +133,11 @@ Vector2 walk_character_map() {
 }
 
 void draw_char_map(Vector2 pos) {
+
     if (movingmaph) {
         frameRowh = currentFramemaph / 5;
         frameColh = currentFramemaph % 5;
+
         src = {
             frameColh * frameRecmaph.width,
             frameRowh * frameRecmaph.height,
@@ -140,28 +146,51 @@ void draw_char_map(Vector2 pos) {
         };
     }
     else if (movingmapv) {
-        frameRowv = currentFramemapv / 3;
-        frameColv = currentFramemapv % 3;
+        frameRowv = currentFramemapv / 5;
+        frameColv = currentFramemapv % 5;
+
         src = {
-            frameColv * frameRecmapv.width,
-            frameRowv * frameRecmapv.height,
-            frameRecmapv.width,
-            frameRecmapv.height
+            frameColv * (facingDown ? frameRecmapd.width : frameRecmapv.width),
+            frameRowv * (facingDown ? frameRecmapd.height : frameRecmapv.height),
+            (facingDown ? frameRecmapd.width : frameRecmapv.width),
+            (facingDown ? frameRecmapd.height : frameRecmapv.height)
         };
     }
     else {
+        // Idle frame fallback
         if (facingLeftmap || facingRightmap) {
-            src = { 0, 0, frameRecmaph.width, frameRecmaph.height };
-        } else {
-            src = { 0, 0, frameRecmapv.width, frameRecmapv.height };
+            src = {
+                0,
+                0,
+                frameRecmaph.width,
+                frameRecmaph.height
+            };
+        }
+        else if (facingDown) {
+            src = {
+                0,
+                0,
+                frameRecmapd.width,
+                frameRecmapd.height
+            };
+        }
+        else {
+            src = {
+                0,
+                0,
+                frameRecmapv.width,
+                frameRecmapv.height
+            };
         }
     }
 
-    dest = {
-        x_co_ordinate,
-        y_co_ordinate,
-        src.width * 0.33f,
-        src.height * 0.33f
+    float targetHeight = 64.0f;
+    float scale = targetHeight / src.height;
+    Rectangle dest = {
+        pos.x,
+        pos.y,
+        src.width * scale,
+        src.height * scale
     };
 
     Vector2 origin = { 0, 0 };
@@ -175,7 +204,6 @@ void draw_char_map(Vector2 pos) {
     else if (facingUp)
         DrawTexturePro(character_mapu, src, dest, origin, 0.0f, WHITE);
 }
-
 
 void unload_character_map() {
     UnloadTexture(character_mapu);

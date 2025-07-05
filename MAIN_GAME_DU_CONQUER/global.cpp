@@ -1,10 +1,9 @@
 #include "global.h"
 #include "character_dept.h"
 #include "raylib.h"
-// #include "raylib.h"
 
 // Global variable definitions
-double x_co_ordinate = 4523, y_co_ordinate = 2873;
+double x_co_ordinate = 6000, y_co_ordinate = 2873;
 double scale = 0;
 int screenWidth = GetScreenWidth();
 int screenHeight = GetScreenHeight();
@@ -24,6 +23,10 @@ bool cctv_game =false;
 bool maze_game = false;
 bool bank_game = false;
 bool iba_game =false;
+bool law_game = false;
+bool gear_game = false;
+bool robotics_game = false;
+bool cse_game = false;
 
 //sabotage things
 bool lift_sabotage = false;
@@ -41,7 +44,7 @@ Music walk_music;
 Texture2D character;
 
 // dept wise bgm
-Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_lift,bgm_cctv,bgm_bank,bgm_iba;
+Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_lift,bgm_cctv,bgm_bank,bgm_iba,bgm_ducsu,bgm_cse,bgm_robotics,bgm_law;
 
 // Load all game assets
 void init_assets() {
@@ -62,11 +65,15 @@ void init_assets() {
     bgm_cctv = bgm_eee;
     bgm_bank = bgm_eee;
     bgm_iba =bgm_eee;
+    bgm_ducsu = bgm_eee;
+    bgm_lift = bgm_eee;
+    bgm_law = bgm_eee;
+    bgm_robotics = bgm_eee;
+    bgm_cse = bgm_eee;
 
     character = LoadTexture("resources/character.png");
 }
 
-// Unload all game assets
 void unload_assets() {
     UnloadSound(conquered_sound);
     UnloadSound(pop_up_sound);

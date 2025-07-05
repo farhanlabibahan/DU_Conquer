@@ -18,6 +18,10 @@
 #include "iba.h"
 #include "bank.h"
 #include "business.h"
+#include "ducsu.h"
+#include "law.h"
+#include "robotics.h"
+#include "cse.h"
 #include <iostream>
 
 
@@ -48,8 +52,11 @@ int main() {
     init_cctv();
     init_maze();
     init_bank();
-
+    init_ducsu();
     init_iba();
+    init_law();
+    init_robotics();
+    init_cse();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -74,7 +81,11 @@ int main() {
         else if (state_of_game == LAYER_CCTV)logic_draw_cctv();
         else if (state_of_game == LAYER_MAZE)logic_draw_maze();
         else if (state_of_game == LAYER_BANK) logic_draw_bank();
-        else if (state_of_game = LAYER_IBA)logic_draw_iba();
+        else if (state_of_game == LAYER_IBA) logic_draw_iba();
+        else if (state_of_game == LAYER_DUCSU)logic_draw_ducsu();
+        else if (state_of_game == LAYER_LAW)logic_draw_law();
+        else if (state_of_game == LAYER_ROBOTICS) logic_draw_robotics();
+        else if (state_of_game == LAYER_CSE) logic_draw_cse();
         else if (state_of_game == LAYER_EXIT) break;
 
         DrawFPS(10,20);
@@ -98,6 +109,10 @@ int main() {
     unload_maze();
     unload_bank();
     unload_iba();
+    unload_ducsu();
+    unload_law();
+    unload_robotics();
+    unload_cse();
     CloseAudioDevice();
     CloseWindow();
 

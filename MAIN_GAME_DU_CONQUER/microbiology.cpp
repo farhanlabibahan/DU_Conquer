@@ -89,7 +89,7 @@ void logic_draw_microbiology() {
                 PlaySound(click_sound);
                 unload_snake();
                 eKeyHandled = true;
-                state_of_game = LAYER_MAP;
+                state_of_game = LAYER_LIFT;
             } else if (IsKeyPressed(KEY_E)) {
                 PlaySound(error_sound);
             }

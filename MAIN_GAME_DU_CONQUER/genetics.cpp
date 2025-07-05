@@ -85,12 +85,12 @@ void logic_draw_genetics() {
         }
 
         if (CheckCollisionCircles(playerPos_genetics, 50.0f, exit_zone_genetics, 50.0f)) {
-            pop_up_genetics = "Press E to Exit";
+            pop_up_genetics = "Press E to the Elevator";
             if (IsKeyPressed(KEY_E)) {
                 PlaySound(click_sound);
                 unload_game_of_life();
                 eKeyHandled = true;
-                state_of_game = LAYER_MAP;
+                state_of_game = LAYER_LIFT;
             } else if (IsKeyPressed(KEY_E) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
                 PlaySound(error_sound);
             }
