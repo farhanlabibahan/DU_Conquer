@@ -917,6 +917,27 @@ add_isometric_obstacle(
 );
 
 add_isometric_obstacle(
+    (Vector2){6088.56, 2981.91},
+    (Vector2){6215.56, 3043.91},
+    (Vector2){6214.56, 3105.91},
+    (Vector2){6087.56, 3044.91}
+);
+
+add_isometric_obstacle(
+    (Vector2){6214.56, 3038.91},
+    (Vector2){6500.56, 2897.91},
+    (Vector2){6501.56, 2964.91},
+    (Vector2){6220.56, 3102.91}
+);
+
+add_isometric_obstacle(
+    (Vector2){6089.56, 2977.91},
+    (Vector2){6341.56, 2819.91},
+    (Vector2){6494.56, 2900.91},
+    (Vector2){6211.56, 3030.91}
+);
+
+add_isometric_obstacle(
     (Vector2){7772.46, 2574.46},
     (Vector2){7500.46, 2434.46},
     (Vector2){7500.46, 2461.46},
