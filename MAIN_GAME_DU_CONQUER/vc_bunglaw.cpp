@@ -30,7 +30,7 @@ void init_vc_bunglaw() {
     SetMusicVolume(bgm_vc_bunglaw, 0.13f);
     PlayMusicStream(bgm_vc_bunglaw);
     SetMusicVolume(walk_music, 1.0f);
-    bg_image_vc_bunglaw = LoadTexture("resources/microbiology.png");
+    bg_image_vc_bunglaw = LoadTexture("resources/vc bunglow.png");
     scale = (float)GetMonitorHeight(0) / bg_image_vc_bunglaw.height;
     playerPos_vc_bunglaw = {0*scale,screenHeight-400*scale};
     exit_zone_vc_bunglaw = {0*scale,screenHeight-400*scale};

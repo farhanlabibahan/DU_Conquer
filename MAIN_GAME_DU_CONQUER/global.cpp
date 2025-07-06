@@ -27,6 +27,7 @@ bool law_game = false;
 bool gear_game = false;
 bool robotics_game = false;
 bool cse_game = false;
+bool philosophy_game=false;
 
 //sabotage things
 bool lift_sabotage = false;
@@ -44,7 +45,7 @@ Music walk_music;
 Texture2D character;
 
 // dept wise bgm
-Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_lift,bgm_cctv,bgm_bank,bgm_iba,bgm_ducsu,bgm_cse,bgm_robotics,bgm_law;
+Music bgm_eee,bgm_nuclear,bgm_microbiology,bgm_genetics,bgm_japanesse,bgm_eee_first,bgm_vc_bunglaw,bgm_lift,bgm_cctv,bgm_bank,bgm_iba,bgm_ducsu,bgm_cse,bgm_robotics,bgm_law,bgm_philosophy;
 
 // Load all game assets
 void init_assets() {
@@ -70,7 +71,7 @@ void init_assets() {
     bgm_law = bgm_eee;
     bgm_robotics = bgm_eee;
     bgm_cse = bgm_eee;
-
+    bgm_philosophy=bgm_eee;
     character = LoadTexture("resources/character.png");
 }
 

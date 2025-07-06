@@ -22,6 +22,8 @@
 #include "law.h"
 #include "robotics.h"
 #include "cse.h"
+#include "philosophy.h"
+#include "tictactoe.h"
 #include <iostream>
 
 
@@ -57,6 +59,8 @@ int main() {
     init_law();
     init_robotics();
     init_cse();
+    init_philosophy();
+    init_tictactoe();
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -86,6 +90,7 @@ int main() {
         else if (state_of_game == LAYER_LAW)logic_draw_law();
         else if (state_of_game == LAYER_ROBOTICS) logic_draw_robotics();
         else if (state_of_game == LAYER_CSE) logic_draw_cse();
+        else if (state_of_game == LAYER_PHILOSOPHY)logic_draw_philosophy();
         else if (state_of_game == LAYER_EXIT) break;
 
         DrawFPS(10,20);
@@ -113,6 +118,7 @@ int main() {
     unload_law();
     unload_robotics();
     unload_cse();
+    unload_philosophy();
     CloseAudioDevice();
     CloseWindow();
 
