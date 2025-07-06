@@ -14,7 +14,7 @@ Vector2 mokarram = {4554,2575.0};
 Vector2 eee_building = {6853.3,2376.3};
 Vector2 nuclear_building = {6196.5,2702.1};
 Vector2 ducsu_building = {2051.0,1632.0};
-Vector2 philosophy_building = {2554.4,1882.3};
+Vector2 phylosophy_building = {2554.4,1882.3};
 Vector2 japanesse_building = {2672.8,2006.8};
 Vector2 bank_building = {5706.6,2726.0};
 Vector2 iba_building = {2406.3,1777.7};
@@ -47,7 +47,7 @@ void init_map() {
     SetMusicVolume(bgm, 0.4f);
     PlayMusicStream(bgm);
 
-    camera.zoom = 2.5f;
+    camera.zoom = 1.0f;
     LoadIsometricObstacles();
 
 }
@@ -123,13 +123,13 @@ void logic_draw_map() {
         }
     }
 
-    else if (CheckCollisionCircles(character_pos_map, 50.0f, philosophy_building, 50.0f)) {
-        toShowTextMap = "Press E to enter Mokarram Sc Building";
-        if(IsKeyPressed(KEY_E))
-            {
-            state_of_game = LAYER_PHILOSOPHY;
-            }
-    }
+    // else if (CheckCollisionCircles(character_pos_map, 50.0f, phylosophy_building, 50.0f)) {
+    //     toShowTextMap = "Press E to enter Mokarram Sc Building";
+    //     if(IsKeyPressed(KEY_E))
+    //     {
+    //         state_of_game = LAYER_DUCSU;
+    //     }
+    // }
 
     else if (CheckCollisionCircles(character_pos_map, 50.0f, japanesse_building, 50.0f)) {
         toShowTextMap = "Press E to enter Japanese Dept";
@@ -200,15 +200,13 @@ void logic_draw_map() {
 
     BeginMode2D(camera);
     DrawTexture(map_texture, 0, 0, WHITE);
-    draw_char_map(character_pos_map);
-
+    draw_char_map(proposed);
     
     Vector2 offset_map = walk_character_map();
     proposed.x += offset_map.x;
 
 
-    DrawCircleV(character_pos_map, 20.0f, Fade(RED, 0.3f));  // semi-transparent red
-
+    // DrawCircle(x_co_ordinate+30,y_co_ordinate+40,20.0f,RED);
 
 
     EndMode2D();
