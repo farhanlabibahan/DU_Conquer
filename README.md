@@ -1,13 +1,14 @@
 # DU_Conquer
 CSE-1202 Group Project
 
-<img width="1536" height="1024" alt="main_menu" src="https://github.com/user-attachments/assets/e6af9894-e4ab-4b9e-9e11-5c2741effe57" />
 
 ==============================
       DU CONQUER - README
 ==============================
 
 DU Conquer is a campus-themed exploration game packed with fun mini-games, cinematic intro/outro, and diverse challenges. It is built in C++ using the Raylib game development library and runs on Windows, Linux, and macOS.
+
+<img width="1536" height="1024" alt="main_menu" src="https://github.com/user-attachments/assets/e6af9894-e4ab-4b9e-9e11-5c2741effe57" />
 
 --------------------------------------
  REQUIREMENTS
