@@ -31,7 +31,7 @@ void init_microbiology() {
     bg_image_microbiology = LoadTexture("resources/microbio lift.png");
     scale = (float)GetScreenHeight() / bg_image_microbiology.height;
     
-    playerPos_microbiology = {0*scale,screenHeight-400*scale};
+    playerPos_microbiology = {4700*scale,screenHeight-400*scale};
     exit_zone_microbiology = {0*scale,screenHeight-400*scale};
     game_zone_microbiology = {2000*scale,screenHeight-400*scale};
 
