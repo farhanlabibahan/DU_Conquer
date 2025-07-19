@@ -1,6 +1,8 @@
 # DU_Conquer
 CSE-1202 Group Project
 
+<img width="1536" height="1024" alt="main_menu" src="https://github.com/user-attachments/assets/e6af9894-e4ab-4b9e-9e11-5c2741effe57" />
+
 ==============================
       DU CONQUER - README
 ==============================
@@ -11,7 +13,6 @@ DU Conquer is a campus-themed exploration game packed with fun mini-games, cinem
  REQUIREMENTS
 --------------------------------------
 
- 
 Windows:
 - MinGW or similar with g++
 - Raylib built for Windows
